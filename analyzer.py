@@ -1,108 +1,219 @@
-# analyzer.py
-# استفاده: python analyzer.py your_code.py
-import ast
-import sys
-from pathlib import Path
+import random
+import timeit
+from typing import List, TypeVar
 
-COMPLEXITY = {0: "O(1) یا بدون حلقه", 1: "O(n)", 2: "O(n²)", 3: "O(n³)"}
+T = TypeVar("T")
 
 
-class CodeAnalyzer(ast.NodeVisitor):
-    def __init__(self):
-        self.issues = []           # (line, message)
-        self.loop_depth = 0
-        self.func_stack = []
-        self.max_depth = {}        # تابع -> بیشترین عمق حلقه
-        self.func_calls = {}       # تابع -> نام توابعی که صدا زده
+# ==========================================
+# 1. نسخه اولیه (Original Version)
+# ==========================================
 
-    @property
-    def current_func(self):
-        return self.func_stack[-1] if self.func_stack else "<module>"
+def find_common_elements(list_a: List[T],
+                         list_b: List[T]) -> List[T]:
+    """
+    پیدا کردن عناصر مشترک دو لیست بدون تکرار.
+    ترتیب اولین ظاهر شدن عناصر مطابق list_a است.
+    """
+    result = []
 
-    def add(self, node, msg):
-        self.issues.append((node.lineno, msg))
+    for item in list_a:
+        if item in list_b:
+            if item not in result:
+                result.append(item)
 
-    def visit_FunctionDef(self, node):
-        self.func_stack.append(node.name)
-        self.max_depth.setdefault(node.name, 0)
-        self.func_calls[node.name] = set()
-        saved, self.loop_depth = self.loop_depth, 0
+    return result
 
-        self.generic_visit(node)
 
-        self.loop_depth = saved
-        self.func_stack.pop()
+# ==========================================
+# 2. نسخه بهینه‌شده (Optimized Version)
+# ==========================================
 
-        # بررسی بازگشتی بودن بدون کش
-        if node.name in self.func_calls[node.name]:
-            decorators = [ast.unparse(d) for d in node.decorator_list]
-            if not any("cache" in d for d in decorators):
-                self.add(node, f"تابع «{node.name}» بازگشتی است. اگر زیرمسئله‌ها تکرار می‌شوند، از @lru_cache استفاده کن.")
+def find_common_elements_optimized(
+    list_a: List[T],
+    list_b: List[T]
+) -> List[T]:
+    """
+    نسخه بهینه‌شده با استفاده از set.
+    ترتیب خروجی مطابق اولین ظاهر شدن عناصر در list_a است.
 
-    def _visit_loop(self, node):
-        self.loop_depth += 1
-        fn = self.current_func
-        self.max_depth[fn] = max(self.max_depth.get(fn, 0), self.loop_depth)
-        if self.loop_depth >= 3:
-            self.add(node, f"حلقه‌های تودرتو با عمق {self.loop_depth} در «{fn}» (پیچیدگی تقریبی O(n^{self.loop_depth})).")
-        self.generic_visit(node)
-        self.loop_depth -= 1
+    نکته: عناصر باید قابل هش شدن (hashable) باشند.
+    """
+    set_b = set(list_b)
+    seen = set()
+    result = []
 
-    visit_For = _visit_loop
-    visit_While = _visit_loop
+    for item in list_a:
+        if item in set_b and item not in seen:
+            result.append(item)
+            seen.add(item)
 
-    def visit_Call(self, node):
-        if isinstance(node.func, ast.Name):
-            if self.func_stack:
-                self.func_calls[self.current_func].add(node.func.id)
-            if node.func.id == "sorted" and self.loop_depth > 0:
-                self.add(node, "sorted() داخل حلقه هر بار O(n log n) است. مرتب‌سازی را بیرون از حلقه انجام بده.")
-        elif isinstance(node.func, ast.Attribute) and self.loop_depth > 0:
-            if node.func.attr == "pop" and node.args and isinstance(node.args[0], ast.Constant) and node.args[0].value == 0:
-                self.add(node, "pop(0) روی لیست O(n) است. برای صف از collections.deque استفاده کن.")
-            if node.func.attr == "insert" and node.args and isinstance(node.args[0], ast.Constant) and node.args[0].value == 0:
-                self.add(node, "insert(0, ...) روی لیست O(n) است. برای صف از collections.deque استفاده کن.")
-        self.generic_visit(node)
+    return result
 
-    def visit_Compare(self, node):
-        if self.loop_depth > 0 and any(isinstance(op, (ast.In, ast.NotIn)) for op in node.ops):
-            comp = node.comparators[0]
-            if isinstance(comp, (ast.List, ast.Tuple)):
-                self.add(node, "جست‌وجوی `in` روی لیست داخل حلقه O(n) است. از set استفاده کن (O(1)).")
-            elif isinstance(comp, ast.Name):
-                self.add(node, f"جست‌وجوی `in` داخل حلقه. اگر «{comp.id}» لیست است، آن را به set تبدیل کن (احتمال کندی).")
-        self.generic_visit(node)
 
-    def visit_AugAssign(self, node):
-        is_str = (isinstance(node.value, ast.Constant) and isinstance(node.value.value, str)) \
-                 or isinstance(node.value, ast.JoinedStr)
-        if self.loop_depth > 0 and isinstance(node.op, ast.Add) and is_str:
-            self.add(node, "الحاق رشته با += داخل حلقه هر بار کل رشته را کپی می‌کند. از list و ''.join(...) استفاده کن.")
-        self.generic_visit(node)
+# ==========================================
+# 3. تست صحت (Correctness Tests)
+# ==========================================
 
+def run_tests():
+    test_cases = [
+        ([1, 2, 3], [2, 3, 4], [2, 3]),
+        ([1, 1, 2, 2, 3], [1, 2], [1, 2]),
+        ([], [1, 2, 3], []),
+        ([1, 2, 3], [], []),
+        ([5, 4, 3, 2], [2, 3, 5], [5, 3, 2]),
+        (["a", "b", "a"], ["a", "c"], ["a"]),
+    ]
+
+    for index, (list_a, list_b, expected) in enumerate(
+        test_cases, start=1
+    ):
+        original = find_common_elements(list_a, list_b)
+        optimized = find_common_elements_optimized(
+            list_a, list_b
+        )
+
+        assert original == expected, (
+            f"Original failed on test {index}: {original}"
+        )
+        assert optimized == expected, (
+            f"Optimized failed on test {index}: {optimized}"
+        )
+
+    print("All correctness tests passed!")
+
+
+# ==========================================
+# 4. بررسی پیچیدگی الگوریتم
+# ==========================================
+
+def print_complexity_analysis():
+    print("\n" + "=" * 55)
+    print("COMPLEXITY ANALYSIS")
+    print("=" * 55)
+
+    print("""
+Original Version:
+-----------------
+Let n = len(list_a), m = len(list_b).
+
+- Searching in list_b: O(m) per item.
+- Searching in result: up to O(n) per item.
+- Total time: O(n*m + n^2).
+- If n and m are similar: O(n^2).
+- Extra space: O(n).
+
+Optimized Version:
+------------------
+- Building set_b: expected O(m).
+- Membership checks: expected O(1) per item.
+- Total expected time: O(n + m).
+- Extra space: O(n + m).
+
+Important:
+These are expected bounds for typical hash-table behavior.
+Worst-case hash-table operations can be slower.
+The optimized version requires hashable elements.
+""")
+
+
+# ==========================================
+# 5. بنچمارک (Benchmark)
+# ==========================================
+
+def run_benchmark():
+    random.seed(42)
+
+    size = 3000
+
+    list_a = [
+        random.randint(0, size)
+        for _ in range(size)
+    ]
+
+    list_b = [
+        random.randint(0, size)
+        for _ in range(size)
+    ]
+
+    # ابتدا مطمئن می‌شویم خروجی دو نسخه برابر است.
+    original_result = find_common_elements(
+        list_a, list_b
+    )
+
+    optimized_result = find_common_elements_optimized(
+        list_a, list_b
+    )
+
+    assert original_result == optimized_result, (
+        "The two implementations returned different results!"
+    )
+
+    print("\n" + "=" * 55)
+    print("BENCHMARK")
+    print("=" * 55)
+
+    print(f"Input size A: {len(list_a)}")
+    print(f"Input size B: {len(list_b)}")
+
+    repetitions = 3
+
+    original_timer = timeit.Timer(
+        lambda: find_common_elements(list_a, list_b)
+    )
+
+    optimized_timer = timeit.Timer(
+        lambda: find_common_elements_optimized(
+            list_a, list_b
+        )
+    )
+
+    original_times = original_timer.repeat(
+        repeat=repetitions, number=1
+    )
+
+    optimized_times = optimized_timer.repeat(
+        repeat=repetitions, number=1
+    )
+
+    original_best = min(original_times)
+    optimized_best = min(optimized_times)
+
+    print(
+        f"\nOriginal best time: "
+        f"{original_best:.6f} seconds"
+    )
+
+    print(
+        f"Optimized best time: "
+        f"{optimized_best:.6f} seconds"
+    )
+
+    if optimized_best > 0:
+        speedup = original_best / optimized_best
+
+        print(f"Speedup: {speedup:.2f}x")
+
+    print(
+        "\nNote: Results depend on your computer, "
+        "Python version, and input data."
+    )
+
+
+# ==========================================
+# 6. اجرای برنامه
+# ==========================================
 
 def main():
-    if len(sys.argv) < 2:
-        print("استفاده: python analyzer.py your_code.py")
-        sys.exit(1)
+    print("=" * 55)
+    print("PYOPTIMIZE: CODE ANALYSIS AND OPTIMIZATION")
+    print("=" * 55)
 
-    path = Path(sys.argv[1])
-    tree = ast.parse(path.read_text(encoding="utf-8"))
-    analyzer = CodeAnalyzer()
-    analyzer.visit(tree)
+    run_tests()
+    print_complexity_analysis()
+    run_benchmark()
 
-    print(f"\n=== تحلیل {path.name} ===\n")
-    print("تخمین پیچیدگی زمانی بر اساس عمق حلقه‌ها:")
-    for fn, depth in analyzer.max_depth.items():
-        print(f"  {fn:<25} {COMPLEXITY.get(depth, f'O(n^{depth})')}")
-
-    print("\nمشکلات احتمالی:")
-    if not analyzer.issues:
-        print("  موردی پیدا نشد.")
-    for line, msg in sorted(analyzer.issues):
-        print(f"  خط {line}: {msg}")
-
-    print("\nنکته: این تحلیل تخمینی و ایستاست. برای پیدا کردن گلوگاه واقعی از cProfile استفاده کن.")
+    print("\nAnalysis completed successfully.")
 
 
 if __name__ == "__main__":
