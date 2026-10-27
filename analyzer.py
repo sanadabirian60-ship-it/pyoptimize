@@ -1,5 +1,5 @@
-
-# استفاده: python index.py your_code.py
+# analyzer.py
+# استفاده: python analyzer.py your_code.py
 import ast
 import sys
 from pathlib import Path
@@ -83,7 +83,7 @@ class CodeAnalyzer(ast.NodeVisitor):
 
 def main():
     if len(sys.argv) < 2:
-        print("استفاده: python index.py your_code.py")
+        print("استفاده: python analyzer.py your_code.py")
         sys.exit(1)
 
     path = Path(sys.argv[1])
