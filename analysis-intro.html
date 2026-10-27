@@ -3,183 +3,745 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مقدمه‌ای بر تحلیل ایستای کد پایتون</title>
+
+  <title>تحلیل و بهینه‌سازی کد پایتون | PyOptimize</title>
+
+  <meta name="description"
+        content="مقاله آموزشی درباره تحلیل ایستای کد پایتون، پیچیدگی الگوریتم، بهینه‌سازی و ارزیابی عملکرد.">
+
   <style>
     :root {
-      --bg: #ffffff;
-      --text: #1f2328;
-      --muted: #656d76;
-      --accent: #0969da;
-      --border: #d0d7de;
-      --code-bg: #f6f8fa;
-      color-scheme: light;
+      --bg: #0b1020;
+      --panel: #121a2d;
+      --panel-light: #19243a;
+      --text: #edf2ff;
+      --muted: #a6b2cc;
+      --primary: #7c8cff;
+      --secondary: #42d6b5;
+      --border: #293651;
+      --warning: #ffd166;
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0d1117;
-        --text: #e6edf3;
-        --muted: #8b949e;
-        --accent: #58a6ff;
-        --border: #30363d;
-        --code-bg: #161b22;
-        color-scheme: dark;
-      }
+
+    * {
+      box-sizing: border-box;
     }
-    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Tahoma, "Vazirmatn", sans-serif;
-      line-height: 1.9;
       background: var(--bg);
       color: var(--text);
+      font-family: Tahoma, Arial, sans-serif;
+      line-height: 2;
     }
-    main {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 48px 20px;
-    }
-    h1 {
-      font-size: 2rem;
-      margin: 0 0 8px;
-    }
-    h2 {
-      font-size: 1.3rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
-      margin-top: 40px;
-    }
-    .meta {
-      color: var(--muted);
-      margin: 0 0 24px;
-    }
+
     a {
-      color: var(--accent);
+      color: var(--secondary);
+      text-decoration: none;
     }
-    pre {
-      background: var(--code-bg);
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      width: min(1000px, 92%);
+      margin: auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 16, 32, 0.96);
+    }
+
+    .nav {
+      min-height: 75px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      padding: 12px 0;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      direction: ltr;
+    }
+
+    .logo span {
+      color: var(--secondary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .hero {
+      padding: 60px 0 45px;
+      background:
+        radial-gradient(ellipse at top, #202b53 0%, transparent 70%);
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #3d5077;
+      border-radius: 30px;
+      padding: 4px 14px;
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    h1 {
+      font-size: clamp(29px, 5vw, 44px);
+      line-height: 1.6;
+      margin: 18px 0;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 245px;
+      gap: 28px;
+      align-items: start;
+      padding: 35px 0 60px;
+    }
+
+    article,
+    .toc,
+    .callout,
+    .comparison {
+      background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 16px;
-      overflow-x: auto;
+      border-radius: 14px;
+    }
+
+    article {
+      padding: clamp(18px, 4vw, 35px);
+      min-width: 0;
+    }
+
+    article h2 {
+      font-size: 25px;
+      margin-top: 42px;
+      line-height: 1.7;
+    }
+
+    article h3 {
+      font-size: 19px;
+      margin-top: 28px;
+    }
+
+    article p,
+    article li {
+      color: #d2dbed;
+    }
+
+    article li {
+      margin: 7px 0;
+    }
+
+    .toc {
+      padding: 18px;
+      position: sticky;
+      top: 15px;
+    }
+
+    .toc h3 {
+      margin-top: 0;
+    }
+
+    .toc a {
+      display: block;
+      padding: 5px 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .toc a:hover {
+      color: var(--secondary);
+    }
+
+    .callout {
+      padding: 17px;
+      margin: 20px 0;
+      border-right: 4px solid var(--secondary);
+    }
+
+    .callout.warning {
+      border-right-color: var(--warning);
+    }
+
+    pre {
       direction: ltr;
       text-align: left;
+      overflow-x: auto;
+      background: #080d19;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 17px;
+      line-height: 1.8;
+      font-size: 13px;
+      color: #d8e5ff;
+      tab-size: 4;
     }
+
     code {
-      font-family: Consolas, "Courier New", monospace;
-      font-size: 0.92rem;
+      font-family: Consolas, Monaco, monospace;
     }
+
+    p code,
+    li code {
+      direction: ltr;
+      unicode-bidi: isolate;
+      background: var(--panel-light);
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: var(--secondary);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 20px 0;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 16px 0;
+      min-width: 480px;
+      background: var(--panel-light);
     }
-    th, td {
+
+    th,
+    td {
+      padding: 12px;
       border: 1px solid var(--border);
-      padding: 8px 12px;
       text-align: right;
+      font-size: 14px;
     }
+
     th {
-      background: var(--code-bg);
+      color: var(--secondary);
     }
-    .note {
-      border-right: 4px solid var(--accent);
-      padding: 8px 16px;
-      margin: 20px 0;
-      background: var(--code-bg);
+
+    .button {
+      display: inline-block;
+      padding: 10px 17px;
+      background: var(--primary);
+      color: white;
+      border-radius: 9px;
+      font-weight: bold;
     }
+
+    .button:hover {
+      text-decoration: none;
+      opacity: 0.9;
+    }
+
+    .references li {
+      overflow-wrap: anywhere;
+    }
+
     footer {
-      margin-top: 56px;
-      color: var(--muted);
-      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
       text-align: center;
+      padding: 25px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+        order: -1;
+      }
+
+      .toc-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .toc-links {
+        grid-template-columns: 1fr;
+      }
+
+      article h2 {
+        font-size: 22px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <main>
-    <h1>مقدمه‌ای بر تحلیل ایستای کد پایتون</h1>
-    <p class="meta">تحلیل ایستا یعنی بررسی کد بدون اجرای آن. در این مطلب می‌بینیم چه چیزهایی را می‌توان از ساختار کد فهمید و کجا باید به اندازه‌گیری واقعی تکیه کرد.</p>
 
-    <h2>هدف این پروژه</h2>
-    <p>هدف این پروژه ساختن یک ابزار ساده و قابل‌فهم برای پیدا کردن الگوهای کندکننده در کد پایتون است. ابزار کد را بدون اجرا بررسی می‌کند، نقاط مشکوک را با شماره‌ی خط گزارش می‌دهد و پیشنهاد می‌کند چه تغییری بدهی. هدف دوم این است که نشان دهیم چطور بعد از هر تغییر، بهبود واقعی را با اندازه‌گیری تأیید کنی.</p>
+<header>
+  <div class="container nav">
+    <a class="logo" href="./">Py<span>Optimize</span></a>
 
-    <h2>تحلیل ایستا چیست؟</h2>
-    <p>کد پایتون را می‌توان به‌صورت یک درخت نحوی (AST) خواند. ماژول <code>ast</code> در کتابخانه‌ی استاندارد این درخت را در اختیارت می‌گذارد. با پیمایش این درخت می‌توان الگوهایی را پیدا کرد که معمولاً کندی ایجاد می‌کنند، مثل:</p>
-    <ul>
-      <li>جست‌وجوی <code>in</code> روی لیست داخل حلقه</li>
-      <li>الحاق رشته با <code>+=</code> داخل حلقه</li>
-      <li>حلقه‌های تودرتو</li>
-      <li>توابع بازگشتی بدون کش</li>
-    </ul>
+    <nav class="nav-links" aria-label="منوی اصلی">
+      <a href="./">صفحه اصلی</a>
+      <a href="./#analyzer">تحلیل‌گر کد</a>
+      <a href="#references">منابع</a>
+    </nav>
+  </div>
+</header>
 
-    <h2>ابزار این مطلب</h2>
-    <p>اسکریپت <code>analyzer.py</code> همین کار را انجام می‌دهد. برای اجرا:</p>
-    <pre><code>python analyzer.py your_code.py</code></pre>
-    <p>خروجی شامل تخمین پیچیدگی هر تابع بر اساس عمق حلقه‌ها و فهرست مشکلات احتمالی با شماره‌ی خط است.</p>
+<section class="hero">
+  <div class="container">
+    <span class="badge">مقاله آموزشی و فنی</span>
 
-    <h2>نمونه‌ی عملی</h2>
-    <p>تابعی را در نظر بگیر که کاربرهای ثبت‌شده در لاگ را فیلتر می‌کند. نسخه‌ی اول از <code>in</code> روی لیست و حلقه‌ی تودرتو روی <code>blacklist</code> استفاده می‌کند. با تبدیل ورودی‌ها به set و ساخت یک‌باره‌ی رشته با <code>join</code>، همان خروجی با سرعت بسیار بیشتری به دست می‌آید. در یک بنچ‌مارک با ۵۰۰۰ لاگ و ورودی تصادفی، نسخه‌ی بهینه حدود ۱۷۳ برابر سریع‌تر بود. همچنین فیبوناچی بازگشتی با <code>lru_cache</code> در همان آزمایش حدود ۲۳۰۰ برابر سریع‌تر شد.</p>
+    <h1>تحلیل و بهینه‌سازی کد پایتون؛ از بررسی تا ارزیابی</h1>
 
-    <div class="note">
-      این اعداد مربوط به یک ورودی مشخص روی یک ماشین مشخص است. اندازه‌ی بهبود به داده و محیط بستگی دارد، پس برای گزارش دقیق، خودت هم با <code>timeit</code> بسنج.
-    </div>
+    <p>
+      در این مقاله یک الگوریتم مشخص را بررسی می‌کنیم،
+      نقاط ضعف احتمالی آن را توضیح می‌دهیم و با استفاده از
+      ساختار داده مناسب، نسخه‌ای با پیچیدگی زمانی بهتر می‌سازیم.
+      سپس صحت و عملکرد دو نسخه را مقایسه می‌کنیم.
+    </p>
 
-    <h2>محدودیت‌های تحلیل ایستا</h2>
-    <p>تحلیلگر ساختاری فقط الگوها را می‌بیند، نه زمان واقعی را. ممکن است حلقه‌ای را گزارش کند که در عمل کوچک است، و ممکن است گلوگاهی را که با الگوهای شناخته‌شده مطابقت ندارد نبیند. مثلاً در نسخه‌ی تست، حلقه‌ی تودرتوی با عمق ۲ روی <code>blacklist</code> گزارش نشد. برای تصمیم نهایی باید اندازه‌گیری کرد.</p>
+    <a href="./#analyzer" class="button">رفتن به تحلیل‌گر کد</a>
+  </div>
+</section>
 
-    <h2>اندازه‌گیری واقعی</h2>
-    <table>
-      <tr><th>ابزار</th><th>کاربرد</th></tr>
-      <tr><td><code>timeit</code></td><td>مقایسه‌ی زمان دو نسخه‌ی یک تابع</td></tr>
-      <tr><td><code>cProfile</code></td><td>پیدا کردن اینکه زمان در کدام تابع می‌رود</td></tr>
-    </table>
-    <pre><code>python -m cProfile -s cumtime your_script.py</code></pre>
+<main class="container layout">
 
-    <h2>مثال کامل: تحلیل و بهینه‌سازی</h2>
-    <p>کد زیر نسخه‌ی اول است. ابتدا آن را با <code>analyzer.py</code> بررسی می‌کنیم:</p>
-    <pre><code>def find_common_users(logs, blacklist, allowed):
+  <article>
+
+    <section id="introduction">
+      <h2>۱. مقدمه</h2>
+
+      <p>
+        بهینه‌سازی نرم‌افزار فرایندی برای بهبود عملکرد برنامه،
+        کاهش مصرف منابع یا افزایش خوانایی و نگهداشت‌پذیری کد است.
+        با این حال، هر تغییر ظاهری یا کوتاه‌تر شدن کد لزوماً
+        به معنای بهینه‌تر شدن آن نیست.
+      </p>
+
+      <p>
+        یک بهینه‌سازی معتبر باید رفتار مورد انتظار برنامه را حفظ کند.
+        بنابراین، علاوه بر تحلیل پیچیدگی، باید آزمون‌های صحت و
+        اندازه‌گیری عملکرد نیز انجام شوند.
+      </p>
+    </section>
+
+    <section id="problem">
+      <h2>۲. تعریف مسئله</h2>
+
+      <p>
+        دو فهرست به نام‌های <code>list_a</code> و
+        <code>list_b</code> داریم. هدف، یافتن عناصری است که
+        در هر دو فهرست وجود دارند؛ هر عنصر فقط یک بار در خروجی
+        قرار می‌گیرد و ترتیب اولین حضور آن در فهرست اول حفظ می‌شود.
+      </p>
+
+      <pre><code>list_a = [1, 2, 3, 2, 4, 5]
+list_b = [2, 4, 5, 6]
+
+# Expected output:
+[2, 4, 5]</code></pre>
+
+      <p>
+        حفظ ترتیب مهم است؛ زیرا استفاده از یک مجموعه برای ساخت مستقیم
+        خروجی می‌تواند ترتیب مورد انتظار را تغییر دهد.
+      </p>
+    </section>
+
+    <section id="original">
+      <h2>۳. پیاده‌سازی اولیه</h2>
+
+      <pre><code>def find_common_elements(list_a, list_b):
     result = []
-    for log in logs:
-        if log["user"] not in result:
-            for b in blacklist:
-                if b == log["user"]:
-                    break
-            else:
-                if log["user"] in allowed:
-                    result.append(log["user"])
-    report = ""
-    for r in result:
-        report += f"{r}\n"
-    return report</code></pre>
-    <pre><code>$ python analyzer.py slow_code.py
-  find_common_users         O(n²)
-  خط 4: جست‌وجوی `in` داخل حلقه روی result
-  خط 9: جست‌وجوی `in` داخل حلقه روی allowed
-  خط 13: الحاق رشته با += داخل حلقه</code></pre>
-    <p>تحلیلگر سه مشکل را پیدا کرد. حلقه‌ی تودرتو روی <code>blacklist</code> هم وجود دارد که در گزارش نیامد، پس خروجی تحلیلگر کامل نیست.</p>
-    <p>نسخه‌ی بهینه:</p>
-    <pre><code>def find_common_users(logs, blacklist, allowed):
-    blacklist_set = set(blacklist)
-    allowed_set = set(allowed)
+
+    for item in list_a:
+        if item in list_b:
+            if item not in result:
+                result.append(item)
+
+    return result</code></pre>
+
+      <h3>تحلیل عملکرد</h3>
+
+      <p>
+        برای هر عنصر از <code>list_a</code>، عبارت
+        <code>item in list_b</code> ممکن است تمام عناصر فهرست دوم
+        را بررسی کند. این عملیات در بدترین حالت
+        <code>O(m)</code> زمان می‌برد.
+      </p>
+
+      <p>
+        بررسی <code>item not in result</code> نیز در بدترین حالت
+        متناسب با تعداد عناصر خروجی، یعنی حداکثر
+        <code>O(n)</code> زمان نیاز دارد.
+      </p>
+
+      <p>
+        اگر <code>n</code> طول فهرست اول و <code>m</code> طول فهرست
+        دوم باشد، کران بالای زمانی این پیاده‌سازی
+        <code>O(nm + n²)</code> است. حافظه اضافی برای فهرست نتیجه
+        حداکثر <code>O(n)</code> است.
+      </p>
+    </section>
+
+    <section id="optimized">
+      <h2>۴. نسخه بهینه‌شده</h2>
+
+      <pre><code>def find_common_elements_optimized(list_a, list_b):
+    set_b = set(list_b)
     seen = set()
     result = []
-    for log in logs:
-        user = log["user"]
-        if user in seen or user in blacklist_set:
-            continue
-        if user in allowed_set:
-            seen.add(user)
-            result.append(user)
-    return "".join(f"{r}\n" for r in result)</code></pre>
-    <p>تغییرات: جست‌وجو روی set انجام می‌شود (O(1))، حلقه‌ی داخلی روی blacklist حذف شده، و رشته‌ی گزارش یک‌باره ساخته می‌شود.</p>
-    <p>برای اندازه‌گیری، هر دو نسخه را با <code>timeit</code> روی همان ورودی اجرا کن. در بنچ‌مارک من با ۵۰۰۰ لاگ، نسخه‌ی کند حدود ۱۱۰ میلی‌ثانیه و نسخه‌ی بهینه حدود ۰٫۶ میلی‌ثانیه طول کشید.</p>
 
-    <h2>جمع‌بندی</h2>
-    <p>تحلیل ایستا برای پیدا کردن نقاط مشکوک خوب است. تصمیم درباره‌ی بهینه‌سازی را باید بر اساس اندازه‌گیری گرفت.</p>
+    for item in list_a:
+        if item in set_b and item not in seen:
+            result.append(item)
+            seen.add(item)
 
-    <footer>
-      <a href="index.html">بازگشت به صفحه‌ی اصلی</a>
-    </footer>
-  </main>
+    return result</code></pre>
+
+      <h3>چرا این نسخه سریع‌تر است؟</h3>
+
+      <ul>
+        <li>
+          مجموعه <code>set_b</code> امکان بررسی عضویت را با زمان
+          مورد انتظار <code>O(1)</code> فراهم می‌کند.
+        </li>
+        <li>
+          مجموعه <code>seen</code> از تکرار عناصر خروجی جلوگیری می‌کند.
+        </li>
+        <li>
+          فهرست <code>result</code> ترتیب اولین حضور عناصر را حفظ می‌کند.
+        </li>
+      </ul>
+
+      <p>
+        ساخت <code>set_b</code> به‌طور متوسط
+        <code>O(m)</code> زمان نیاز دارد. سپس حلقه روی فهرست اول
+        با بررسی‌های عضویت مورد انتظار <code>O(1)</code> برای هر
+        عنصر اجرا می‌شود.
+      </p>
+
+      <p>
+        در نتیجه، پیچیدگی زمانی مورد انتظار برابر
+        <code>O(n + m)</code> و پیچیدگی حافظه اضافی
+        <code>O(n + m)</code> است.
+      </p>
+
+      <div class="callout warning">
+        این تحلیل برای رفتار معمول جدول هش است. عملکرد بدترین حالت
+        می‌تواند متفاوت باشد. همچنین، عناصر فهرست‌ها باید قابل هش شدن
+        باشند؛ برای مثال، عددها و رشته‌ها معمولاً قابل استفاده‌اند،
+        اما فهرست‌های تو‌در‌تو مستقیماً نمی‌توانند عضو set باشند.
+      </div>
+    </section>
+
+    <section id="comparison">
+      <h2>۵. مقایسه دو پیاده‌سازی</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ویژگی</th>
+              <th>نسخه اولیه</th>
+              <th>نسخه بهینه‌شده</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>زمان مورد انتظار</td>
+              <td><code>O(nm + n²)</code></td>
+              <td><code>O(n + m)</code></td>
+            </tr>
+
+            <tr>
+              <td>حافظه اضافی</td>
+              <td><code>O(n)</code></td>
+              <td><code>O(n + m)</code></td>
+            </tr>
+
+            <tr>
+              <td>حفظ ترتیب خروجی</td>
+              <td>بله</td>
+              <td>بله</td>
+            </tr>
+
+            <tr>
+              <td>حذف تکرارها</td>
+              <td>بله</td>
+              <td>بله</td>
+            </tr>
+
+            <tr>
+              <td>نیاز به عناصر قابل هش شدن</td>
+              <td>خیر</td>
+              <td>بله</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        این جدول نشان می‌دهد نسخه بهینه‌شده در شرایط معمول، رشد زمانی
+        بهتری دارد؛ اما برای این بهبود، حافظه بیشتری مصرف می‌کند.
+        انتخاب مناسب به محدودیت‌های واقعی برنامه بستگی دارد.
+      </p>
+    </section>
+
+    <section id="correctness">
+      <h2>۶. آزمون صحت</h2>
+
+      <p>
+        پیش از مقایسه سرعت، باید بررسی کنیم که هر دو پیاده‌سازی
+        خروجی مورد انتظار را تولید می‌کنند.
+      </p>
+
+      <pre><code>def run_tests():
+    cases = [
+        ([1, 2, 3], [2, 3, 4], [2, 3]),
+        ([1, 1, 2, 2], [1, 2], [1, 2]),
+        ([], [1, 2], []),
+        ([1, 2], [], []),
+        ([5, 4, 3, 2], [2, 3, 5], [5, 3, 2]),
+        (["a", "b", "a"], ["a", "c"], ["a"]),
+    ]
+
+    for a, b, expected in cases:
+        original = find_common_elements(a, b)
+        optimized = find_common_elements_optimized(a, b)
+
+        assert original == expected
+        assert optimized == expected
+        assert original == optimized
+
+    print("All tests passed!")</code></pre>
+
+      <p>
+        این آزمون‌ها چند حالت مهم از جمله ورودی خالی، تکرار عناصر،
+        رشته‌ها و ترتیب خروجی را پوشش می‌دهند. موفقیت آن‌ها شواهدی
+        برای صحت این نمونه‌هاست، اما به‌تنهایی اثبات رسمی برای تمام
+        ورودی‌های ممکن نیست.
+      </p>
+    </section>
+
+    <section id="benchmark">
+      <h2>۷. بنچمارک و اندازه‌گیری زمان اجرا</h2>
+
+      <p>
+        تحلیل پیچیدگی، رفتار رشد الگوریتم را توصیف می‌کند؛ اما برای
+        مشاهده عملکرد واقعی باید زمان اجرا را اندازه‌گیری کنیم.
+        ماژول استاندارد <code>timeit</code> پایتون برای این کار مناسب است.
+      </p>
+
+      <pre><code>import random
+import timeit
+
+random.seed(42)
+
+size = 3000
+
+list_a = [
+    random.randint(0, size)
+    for _ in range(size)
+]
+
+list_b = [
+    random.randint(0, size)
+    for _ in range(size)
+]
+
+# Verify equivalent results first.
+assert (
+    find_common_elements(list_a, list_b)
+    ==
+    find_common_elements_optimized(list_a, list_b)
+)
+
+original_time = min(
+    timeit.repeat(
+        lambda: find_common_elements(list_a, list_b),
+        repeat=3,
+        number=1
+    )
+)
+
+optimized_time = min(
+    timeit.repeat(
+        lambda: find_common_elements_optimized(list_a, list_b),
+        repeat=3,
+        number=1
+    )
+)
+
+print("Original:", original_time)
+print("Optimized:", optimized_time)
+
+if optimized_time > 0:
+    print("Speedup:", original_time / optimized_time)</code></pre>
+
+      <h3>چگونه نتایج را گزارش کنیم؟</h3>
+
+      <p>
+        زمان‌های واقعی را پس از اجرای کد ثبت کن. برای مقایسه معتبرتر،
+        آزمایش را با اندازه‌های مختلف ورودی تکرار کن و نسخه پایتون،
+        مشخصات محیط اجرا و روش اندازه‌گیری را گزارش بده.
+      </p>
+
+      <div class="callout">
+        هیچ زمان اجرا یا ضریب سرعتی در این مقاله به‌عنوان نتیجه
+        اندازه‌گیری‌شده اعلام نشده است؛ اعداد واقعی باید از اجرای
+        آزمایش به دست آیند.
+      </div>
+    </section>
+
+    <section id="limitations">
+      <h2>۸. محدودیت‌ها</h2>
+
+      <ul>
+        <li>
+          نسخه بهینه‌شده برای عناصر قابل هش شدن طراحی شده است.
+        </li>
+        <li>
+          مجموعه‌ها حافظه اضافی مصرف می‌کنند.
+        </li>
+        <li>
+          زمان اجرای واقعی به اندازه و توزیع داده‌ها و محیط اجرا وابسته است.
+        </li>
+        <li>
+          تحلیل پیچیدگی به فرض‌های مشخص درباره عملیات و رفتار ساختار داده‌ها نیاز دارد.
+        </li>
+        <li>
+          ابزارهای تحلیل ایستا ممکن است نتوانند رفتار زمان اجرا را به‌طور کامل پیش‌بینی کنند.
+        </li>
+      </ul>
+    </section>
+
+    <section id="methodology">
+      <h2>۹. روش‌شناسی پروژه PyOptimize</h2>
+
+      <p>
+        نسخه فعلی تحلیل‌گر در صفحه اصلی PyOptimize، الگوهای متنی
+        محدودی را در کد ورودی جست‌وجو می‌کند. این بررسی در مرورگر
+        انجام می‌شود و کد پایتون اجرا نمی‌شود.
+      </p>
+
+      <p>
+        بنابراین، هشدارهای ابزار باید به‌عنوان پیشنهاد برای بررسی
+        بیشتر در نظر گرفته شوند، نه تشخیص قطعی خطا یا تضمین افزایش سرعت.
+      </p>
+
+      <p>
+        برای توسعه‌های بعدی می‌توان از تجزیه‌کننده نحوی AST پایتون،
+        آزمون‌های خودکار و اجرای بنچمارک در محیط کنترل‌شده استفاده کرد.
+        اجرای واقعی کد پایتون از طریق وب نیز به محیط اجرایی مناسب نیاز دارد.
+      </p>
+    </section>
+
+    <section id="conclusion">
+      <h2>۱۰. نتیجه‌گیری</h2>
+
+      <p>
+        در این مطالعه، الگوریتم یافتن عناصر مشترک دو فهرست را بررسی
+        کردیم و با استفاده از <code>set</code>، جست‌وجوهای خطی تکراری
+        را کاهش دادیم.
+      </p>
+
+      <p>
+        پیچیدگی زمانی مورد انتظار از
+        <code>O(nm + n²)</code> به <code>O(n + m)</code> کاهش یافت.
+        در مقابل، حافظه اضافی بیشتری مصرف شد و محدودیت قابل هش بودن
+        عناصر نیز به وجود آمد.
+      </p>
+
+      <p>
+        نتیجه اصلی این است که بهینه‌سازی مؤثر به انتخاب ساختار داده
+        مناسب، حفظ رفتار مورد انتظار، آزمون صحت و ارزیابی عملکرد
+        در شرایط واقعی وابسته است.
+      </p>
+    </section>
+
+    <section id="references">
+      <h2>۱۱. منابع</h2>
+
+      <ul class="references">
+        <li>
+          <a href="https://docs.python.org/3/library/stdtypes.html#types-set"
+             target="_blank" rel="noopener noreferrer">
+            مستندات رسمی پایتون: انواع مجموعه‌ها
+          </a>
+        </li>
+
+        <li>
+          <a href="https://docs.python.org/3/library/timeit.html"
+             target="_blank" rel="noopener noreferrer">
+            مستندات رسمی پایتون: ماژول timeit
+          </a>
+        </li>
+
+        <li>
+          <a href="https://docs.python.org/3/library/ast.html"
+             target="_blank" rel="noopener noreferrer">
+            مستندات رسمی پایتون: ماژول AST
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <div class="callout">
+      <strong>ادامه کار:</strong>
+      <p>
+        برای بررسی الگوهای متنی در کد خود، به صفحه اصلی برگرد.
+      </p>
+      <a class="button" href="./#analyzer">بازگشت به PyOptimize</a>
+    </div>
+
+  </article>
+
+  <aside class="toc">
+    <h3>فهرست مقاله</h3>
+
+    <nav class="toc-links" aria-label="فهرست مطالب">
+      <a href="#introduction">۱. مقدمه</a>
+      <a href="#problem">۲. تعریف مسئله</a>
+      <a href="#original">۳. نسخه اولیه</a>
+      <a href="#optimized">۴. نسخه بهینه‌شده</a>
+      <a href="#comparison">۵. مقایسه</a>
+      <a href="#correctness">۶. آزمون صحت</a>
+      <a href="#benchmark">۷. بنچمارک</a>
+      <a href="#limitations">۸. محدودیت‌ها</a>
+      <a href="#methodology">۹. روش‌شناسی</a>
+      <a href="#conclusion">۱۰. نتیجه‌گیری</a>
+      <a href="#references">۱۱. منابع</a>
+    </nav>
+  </aside>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="logo">Py<span>Optimize</span></div>
+    <p>تحلیل کد، بررسی الگوریتم و یادگیری بهینه‌سازی نرم‌افزار</p>
+    <p>© ۱۴۰۵ — PyOptimize</p>
+  </div>
+</footer>
+
 </body>
-</html>
+  </html>
