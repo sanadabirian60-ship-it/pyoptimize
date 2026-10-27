@@ -3,119 +3,851 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تحلیل و بهینه‌سازی کد</title>
+
+  <title>PyOptimize | تحلیل و بهینه‌سازی کد پایتون</title>
+  <meta name="description"
+        content="تحلیل اولیه کد پایتون، شناسایی الگوهای احتمالی کند و ارائه پیشنهادهای بهینه‌سازی.">
+
   <style>
     :root {
-      --bg: #ffffff;
-      --text: #1f2328;
-      --muted: #656d76;
-      --accent: #0969da;
-      --border: #d0d7de;
-      color-scheme: light;
+      --bg: #0b1020;
+      --panel: #121a2d;
+      --panel-light: #19243a;
+      --text: #edf2ff;
+      --muted: #a6b2cc;
+      --primary: #7c8cff;
+      --secondary: #42d6b5;
+      --border: #293651;
+      --danger: #ff8290;
+      --warning: #ffd166;
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0d1117;
-        --text: #e6edf3;
-        --muted: #8b949e;
-        --accent: #58a6ff;
-        --border: #30363d;
-        color-scheme: dark;
-      }
+
+    * {
+      box-sizing: border-box;
     }
-    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Tahoma, "Vazirmatn", sans-serif;
-      line-height: 1.9;
       background: var(--bg);
       color: var(--text);
+      font-family: Tahoma, Arial, sans-serif;
+      line-height: 1.9;
     }
-    main {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 48px 20px;
-    }
-    header h1 {
-      margin: 0 0 8px;
-      font-size: 2rem;
-    }
-    header p {
-      margin: 0;
-      color: var(--muted);
-    }
-    section {
-      margin-top: 40px;
-    }
-    h2 {
-      font-size: 1.3rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
-    }
-    ul.posts {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    ul.posts li {
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    ul.posts a {
-      color: var(--accent);
+
+    a {
+      color: inherit;
       text-decoration: none;
+    }
+
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1120px, 92%);
+      margin: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11, 16, 32, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 24px;
       font-weight: bold;
-      font-size: 1.1rem;
+      direction: ltr;
+      white-space: nowrap;
     }
-    ul.posts a:hover {
-      text-decoration: underline;
+
+    .logo span {
+      color: var(--secondary);
     }
-    ul.posts small {
-      display: block;
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
       color: var(--muted);
-      margin-top: 4px;
+      font-size: 14px;
     }
-    footer {
-      margin-top: 56px;
-      color: var(--muted);
-      font-size: 0.9rem;
+
+    .nav-links a:hover {
+      color: var(--secondary);
+    }
+
+    .hero {
+      padding: 85px 0 65px;
       text-align: center;
+      background:
+        radial-gradient(ellipse at top, #202b53 0%, transparent 65%);
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #3d5077;
+      color: var(--secondary);
+      border-radius: 30px;
+      padding: 5px 15px;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.5;
+      margin: 0 auto 20px;
+      max-width: 850px;
+    }
+
+    h1 span {
+      color: var(--secondary);
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: 0 auto 30px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .button {
+      display: inline-block;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 23px;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    .button.secondary {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+    }
+
+    section {
+      padding: 48px 0;
+    }
+
+    .section-title {
+      font-size: 28px;
+      margin: 0 0 10px;
+    }
+
+    .section-description {
+      color: var(--muted);
+      margin: 0 0 28px;
+    }
+
+    .analyzer {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.16);
+    }
+
+    .editor-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .editor-label small {
+      color: var(--muted);
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 280px;
+      resize: vertical;
+      direction: ltr;
+      text-align: left;
+      background: #080d19;
+      color: #d8e5ff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      outline: none;
+      font: 14px/1.8 Consolas, Monaco, monospace;
+      tab-size: 4;
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .notice {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 14px;
+    }
+
+    .results {
+      display: none;
+      margin-top: 25px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    .results h3 {
+      margin-top: 0;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .metric {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 23px;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .finding {
+      border-right: 3px solid var(--primary);
+      background: var(--panel-light);
+      padding: 12px 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .finding.warning {
+      border-color: var(--warning);
+    }
+
+    .finding.error {
+      border-color: var(--danger);
+    }
+
+    .finding.success {
+      border-color: var(--secondary);
+    }
+
+    .finding p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .code-output {
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #080d19;
+      padding: 16px;
+      border-radius: 10px;
+      color: #d8e5ff;
+      font: 13px/1.8 Consolas, Monaco, monospace;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 23px;
+    }
+
+    .card .icon {
+      font-size: 27px;
+    }
+
+    .card h3 {
+      margin: 8px 0;
+    }
+
+    .card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .article-card {
+      display: block;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .article-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .article-card .read-more {
+      color: var(--secondary);
+      display: inline-block;
+      margin-top: 12px;
+    }
+
+    .about-box {
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 25px;
+      background: linear-gradient(135deg, var(--panel), #101a30);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 25px 0;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .ltr {
+      direction: ltr;
+      unicode-bidi: isolate;
+      display: inline-block;
+    }
+
+    @media (max-width: 750px) {
+      .nav {
+        padding: 12px 0;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .hero {
+        padding: 55px 0 35px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .analyzer {
+        padding: 15px;
+      }
+
+      textarea {
+        min-height: 240px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <main>
-    <header>
-      <h1>تحلیل و بهینه‌سازی کد</h1>
-      <p>یادداشت‌هایی درباره‌ی پیدا کردن گلوگاه‌ها، پیچیدگی الگوریتم‌ها و بهینه‌سازی کد پایتون با مثال‌های واقعی و اندازه‌گیری.</p>
-    </header>
 
-    <section>
-      <h2>آخرین مقالات</h2>
-      <ul class="posts">
-        <li>
-          <a href="#">چرا این حلقه ده برابر کندتر است؟</a>
-          <small>نمونه: مقایسه‌ی جست‌وجوی لیست و set</small>
-        </li>
-        <li>
-          <a href="#">پیدا کردن گلوگاه با cProfile</a>
-          <small>نمونه: از تحلیل ایستا تا اندازه‌گیری واقعی</small>
-        </li>
-        <li>
-          <a href="#">بازگشت، کش و lru_cache</a>
-          <small>نمونه: بهینه‌سازی تابع فیبوناچی</small>
-        </li>
-      </ul>
-    </section>
+<header>
+  <div class="container nav">
+    <a href="./" class="logo">Py<span>Optimize</span></a>
 
-    <section>
-      <h2>درباره‌ی این وبلاگ</h2>
-      <p>در این وبلاگ هر مطلب شامل کد قبل و بعد از بهینه‌سازی، زمان یا حافظه‌ی اندازه‌گیری‌شده و توضیح دلیل بهبود است.</p>
-    </section>
+    <nav class="nav-links" aria-label="منوی اصلی">
+      <a href="#analyzer">تحلیل کد</a>
+      <a href="#features">قابلیت‌ها</a>
+      <a href="#articles">مقالات</a>
+      <a href="#about">درباره پروژه</a>
+    </nav>
+  </div>
+</header>
 
-    <footer>
-      © ۱۴۰۵
-    </footer>
-  </main>
+<main>
+
+  <section class="hero">
+    <div class="container">
+      <div class="badge">ابزار آموزشی تحلیل کد پایتون</div>
+
+      <h1>
+        کدت را بررسی کن،
+        <span>بهترش کن.</span>
+      </h1>
+
+      <p>
+        با PyOptimize الگوهای احتمالی کندی کد را بررسی کن،
+        پیچیدگی الگوریتمت را بهتر بشناس و برای بهبود عملکرد
+        برنامه پیشنهادهای کاربردی دریافت کن.
+      </p>
+
+      <a href="#analyzer" class="button">شروع تحلیل کد ←</a>
+    </div>
+  </section>
+
+  <section id="analyzer">
+    <div class="container">
+      <h2 class="section-title">تحلیل‌گر کد پایتون</h2>
+
+      <p class="section-description">
+        کدت را وارد کن و دکمه تحلیل را بزن.
+        بررسی‌ها در همین مرورگر انجام می‌شوند.
+      </p>
+
+      <div class="analyzer">
+        <div class="editor-label">
+          <strong>کد منبع Python</strong>
+          <small>تحلیل ایستا و مبتنی بر الگوهای متنی</small>
+        </div>
+
+        <textarea id="codeInput"
+          spellcheck="false"
+          aria-label="کد پایتون برای تحلیل"
+          placeholder="کد پایتون خود را اینجا وارد کنید...">def find_common_elements(list_a, list_b):
+    result = []
+
+    for item in list_a:
+        if item in list_b:
+            if item not in result:
+                result.append(item)
+
+    return result</textarea>
+
+        <div class="actions">
+          <button class="button" id="analyzeBtn">
+            تحلیل کد
+          </button>
+
+          <button class="button secondary" id="exampleBtn">
+            بارگذاری مثال
+          </button>
+
+          <button class="button secondary" id="clearBtn">
+            پاک کردن
+          </button>
+        </div>
+
+        <p class="notice">
+          توجه: این نسخه مفسر کامل پایتون نیست؛ نتیجه‌ها تخمینی هستند.
+          کد واردشده اجرا نمی‌شود و به سرور ارسال نمی‌شود.
+        </p>
+
+        <div id="results" class="results" aria-live="polite">
+          <h3>نتایج تحلیل</h3>
+
+          <div class="metrics">
+            <div class="metric">
+              <strong id="lineCount">۰</strong>
+              <span>تعداد خطوط غیرخالی</span>
+            </div>
+
+            <div class="metric">
+              <strong id="loopCount">۰</strong>
+              <span>تعداد حلقه‌های شناسایی‌شده</span>
+            </div>
+
+            <div class="metric">
+              <strong id="findingCount">۰</strong>
+              <span>تعداد پیشنهادها و هشدارها</span>
+            </div>
+          </div>
+
+          <div id="findings"></div>
+
+          <h3>جمع‌بندی پیچیدگی</h3>
+          <div id="complexity" class="finding"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="container">
+      <h2 class="section-title">قابلیت‌های PyOptimize</h2>
+
+      <p class="section-description">
+        ابزارهای آموزشی برای درک بهتر کیفیت و عملکرد کد.
+      </p>
+
+      <div class="grid">
+        <article class="card">
+          <div class="icon">🔍</div>
+          <h3>تحلیل ایستا</h3>
+          <p>
+            شناسایی برخی الگوهای رایج در کد، بدون اجرای برنامه.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="icon">⚡</div>
+          <h3>پیشنهاد بهینه‌سازی</h3>
+          <p>
+            مشاهده پیشنهادهایی برای بررسی حلقه‌ها و جست‌وجوهای
+            تکراری و انتخاب ساختار داده مناسب.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="icon">📊</div>
+          <h3>پیچیدگی الگوریتم</h3>
+          <p>
+            آشنایی با مفاهیم پیچیدگی زمانی و حافظه و اهمیت
+            اندازه ورودی در عملکرد برنامه.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="articles">
+    <div class="container">
+      <h2 class="section-title">مقالات آموزشی</h2>
+
+      <p class="section-description">
+        تحلیل الگوریتم‌ها را با مثال‌های عملی یاد بگیر.
+      </p>
+
+      <div class="grid">
+        <a class="card article-card" href="analysis-intro.html">
+          <div class="icon">📘</div>
+          <h3>مقدمه‌ای بر تحلیل کد</h3>
+          <p>
+            آشنایی با تحلیل ایستا، پیچیدگی زمانی،
+            مشکلات عملکردی و محدودیت‌های تحلیل خودکار.
+          </p>
+          <span class="read-more">مطالعه مقاله ←</span>
+        </a>
+
+        <a class="card article-card" href="#analyzer">
+          <div class="icon">🧠</div>
+          <h3>بررسی یک الگوریتم واقعی</h3>
+          <p>
+            بررسی روش پیدا کردن عناصر مشترک دو لیست
+            و استفاده از مجموعه‌ها برای بهبود عملکرد.
+          </p>
+          <span class="read-more">آزمایش کد ←</span>
+        </a>
+
+        <a class="card article-card" href="#features">
+          <div class="icon">📈</div>
+          <h3>پیچیدگی زمانی و حافظه</h3>
+          <p>
+            با نماد O بزرگ و تفاوت تحلیل نظری با
+            اندازه‌گیری تجربی آشنا شو.
+          </p>
+          <span class="read-more">مشاهده قابلیت‌ها ←</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <div class="about-box">
+        <h2>درباره PyOptimize</h2>
+
+        <p>
+          PyOptimize یک پروژه آموزشی برای بررسی الگوهای کد
+          پایتون و یادگیری اصول بهینه‌سازی الگوریتم‌ها است.
+          هدف پروژه کمک به درک بهتر عملکرد کد و اهمیت انتخاب
+          ساختار داده مناسب است.
+        </p>
+
+        <p>
+          نتایج این نسخه تخمینی هستند و جایگزین ابزارهای کامل
+          تحلیل کد، اجرای آزمون‌ها یا بنچمارک واقعی نمی‌شوند.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="logo">Py<span>Optimize</span></div>
+    <p>پروژه‌ای آموزشی برای تحلیل و بهینه‌سازی کد پایتون.</p>
+    <p>© ۱۴۰۵ — PyOptimize</p>
+  </div>
+</footer>
+
+<script>
+  "use strict";
+
+  const codeInput = document.getElementById("codeInput");
+  const analyzeBtn = document.getElementById("analyzeBtn");
+  const exampleBtn = document.getElementById("exampleBtn");
+  const clearBtn = document.getElementById("clearBtn");
+  const results = document.getElementById("results");
+  const findingsElement = document.getElementById("findings");
+  const complexityElement = document.getElementById("complexity");
+
+  const exampleCode = `def find_common_elements(list_a, list_b):
+    result = []
+
+    for item in list_a:
+        if item in list_b:
+            if item not in result:
+                result.append(item)
+
+    return result`;
+
+  function addFinding(type, title, description) {
+    const box = document.createElement("div");
+    box.className = "finding " + type;
+
+    const heading = document.createElement("strong");
+    heading.textContent = title;
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = description;
+
+    box.appendChild(heading);
+    box.appendChild(paragraph);
+    findingsElement.appendChild(box);
+  }
+
+  function analyzeCode() {
+    const code = codeInput.value;
+    findingsElement.replaceChildren();
+    complexityElement.textContent = "";
+
+    if (!code.trim()) {
+      results.style.display = "block";
+      addFinding(
+        "warning",
+        "کدی وارد نشده است",
+        "ابتدا کد پایتون را در کادر بالا وارد کن."
+      );
+
+      document.getElementById("lineCount").textContent = "۰";
+      document.getElementById("loopCount").textContent = "۰";
+      document.getElementById("findingCount").textContent = "۱";
+      return;
+    }
+
+    const lines = code.split(/\r?\n/);
+    const nonEmptyLines = lines.filter(
+      line => line.trim().length > 0
+    );
+
+    // این شمارش مبتنی بر الگوی متنی است و parser پایتون نیست.
+    const loopMatches = code.match(
+      /^\s*(?:for|while)\b/gm
+    ) || [];
+
+    const loopCount = loopMatches.length;
+    let findingCount = 0;
+
+    document.getElementById("lineCount").textContent =
+      String(nonEmptyLines.length);
+
+    document.getElementById("loopCount").textContent =
+      String(loopCount);
+
+    // بررسی جست‌وجوی عضویت در لیست
+    if (/\bin\s+\w+/.test(code) && loopCount > 0) {
+      addFinding(
+        "warning",
+        "بررسی عضویت در حلقه",
+        "اگر جست‌وجو روی یک لیست بزرگ داخل حلقه تکرار شود، " +
+        "ممکن است زمان اجرا افزایش یابد. در صورت سازگاری با " +
+        "رفتار برنامه، set را بررسی کن."
+      );
+      findingCount++;
+    }
+
+    // بررسی افزودن به ابتدای لیست
+    if (/\.\s*(?:insert\s*\(\s*0|pop\s*\(\s*0)/.test(code)) {
+      addFinding(
+        "warning",
+        "عملیات روی ابتدای لیست",
+        "درج یا حذف از ابتدای list معمولاً به جابه‌جایی " +
+        "عناصر نیاز دارد. ساختار داده مناسب را بررسی کن."
+      );
+      findingCount++;
+    }
+
+    // بررسی sorted داخل حلقه
+    if (/\bsorted\s*\(/.test(code) && loopCount > 0) {
+      addFinding(
+        "warning",
+        "بررسی مرتب‌سازی",
+        "اگر sorted داخل حلقه اجرا شود، ممکن است مرتب‌سازی " +
+        "بارها تکرار شود. بررسی کن که آیا می‌توان آن را " +
+        "خارج از حلقه انجام داد."
+      );
+      findingCount++;
+    }
+
+    // بررسی فراخوانی time.sleep صرفاً به‌عنوان الگوی متنی
+    if (/\btime\.sleep\s*\(/.test(code)) {
+      addFinding(
+        "warning",
+        "توقف صریح برنامه",
+        "کد شامل فراخوانی time.sleep است. بررسی کن که آیا " +
+        "این توقف برای هدف برنامه لازم است."
+      );
+      findingCount++;
+    }
+
+    // بررسی حلقه‌های تو در تو با تورفتگی تقریبی
+    const loopLines = lines
+      .map((line, index) => ({
+        line,
+        index,
+        indent: (line.match(/^\s*/) || [""])[0].length
+      }))
+      .filter(item => /^\s*(for|while)\b/.test(item.line));
+
+    let nestedLoopFound = false;
+
+    for (let i = 0; i < loopLines.length; i++) {
+      for (let j = i + 1; j < loopLines.length; j++) {
+        if (loopLines[j].indent > loopLines[i].indent) {
+          nestedLoopFound = true;
+          break;
+        }
+
+        if (loopLines[j].indent <= loopLines[i].indent) {
+          break;
+        }
+      }
+
+      if (nestedLoopFound) break;
+    }
+
+    if (nestedLoopFound) {
+      addFinding(
+        "warning",
+        "احتمال وجود حلقه‌های تو در تو",
+        "حلقه‌های تو در تو ممکن است تعداد عملیات را افزایش دهند. " +
+        "پیچیدگی واقعی به بدنه حلقه‌ها و اندازه ورودی بستگی دارد."
+      );
+      findingCount++;
+    }
+
+    if (findingCount === 0) {
+      addFinding(
+        "success",
+        "الگوی مشخصی شناسایی نشد",
+        "این نتیجه به معنی بی‌نقص بودن کد نیست؛ این نسخه فقط " +
+        "چند الگوی متنی محدود را بررسی می‌کند."
+      );
+    }
+
+    // جمع‌بندی پیچیدگی: فقط یک تخمین بسیار ابتدایی
+    if (nestedLoopFound) {
+      complexityElement.textContent =
+        "احتمال افزایش تعداد عملیات به دلیل حلقه‌های تو در تو وجود دارد. " +
+        "بدون تحلیل ساختار و اندازه ورودی، تعیین O دقیق ممکن نیست.";
+    } else if (loopCount > 0) {
+      complexityElement.textContent =
+        "در کد حلقه شناسایی شد. وجود حلقه به‌تنهایی برای تعیین " +
+        "پیچیدگی زمانی کافی نیست؛ باید عملیات داخل حلقه نیز بررسی شود.";
+    } else {
+      complexityElement.textContent =
+        "بر اساس الگوهای ساده این نسخه، حلقه‌ای شناسایی نشد. " +
+        "این موضوع پیچیدگی O(1) را اثبات نمی‌کند.";
+    }
+
+    document.getElementById("findingCount").textContent =
+      String(findingCount);
+
+    results.style.display = "block";
+    results.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  analyzeBtn.addEventListener("click", analyzeCode);
+
+  exampleBtn.addEventListener("click", () => {
+    codeInput.value = exampleCode;
+    analyzeCode();
+  });
+
+  clearBtn.addEventListener("click", () => {
+    codeInput.value = "";
+    findingsElement.replaceChildren();
+    complexityElement.textContent = "";
+    results.style.display = "none";
+    codeInput.focus();
+  });
+
+  // امکان استفاده از کلید Tab برای تورفتگی در ویرایشگر
+  codeInput.addEventListener("keydown", event => {
+    if (event.key === "Tab") {
+      event.preventDefault();
+
+      const start = codeInput.selectionStart;
+      const end = codeInput.selectionEnd;
+      const value = codeInput.value;
+
+      codeInput.value =
+        value.substring(0, start) +
+        "    " +
+        value.substring(end);
+
+      codeInput.selectionStart =
+        codeInput.selectionEnd = start + 4;
+    }
+
+    // اجرای تحلیل با Ctrl+Enter یا Cmd+Enter
+    if (
+      event.key === "Enter" &&
+      (event.ctrlKey || event.metaKey)
+    ) {
+      event.preventDefault();
+      analyzeCode();
+    }
+  });
+</script>
+
 </body>
-</html>
+  </html>
