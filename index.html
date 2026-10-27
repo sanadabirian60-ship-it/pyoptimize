@@ -1,390 +1,121 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>PyOptimize | تحلیل و بهینه‌سازی کد پایتون</title>
-
-    <meta name="description"
-          content="پروژه PyOptimize برای تحلیل ایستای کدهای پایتون، شناسایی مشکلات احتمالی و ارائه پیشنهادهای بهینه‌سازی.">
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            font-family: Tahoma, Arial, sans-serif;
-            background: #f4f7fb;
-            color: #263238;
-            line-height: 2;
-        }
-
-        header {
-            background: #142b4a;
-            color: white;
-            padding: 24px 7%;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .logo {
-            font-size: 25px;
-            font-weight: bold;
-            color: #70e1b0;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-right: 18px;
-            font-size: 14px;
-        }
-
-        nav a:hover {
-            color: #70e1b0;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 65px 20px 75px;
-            background: linear-gradient(135deg, #142b4a, #205b67);
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
-
-        .hero p {
-            max-width: 720px;
-            margin: 0 auto 25px;
-            color: #e0edf4;
-        }
-
-        .button {
-            display: inline-block;
-            background: #70e1b0;
-            color: #142b4a;
-            padding: 10px 24px;
-            border-radius: 7px;
-            text-decoration: none;
-            font-weight: bold;
-            margin: 5px;
-        }
-
-        .button:hover {
-            background: #a0f0ce;
-        }
-
-        .button-secondary {
-            background: transparent;
-            color: white;
-            border: 1px solid white;
-        }
-
-        .container {
-            max-width: 1050px;
-            margin: 35px auto;
-            padding: 0 18px;
-        }
-
-        .section-title {
-            text-align: center;
-            color: #176b55;
-            font-size: 27px;
-            margin-bottom: 25px;
-        }
-
-        .intro {
-            background: white;
-            padding: 28px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: white;
-            padding: 22px;
-            border-radius: 12px;
-            border-top: 4px solid #21865b;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .card h3 {
-            color: #24496e;
-            margin-top: 0;
-        }
-
-        .example {
-            background: #142b4a;
-            color: #e7f5ff;
-            padding: 22px;
-            border-radius: 10px;
-            direction: ltr;
-            text-align: left;
-            overflow-x: auto;
-            font-family: Consolas, monospace;
-            line-height: 1.8;
-        }
-
-        .notice {
-            background: #e8f5ee;
-            border-right: 5px solid #21865b;
-            padding: 17px;
-            border-radius: 7px;
-            margin-top: 20px;
-        }
-
-        .steps {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-        }
-
-        .steps li {
-            margin-bottom: 10px;
-        }
-
-        .article-link {
-            display: block;
-            background: white;
-            border-radius: 10px;
-            padding: 22px;
-            text-decoration: none;
-            color: #24496e;
-            border: 1px solid #e0e8ef;
-        }
-
-        .article-link:hover {
-            border-color: #21865b;
-        }
-
-        footer {
-            background: #142b4a;
-            color: white;
-            text-align: center;
-            padding: 25px 15px;
-            margin-top: 50px;
-        }
-
-        footer p {
-            margin: 5px;
-        }
-
-        footer a {
-            color: #70e1b0;
-        }
-
-        @media (max-width: 600px) {
-            .navbar {
-                flex-direction: column;
-            }
-
-            nav {
-                text-align: center;
-            }
-
-            nav a {
-                display: inline-block;
-                margin: 5px 8px;
-            }
-
-            .hero h1 {
-                font-size: 28px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحلیل و بهینه‌سازی کد</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1f2328;
+      --muted: #656d76;
+      --accent: #0969da;
+      --border: #d0d7de;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --text: #e6edf3;
+        --muted: #8b949e;
+        --accent: #58a6ff;
+        --border: #30363d;
+        color-scheme: dark;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Tahoma, "Vazirmatn", sans-serif;
+      line-height: 1.9;
+      background: var(--bg);
+      color: var(--text);
+    }
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 20px;
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+    }
+    section {
+      margin-top: 40px;
+    }
+    h2 {
+      font-size: 1.3rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    ul.posts {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    ul.posts li {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    ul.posts a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    ul.posts a:hover {
+      text-decoration: underline;
+    }
+    ul.posts small {
+      display: block;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    footer {
+      margin-top: 56px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+  </style>
 </head>
-
 <body>
+  <main>
+    <header>
+      <h1>تحلیل و بهینه‌سازی کد</h1>
+      <p>یادداشت‌هایی درباره‌ی پیدا کردن گلوگاه‌ها، پیچیدگی الگوریتم‌ها و بهینه‌سازی کد پایتون با مثال‌های واقعی و اندازه‌گیری.</p>
+    </header>
 
-<header>
-    <div class="navbar">
-        <div class="logo">PyOptimize</div>
-
-        <nav>
-            <a href="#about">معرفی</a>
-            <a href="#features">قابلیت‌ها</a>
-            <a href="#example">نمونه کد</a>
-            <a href="analysis-intro.html">مقاله پروژه</a>
-        </nav>
-    </div>
-</header>
-
-<section class="hero">
-    <h1>تحلیل و بهینه‌سازی کدهای پایتون</h1>
-
-    <p>
-        یک پروژه آموزشی برای بررسی ساختار کد، شناسایی خطاهای نحوی،
-        تشخیص الگوهای مشکوک از نظر کارایی و ارائه پیشنهادهایی برای
-        بهبود کیفیت برنامه‌های پایتون.
-    </p>
-
-    <a class="button" href="analysis-intro.html">
-        آشنایی با پروژه
-    </a>
-
-    <a class="button button-secondary" href="#features">
-        مشاهده قابلیت‌ها
-    </a>
-</section>
-
-<main class="container">
-
-    <section class="intro" id="about">
-        <h2 class="section-title">درباره پروژه</h2>
-
-        <p>
-            نوشتن برنامه‌ای که خروجی درست تولید کند، تنها بخشی از
-            برنامه‌نویسی است. کیفیت کد، سرعت اجرا، مصرف حافظه و امنیت
-            نیز اهمیت زیادی دارند.
-        </p>
-
-        <p>
-            PyOptimize با استفاده از تحلیل ایستای کد پایتون تلاش می‌کند
-            برخی مشکلات و الگوهای قابل بررسی را شناسایی کند و برای
-            بهبود احتمالی آن‌ها پیشنهاد ارائه دهد.
-        </p>
-
-        <div class="notice">
-            <strong>هدف پروژه:</strong>
-            کمک به برنامه‌نویسان برای درک بهتر ساختار کد، شناخت
-            پیچیدگی الگوریتم‌ها و یادگیری روش‌های بهینه‌سازی.
-        </div>
+    <section>
+      <h2>آخرین مقالات</h2>
+      <ul class="posts">
+        <li>
+          <a href="#">چرا این حلقه ده برابر کندتر است؟</a>
+          <small>نمونه: مقایسه‌ی جست‌وجوی لیست و set</small>
+        </li>
+        <li>
+          <a href="#">پیدا کردن گلوگاه با cProfile</a>
+          <small>نمونه: از تحلیل ایستا تا اندازه‌گیری واقعی</small>
+        </li>
+        <li>
+          <a href="#">بازگشت، کش و lru_cache</a>
+          <small>نمونه: بهینه‌سازی تابع فیبوناچی</small>
+        </li>
+      </ul>
     </section>
 
-    <section id="features">
-        <h2 class="section-title">قابلیت‌های اصلی</h2>
-
-        <div class="cards">
-
-            <article class="card">
-                <h3>بررسی خطاهای نحوی</h3>
-                <p>
-                    شناسایی خطاهای نحوی قابل تشخیص پیش از بررسی
-                    الگوهای عملکردی کد.
-                </p>
-            </article>
-
-            <article class="card">
-                <h3>تحلیل عملکرد</h3>
-                <p>
-                    شناسایی الگوهایی مانند حلقه‌های تو در تو و
-                    جست‌وجوهای تکراری که ممکن است بر سرعت اجرا تأثیر بگذارند.
-                </p>
-            </article>
-
-            <article class="card">
-                <h3>بررسی پیچیدگی</h3>
-                <p>
-                    ارائه تخمینی اولیه از پیچیدگی زمانی و بررسی
-                    ساختارهای داده مؤثر بر مصرف حافظه.
-                </p>
-            </article>
-
-            <article class="card">
-                <h3>پیشنهاد بهینه‌سازی</h3>
-                <p>
-                    ارائه راهکارهایی برای بررسی و بهبود کد،
-                    با توجه به الگوهای شناسایی‌شده.
-                </p>
-            </article>
-
-        </div>
+    <section>
+      <h2>درباره‌ی این وبلاگ</h2>
+      <p>در این وبلاگ هر مطلب شامل کد قبل و بعد از بهینه‌سازی، زمان یا حافظه‌ی اندازه‌گیری‌شده و توضیح دلیل بهبود است.</p>
     </section>
 
-    <section id="example" style="margin-top: 40px;">
-        <h2 class="section-title">نمونه‌ای از کد قابل بررسی</h2>
-
-        <p>
-            در مثال زیر، بررسی عضویت در فهرست داخل حلقه انجام می‌شود.
-            اگر جست‌وجوهای زیادی روی یک مجموعه داده بزرگ صورت بگیرد،
-            استفاده از مجموعه (set) ممکن است عملکرد را بهبود دهد.
-        </p>
-
-        <pre class="example"><code>def find_matches(items, targets):
-    matches = []
-
-    for item in items:
-        if item in targets:
-            matches.append(item)
-
-    return matches</code></pre>
-
-        <h3>یک راهکار احتمالی</h3>
-
-        <pre class="example"><code>def find_matches(items, targets):
-    target_set = set(targets)
-    return [item for item in items if item in target_set]</code></pre>
-
-        <p>
-            این تغییر می‌تواند جست‌وجوهای تکراری را سریع‌تر کند،
-            اما ساخت مجموعه نیز هزینه دارد. بنابراین باید با داده‌های
-            واقعی آزمایش شود و از حفظ رفتار برنامه اطمینان حاصل کرد.
-        </p>
-    </section>
-
-    <section style="margin-top: 40px;">
-        <h2 class="section-title">مراحل استفاده از ابزار</h2>
-
-        <div class="steps">
-            <ol>
-                <li>فایل پایتون مورد نظر را آماده کنید.</li>
-                <li>ابزار تحلیل را روی فایل اجرا کنید.</li>
-                <li>گزارش مشکلات و تخمین‌های ارائه‌شده را بررسی کنید.</li>
-                <li>پیشنهادهای مناسب را با حفظ رفتار برنامه آزمایش کنید.</li>
-                <li>در صورت امکان، زمان اجرا و مصرف حافظه را قبل و بعد مقایسه کنید.</li>
-            </ol>
-        </div>
-
-        <div class="notice">
-            صفحه وب فعلی نقش معرفی پروژه را دارد.
-            تحلیل واقعی فایل‌ها توسط اسکریپت پایتون انجام می‌شود؛
-            این صفحه به‌تنهایی فایل پایتون را اجرا یا بهینه نمی‌کند.
-        </div>
-    </section>
-
-    <section style="margin-top: 40px;">
-        <h2 class="section-title">مقاله و مستندات</h2>
-
-        <a class="article-link" href="analysis-intro.html">
-            <h3>تحلیل و بهینه‌سازی کدهای پایتون</h3>
-            <p>
-                معرفی روش تحلیل ایستا، بررسی پیچیدگی زمانی و فضایی،
-                نمونه کدها، محدودیت‌ها و منابع پروژه.
-            </p>
-            <strong>مطالعه مقاله ←</strong>
-        </a>
-    </section>
-
-</main>
-
-<footer>
-    <p>PyOptimize | پروژه آموزشی تحلیل و بهینه‌سازی کد پایتون</p>
-    <p>طراحی‌شده برای یادگیری تحلیل کد و بهبود کیفیت نرم‌افزار</p>
-    <p><a href="analysis-intro.html">مشاهده مقاله پروژه</a></p>
-</footer>
-
+    <footer>
+      © ۱۴۰۵
+    </footer>
+  </main>
 </body>
 </html>
