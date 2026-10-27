@@ -1,363 +1,381 @@
-<!DOCTYPE html><html lang="fa" dir="rtl">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>تحلیل عملکرد List و Set در پایتون | PyOptimize</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <title>تحلیل و بهینه‌سازی کد پایتون | PyOptimize</title>
 
-    body {
-        margin: 0;
-        font-family: Tahoma, Arial, sans-serif;
-        background: #f3f6fa;
-        color: #263445;
-        line-height: 2;
-    }
+    <meta name="description"
+          content="معرفی پروژه PyOptimize برای تحلیل کد پایتون، شناسایی مشکلات و ارائه پیشنهادهای بهینه‌سازی.">
 
-    header {
-        background: #142d4e;
-        color: white;
-        padding: 28px 16px;
-        text-align: center;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    header h1 {
-        color: #66e3b4;
-        margin-bottom: 5px;
-    }
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background-color: #f4f7fb;
+            color: #263238;
+            line-height: 2;
+        }
 
-    nav {
-        background: #204568;
-        text-align: center;
-        padding: 12px;
-    }
+        header {
+            background-color: #142b4a;
+            color: white;
+            padding: 28px 16px;
+            text-align: center;
+        }
 
-    nav a {
-        color: white;
-        text-decoration: none;
-        margin: 0 10px;
-    }
+        header h1 {
+            margin: 0 0 10px;
+            font-size: 27px;
+        }
 
-    main {
-        max-width: 900px;
-        margin: 25px auto;
-        padding: 0 16px;
-    }
+        header p {
+            margin: 0;
+            color: #d8e5f5;
+        }
 
-    article, .info {
-        background: white;
-        padding: 24px;
-        margin-bottom: 22px;
-        border-radius: 12px;
-        box-shadow: 0 3px 12px #152d4e0d;
-    }
+        nav {
+            background-color: #1d3c60;
+            padding: 12px;
+            text-align: center;
+        }
 
-    h2 {
-        color: #087f70;
-        border-bottom: 2px solid #e5edf3;
-        padding-bottom: 8px;
-    }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 12px;
+        }
 
-    h3 {
-        color: #204568;
-    }
+        nav a:hover {
+            color: #70e1b0;
+        }
 
-    pre {
-        direction: ltr;
-        text-align: left;
-        background: #172435;
-        color: #d7f9e9;
-        padding: 18px;
-        border-radius: 8px;
-        overflow-x: auto;
-        font-size: 14px;
-        line-height: 1.7;
-    }
+        main {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 18px;
+        }
 
-    code {
-        font-family: monospace;
-    }
+        section {
+            background-color: white;
+            padding: 24px;
+            margin-bottom: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
 
-    .note {
-        background: #e9f8f2;
-        border-right: 4px solid #087f70;
-        padding: 14px;
-        margin: 18px 0;
-    }
+        h2 {
+            color: #176b55;
+            font-size: 22px;
+            border-bottom: 2px solid #dcefe8;
+            padding-bottom: 8px;
+        }
 
-    .warning {
-        background: #fff5df;
-        border-right: 4px solid #d99a21;
-        padding: 14px;
-        margin: 18px 0;
-    }
+        h3 {
+            color: #24496e;
+        }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 18px 0;
-    }
-
-    th, td {
-        border: 1px solid #d9e1ea;
-        padding: 10px;
-        text-align: center;
-    }
-
-    th {
-        background: #e9f0f6;
-    }
-
-    footer {
-        background: #142d4e;
-        color: white;
-        text-align: center;
-        padding: 22px;
-        margin-top: 35px;
-    }
-
-    @media (max-width: 600px) {
-        article, .info {
-            padding: 16px;
+        code {
+            background-color: #edf2f7;
+            padding: 3px 7px;
+            border-radius: 4px;
+            direction: ltr;
+            display: inline-block;
         }
 
         pre {
-            font-size: 12px;
+            background-color: #142b4a;
+            color: #e7f5ff;
+            padding: 18px;
+            border-radius: 8px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            line-height: 1.7;
         }
-    }
-</style>
 
-</head><body><header>
+        .notice {
+            background-color: #e8f5ee;
+            border-right: 5px solid #21865b;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .warning {
+            background-color: #fff5df;
+            border-right: 5px solid #e5a329;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            background-color: #142b4a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 35px;
+        }
+
+        footer a {
+            color: #70e1b0;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
     <h1>PyOptimize</h1>
-    <p>تحلیل علمی کد و بهینه‌سازی عملکرد در پایتون</p>
-</header><nav>
+    <p>تحلیل، بررسی و بهینه‌سازی کدهای پایتون</p>
+</header>
+
+<nav>
     <a href="index.html">صفحه اصلی</a>
-    <a href="#theory">مبانی نظری</a>
-    <a href="#experiment">آزمایش</a>
+    <a href="#introduction">معرفی پروژه</a>
+    <a href="#features">قابلیت‌ها</a>
+    <a href="#method">روش تحلیل</a>
     <a href="#conclusion">نتیجه‌گیری</a>
-</nav><main><div class="info">
-    <p><strong>عنوان مقاله:</strong> تحلیل پیچیدگی زمانی و مقایسه عملکرد List و Set در پایتون</p>
-    <p><strong>حوزه:</strong> تحلیل الگوریتم و ساختار داده</p>
-    <p><strong>نوع مطالعه:</strong> بررسی نظری همراه با آزمایش تجربی</p>
-    <p><strong>هدف:</strong> بررسی تأثیر انتخاب ساختار داده بر زمان جست‌وجو</p>
-</div>
+</nav>
 
-<article>
-    <h2>۱. چکیده</h2>
+<main>
 
-    <p>
-        انتخاب ساختار داده مناسب یکی از عوامل مؤثر بر کارایی
-        نرم‌افزار است. در این مقاله، عملکرد عملیات بررسی وجود
-        یک عنصر در دو ساختار داده list و set در زبان پایتون
-        از نظر پیچیدگی زمانی و روش اندازه‌گیری تجربی بررسی می‌شود.
-        همچنین محدودیت‌های مقایسه و عوامل مؤثر بر نتایج توضیح داده
-        خواهند شد.
-    </p>
+    <section id="introduction">
+        <h2>۱. معرفی پروژه</h2>
 
-    <h2 id="theory">۲. مبانی نظری</h2>
+        <p>
+            پروژه PyOptimize با هدف بررسی کدهای پایتون و شناسایی
+            مشکلات احتمالی آن‌ها طراحی شده است. این ابزار تلاش می‌کند
+            الگوهایی را که ممکن است باعث کاهش کارایی، افزایش مصرف حافظه
+            یا ایجاد مشکلات امنیتی شوند، شناسایی کند.
+        </p>
 
-    <h3>۲.۱. ساختار List</h3>
+        <p>
+            پس از بررسی کد، ابزار گزارشی شامل یافته‌ها، سطح اهمیت
+            مشکلات و پیشنهادهایی برای بهبود کد ارائه می‌دهد.
+            همچنین تخمینی اولیه از پیچیدگی زمانی و فضایی برنامه نمایش
+            داده می‌شود.
+        </p>
 
-    <p>
-        لیست در پایتون یک مجموعه مرتب از عناصر است که امکان
-        دسترسی به عناصر با اندیس را فراهم می‌کند. برای بررسی
-        وجود یک مقدار، ممکن است لازم باشد عناصر به‌ترتیب بررسی
-        شوند تا مقدار موردنظر پیدا شود یا لیست به پایان برسد.
-    </p>
+        <div class="notice">
+            هدف اصلی این پروژه، کمک به درک بهتر کیفیت کد و یادگیری
+            روش‌های تحلیل و بهینه‌سازی برنامه‌های پایتون است.
+        </div>
+    </section>
 
-    <p>
-        پیچیدگی زمانی جست‌وجوی یک مقدار در لیست در بدترین حالت
-        برابر O(n) است؛ در اینجا n تعداد عناصر لیست است.
-    </p>
+    <section id="problem">
+        <h2>۲. مسئله اصلی</h2>
 
-    <h3>۲.۲. ساختار Set</h3>
+        <p>
+            ممکن است یک برنامه خروجی درستی تولید کند، اما اجرای آن
+            برای ورودی‌های بزرگ زمان زیادی ببرد یا حافظه زیادی مصرف کند.
+            بنابراین، بررسی صحت کد به‌تنهایی برای ارزیابی کیفیت آن کافی نیست.
+        </p>
 
-    <p>
-        مجموعه set برای نگهداری عناصر یکتا طراحی شده و در
-        پیاده‌سازی معمول پایتون از جدول درهم‌سازی استفاده می‌کند.
-        بررسی عضویت در set به‌طور میانگین پیچیدگی O(1) دارد.
-        با این حال، در بدترین حالت پیچیدگی می‌تواند O(n) شود.
-    </p>
+        <p>برخی از مشکلاتی که در بررسی کد اهمیت دارند عبارت‌اند از:</p>
 
-    <table>
-        <tr>
-            <th>ویژگی</th>
-            <th>List</th>
-            <th>Set</th>
-        </tr>
-        <tr>
-            <td>ترتیب عناصر</td>
-            <td>حفظ می‌شود</td>
-            <td>برای ترتیب‌دهی مناسب نیست</td>
-        </tr>
-        <tr>
-            <td>عناصر تکراری</td>
-            <td>مجاز</td>
-            <td>نگهداری نمی‌شوند</td>
-        </tr>
-        <tr>
-            <td>جست‌وجوی میانگین</td>
-            <td>O(n)</td>
-            <td>O(1)</td>
-        </tr>
-        <tr>
-            <td>حافظه</td>
-            <td>معمولاً کمتر برای همین عناصر</td>
-            <td>معمولاً بیشتر به دلیل ساختار درهم‌سازی</td>
-        </tr>
-    </table>
+        <ul>
+            <li>حلقه‌های تو در تو و افزایش احتمالی تعداد عملیات.</li>
+            <li>جست‌وجوهای تکراری در ساختارهای داده.</li>
+            <li>ایجاد نسخه‌های غیرضروری از داده‌ها.</li>
+            <li>استفاده از الگوهای بالقوه ناامن مانند <code>eval()</code>.</li>
+            <li>خطاهای نحوی که مانع اجرای برنامه می‌شوند.</li>
+        </ul>
+    </section>
 
-    <h2>۳. پیاده‌سازی اولیه</h2>
+    <section id="features">
+        <h2>۳. قابلیت‌های PyOptimize</h2>
 
-    <p>
-        در مثال زیر، وجود عدد ۷۵۰۰۰ در یک لیست بررسی می‌شود.
-    </p>
+        <h3>بررسی خطاهای نحوی</h3>
+        <p>
+            ابزار می‌تواند خطاهای نحوی قابل تشخیص هنگام تجزیه کد پایتون
+            را گزارش کند. این بررسی به‌تنهایی تمام خطاهای زمان اجرا یا
+            مشکلات منطقی برنامه را شناسایی نمی‌کند.
+        </p>
 
-    <pre><code>numbers = list(range(100_000))
+        <h3>شناسایی الگوهای مشکوک از نظر کارایی</h3>
+        <p>
+            وجود حلقه‌های تو در تو یا بررسی عضویت در یک مجموعه داده
+            داخل حلقه می‌تواند نشانه‌ای برای بررسی دقیق‌تر عملکرد برنامه باشد.
+        </p>
 
-target = 75_000
+        <h3>تخمین پیچیدگی زمانی</h3>
+        <p>
+            ابزار با توجه به ساختار کد، تخمینی اولیه از رشد تعداد
+            عملیات ارائه می‌دهد. برای تعیین پیچیدگی دقیق، باید اندازه
+            ورودی، رفتار توابع و الگوریتم مورد استفاده نیز بررسی شوند.
+        </p>
 
-found = target in numbers
+        <h3>بررسی مصرف حافظه</h3>
+        <p>
+            ساختارهایی مانند فهرست‌ها، دیکشنری‌ها و مجموعه‌ها می‌توانند
+            در مصرف حافظه نقش داشته باشند. شناسایی این ساختارها به‌تنهایی
+            برای محاسبه دقیق پیچیدگی فضایی کافی نیست.
+        </p>
 
-print(found)</code></pre>
+        <h3>ارائه پیشنهادهای بهینه‌سازی</h3>
+        <p>
+            بر اساس الگوهای شناسایی‌شده، ابزار پیشنهادهایی برای بررسی
+            و بهبود کد ارائه می‌کند. پیشنهادها باید پیش از اعمال،
+            از نظر حفظ رفتار و صحت برنامه آزمایش شوند.
+        </p>
+    </section>
 
-    <p>
-        در این مثال، پایتون عناصر لیست را از ابتدا بررسی می‌کند
-        تا به مقدار هدف برسد. چون مقدار هدف نزدیک انتهای لیست
-        قرار دارد، تعداد زیادی از عناصر بررسی می‌شوند.
-    </p>
+    <section id="method">
+        <h2>۴. روش تحلیل کد</h2>
 
-    <h2>۴. پیاده‌سازی مبتنی بر Set</h2>
+        <p>
+            هسته اصلی پروژه از ماژول <code>ast</code> پایتون استفاده
+            می‌کند. این ماژول کد منبع را به یک درخت نحوی تبدیل می‌کند
+            تا ساختارهایی مانند تعریف توابع، حلقه‌ها، فراخوانی‌ها و
+            ساختارهای داده قابل بررسی باشند.
+        </p>
 
-    <pre><code>numbers = set(range(100_000))
+        <p>مراحل کلی تحلیل به این صورت است:</p>
 
-target = 75_000
+        <ol>
+            <li>خواندن فایل پایتون مورد نظر.</li>
+            <li>بررسی امکان تجزیه نحوی کد.</li>
+            <li>شناسایی ساختارهای مهم برنامه.</li>
+            <li>بررسی الگوهای مشکوک از نظر کارایی یا امنیت.</li>
+            <li>ارائه یافته‌ها و پیشنهادهای بهبود.</li>
+        </ol>
 
-found = target in numbers
+        <h3>نمونه کد برای بررسی</h3>
 
-print(found)</code></pre>
+        <pre><code>def find_matches(items, targets):
+    matches = []
 
-    <p>
-        در این نسخه، ساختار set برای بررسی عضویت استفاده شده است.
-        بررسی عضویت در این ساختار به‌طور میانگین سریع‌تر است،
-        اما ساخت خود set نیز زمان و حافظه مصرف می‌کند.
-    </p>
+    for item in items:
+        if item in targets:
+            matches.append(item)
 
-    <div class="note">
-        <strong>نکته علمی:</strong>
-        اگر قرار است فقط یک بار جست‌وجو انجام شود، هزینه ساخت
-        set ممکن است مزیت آن را کاهش دهد. اگر جست‌وجوهای زیادی
-        روی داده‌های یکسان انجام شوند، استفاده از set می‌تواند
-        سودمندتر باشد.
-    </div>
+    return matches
+</code></pre>
 
-    <h2 id="experiment">۵. طراحی آزمایش تجربی</h2>
+        <p>
+            در این نمونه، بررسی عضویت در <code>targets</code> داخل حلقه
+            انجام می‌شود. اگر <code>targets</code> یک فهرست بزرگ باشد
+            و جست‌وجوهای زیادی انجام شود، تبدیل آن به مجموعه ممکن است
+            عملکرد را بهبود دهد؛ البته این تغییر باید با توجه به نوع
+            داده‌ها و حفظ رفتار برنامه بررسی شود.
+        </p>
 
-    <p>
-        برای مقایسه معتبر، باید اندازه داده، مقدار مورد جست‌وجو،
-        تعداد تکرارها و هزینه ساخت ساختار داده مشخص باشند.
-        کد زیر زمان جست‌وجو را جدا از زمان ساخت list و set
-        اندازه‌گیری می‌کند.
-    </p>
+        <pre><code>def find_matches(items, targets):
+    target_set = set(targets)
+    return [item for item in items if item in target_set]
+</code></pre>
 
-    <pre><code>from timeit import repeat
+        <p>
+            در این نسخه، ساخت مجموعه یک هزینه اولیه دارد، اما می‌تواند
+            جست‌وجوهای تکراری را سریع‌تر کند. میزان بهبود به اندازه ورودی،
+            نوع داده‌ها و تعداد جست‌وجوها بستگی دارد.
+        </p>
+    </section>
 
-sizes = [1_000, 10_000, 100_000]
-repetitions = 5
-number = 1_000
+    <section id="complexity">
+        <h2>۵. پیچیدگی زمانی و فضایی</h2>
 
-for size in sizes:
-data_list = list(range(size))
-data_set = set(data_list)
-target = size - 1
+        <h3>پیچیدگی زمانی</h3>
+        <p>
+            پیچیدگی زمانی نشان می‌دهد با افزایش اندازه ورودی، تعداد
+            عملیات برنامه چگونه رشد می‌کند. برای مثال، یک پیمایش ساده
+            روی ورودی معمولاً با نماد <code>O(n)</code> توصیف می‌شود،
+            در حالی که مقایسه همه جفت‌های عناصر ممکن است پیچیدگی
+            <code>O(n²)</code> داشته باشد.
+        </p>
 
-list_times = repeat(
-    stmt="target in data_list",
-    globals=globals(),
-    repeat=repetitions,
-    number=number
-)
+        <h3>پیچیدگی فضایی</h3>
+        <p>
+            پیچیدگی فضایی میزان رشد حافظه اضافی مورد نیاز الگوریتم را
+            با افزایش اندازه ورودی توصیف می‌کند. برای مثال، ساخت یک
+            مجموعه جدید از n عنصر معمولاً به حافظه‌ای متناسب با تعداد
+            عناصر نیاز دارد.
+        </p>
 
-set_times = repeat(
-    stmt="target in data_set",
-    globals=globals(),
-    repeat=repetitions,
-    number=number
-)
+        <div class="warning">
+            تخمین‌های ابزار بر اساس الگوهای کد هستند و جایگزین اثبات
+            الگوریتمی، اندازه‌گیری واقعی زمان اجرا یا اندازه‌گیری حافظه
+            مصرفی نیستند.
+        </div>
+    </section>
 
-list_best = min(list_times) / number
-set_best = min(set_times) / number
+    <section id="limitations">
+        <h2>۶. محدودیت‌های پروژه</h2>
 
-print(f"Size: {size}")
-print(f"List search: {list_best:.8f} seconds")
-print(f"Set search:  {set_best:.8f} seconds")
-print()</code></pre>
+        <ul>
+            <li>
+                تحلیل ایستا به‌تنهایی نمی‌تواند رفتار تمام ورودی‌ها را پیش‌بینی کند.
+            </li>
+            <li>
+                تشخیص یک الگوی مشکوک لزوماً به معنای وجود خطا یا کندی واقعی نیست.
+            </li>
+            <li>
+                تخمین پیچیدگی به ساختار کد و فرض‌های مربوط به اندازه ورودی وابسته است.
+            </li>
+            <li>
+                پیشنهادهای بهینه‌سازی باید با آزمایش و مقایسه خروجی‌ها ارزیابی شوند.
+            </li>
+            <li>
+                نسخه فعلی به‌صورت خودکار کد اصلی را بازنویسی یا بهینه نمی‌کند؛
+                پیشنهادها برای بررسی توسط برنامه‌نویس ارائه می‌شوند.
+            </li>
+        </ul>
+    </section>
 
-    <div class="warning">
-        <strong>محدودیت آزمایش:</strong>
-        این کد زمان جست‌وجو را اندازه می‌گیرد، نه هزینه ساخت
-        ساختارها را. همچنین انتخاب آخرین عنصر باعث می‌شود
-        جست‌وجوی لیست تقریباً تمام عناصر را بررسی کند.
-        برای مطالعه کامل‌تر باید موقعیت‌های مختلف عنصر،
-        داده‌های تصادفی و هزینه ساخت set نیز بررسی شوند.
-    </div>
+    <section id="conclusion">
+        <h2>۷. نتیجه‌گیری</h2>
 
-    <h2>۶. تحلیل نتایج</h2>
+        <p>
+            PyOptimize یک پروژه آموزشی برای تحلیل ایستای کدهای پایتون است.
+            این ابزار با بررسی ساختار نحوی برنامه، برخی الگوهای مهم را
+            شناسایی می‌کند و برای بهبود احتمالی کارایی، امنیت و خوانایی
+            پیشنهادهایی ارائه می‌دهد.
+        </p>
 
-    <p>
-        پیش از اجرای آزمایش، انتظار نظری این است که با افزایش
-        اندازه لیست، زمان جست‌وجو به‌طور تقریبی متناسب با تعداد
-        عناصر افزایش یابد. در مقابل، زمان جست‌وجو در set در
-        حالت میانگین معمولاً رشد بسیار کمتری خواهد داشت.
-    </p>
+        <p>
+            توسعه‌های آینده می‌توانند شامل اندازه‌گیری زمان اجرا،
+            بررسی مصرف حافظه، آزمایش خودکار نمونه‌های ورودی و مقایسه
+            عملکرد نسخه اولیه با نسخه بهینه‌شده باشند.
+        </p>
+    </section>
 
-    <p>
-        این پیش‌بینی جایگزین داده‌های واقعی نیست. برای نتیجه‌گیری
-        علمی باید خروجی اجرای آزمایش ثبت شود و شرایط محیط اجرا،
-        نسخه پایتون و تعداد تکرارها نیز گزارش شوند.
-    </p>
+    <section id="references">
+        <h2>۸. منابع</h2>
 
-    <h2 id="conclusion">۷. نتیجه‌گیری</h2>
+        <ul>
+            <li>
+                <a href="https://docs.python.org/3/library/ast.html">
+                    مستندات رسمی ماژول ast در پایتون
+                </a>
+            </li>
+            <li>
+                <a href="https://docs.python.org/3/library/timeit.html">
+                    مستندات رسمی ماژول timeit
+                </a>
+            </li>
+            <li>
+                <a href="https://wiki.python.org/moin/TimeComplexity">
+                    راهنمای پیچیدگی زمانی ساختارهای داده در پایتون
+                </a>
+            </li>
+        </ul>
+    </section>
 
-    <p>
-        انتخاب میان list و set به نوع مسئله بستگی دارد. لیست
-        برای حفظ ترتیب، نگهداری مقادیر تکراری و دسترسی اندیسی
-        مناسب است؛ درحالی‌که set برای بررسی مکرر عضویت در میانگین
-        شرایط کارایی بالایی دارد.
-    </p>
+</main>
 
-    <p>
-        بهینه‌سازی معتبر فقط انتخاب ساختاری با پیچیدگی نظری بهتر
-        نیست؛ هزینه ساخت، مصرف حافظه، ویژگی‌های داده و نتایج
-        اندازه‌گیری واقعی نیز باید در تصمیم نهایی لحاظ شوند.
-    </p>
+<footer>
+    <p>پروژه آموزشی PyOptimize | تحلیل و بهینه‌سازی کدهای پایتون</p>
+    <p><a href="index.html">بازگشت به صفحه اصلی</a></p>
+</footer>
 
-    <h2>۸. منابع</h2>
-
-    <ul>
-        <li>
-            <a href="https://docs.python.org/3/tutorial/datastructures.html">
-                مستندات رسمی پایتون: ساختارهای داده
-            </a>
-        </li>
-        <li>
-            <a href="https://docs.python.org/3/library/timeit.html">
-                مستندات رسمی پایتون: ابزار timeit
-            </a>
-        </li>
-        <li>
-            <a href="https://wiki.python.org/moin/TimeComplexity">
-                جدول پیچیدگی زمانی عملیات در پایتون
-            </a>
-        </li>
-    </ul>
-
-</article>
-
-</main><footer>
-    <p>PyOptimize | تحلیل کد و بهینه‌سازی عملکرد</p>
-    <p>پروژه آموزشی برای یادگیری و مستندسازی فنی</p>
-</footer></body>
+</body>
 </html>
