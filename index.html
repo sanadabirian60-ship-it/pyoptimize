@@ -2,88 +2,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyOptimize | تحلیل و بهینه‌سازی پایتون</title>
-    <style>
-        body {
-            font-family: Tahoma, sans-serif;
-            background: #f4f7fb;
-            color: #243047;
-            margin: 0;
-            line-height: 2;
-        }
-        header {
-            background: #173b57;
-            color: white;
-            text-align: center;
-            padding: 35px 15px;
-        }
-        header h1 {
-            color: #64e6b5;
-            font-size: 34px;
-        }
-        main {
-            max-width: 800px;
-            margin: 25px auto;
-            padding: 20px;
-        }
-        section {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 12px;
-        }
-        h2 {
-            color: #087f70;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #667085;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>PyOptimize</h1>
-        <p>تحلیل کد پایتون و بهینه‌سازی عملکرد</p>
-    </header><main>
-    <section>
-        <h2>درباره وبلاگ</h2>
-        <p>
-            به PyOptimize خوش آمدید! در این وبلاگ با روش‌های
-            تحلیل کد پایتون، پیدا کردن خطاها و بهبود عملکرد
-            برنامه‌ها آشنا می‌شویم.
-        </p>
-    </section>
+    <title>PyOptimize | تحلیل کد و بهینه‌سازی پایتون</title><style>
+    * {
+        box-sizing: border-box;
+    }
 
-    <section>
-        <h2>تحلیل ایستا (Static Analysis)</h2>
-        <p>
-            بررسی کد بدون اجرای برنامه، برای شناسایی خطاها
-            و رعایت استانداردهای برنامه‌نویسی.
-        </p>
-    </section>
+    body {
+        margin: 0;
+        font-family: Tahoma, Arial, sans-serif;
+        background: #f3f6fa;
+        color: #263445;
+        line-height: 2;
+    }
 
-    <section>
-        <h2>تحلیل عملکرد (Profiling)</h2>
-        <p>
-            بررسی زمان اجرای بخش‌های مختلف برنامه برای پیدا
-            کردن قسمت‌هایی که سرعت برنامه را کاهش می‌دهند.
-        </p>
-    </section>
+    header {
+        background: #142d4e;
+        color: white;
+        padding: 28px 16px;
+        text-align: center;
+    }
 
-    <section>
-        <h2>بهینه‌سازی الگوریتم</h2>
-        <p>
-            یاد می‌گیریم چطور با انتخاب الگوریتم مناسب،
-            برنامه‌های سریع‌تر و کارآمدتری بنویسیم.
-        </p>
-    </section>
-</main>
+    header h1 {
+        color: #66e3b4;
+        margin-bottom: 5px;
+    }
 
-<footer>
-    ساخته‌شده برای یادگیری و تجربه عملی پایتون
-</footer>
+    nav {
+        background: #204568;
+        text-align: center;
+        padding: 12px;
+    }
 
-</body>
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+
+    nav a:hover {
+        color: #66e3b4;
+    }
+
+    main {
+        max-width: 900px;
+        margin: 25px auto;
+        padding: 0 16px;
+    }
+
+    article, .info, .articles-box {
+        background: white;
+        padding: 24px;
+        margin-bottom: 22px;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px #152d4e0d;
+    }
+
+    h2 {
+        color: #087f70;
+        border-bottom: 2px solid #e5edf3;
+        padding-bottom: 8px;
+    }
+
+    .article-link {
+        display: block;
+        background: #e9f8f2;
+        border-right: 4px solid #087f70;
+        padding: 16px;
+        margin-top: 16px;
+        border-radius: 8px;
+        color: #142d4e;
+        text-decoration: none;
+    }
+
+    .article-link:hover {
+        background: #d8f3e8;
+    }
+
+    .article-link strong {
+        display: block;
+        color: #087f70;
+        font-size: 17px;
+    }
+
+    footer {
+        background: #142d4e;
+        color: white;
+        text-align: center;
+        padding: 22px;
+        margin-top: 35px;
+    }
+
+    @media (max-width: 600px) {
+        article, .info, .articles-box {
+            padding: 16px;
+        }
+    }
+</style>
+
+</head><body><header>
+    <h1>PyOptimize</h1>
+    <p>تحلیل علمی کد و بهینه‌سازی عملکرد در پایتون</p>
+</header><nav>
+    <a href="index.html">صفحه اصلی</a>
+    <a href="#about">درباره پروژه</a>
+    <a href="#articles">مقاله‌های فنی</a>
+</nav><main><section class="info" id="about">
+    <h2>درباره PyOptimize</h2>
+
+    <p>
+        PyOptimize یک پروژه آموزشی و پژوهشی برای بررسی عملکرد
+        برنامه‌های پایتون، تحلیل پیچیدگی الگوریتم‌ها و شناخت
+        روش‌های بهینه‌سازی کد است.
+    </p>
+
+    <p>
+        هدف این پروژه، مقایسه روش‌های مختلف برنامه‌نویسی با
+        استفاده از مبانی نظری، آزمایش‌های قابل تکرار و تحلیل
+        نتایج واقعی است.
+    </p>
+</section>
+
+<section class="articles-box" id="articles">
+    <h2>مقاله‌های فنی</h2>
+
+    <p>
+        در این بخش، مقاله‌های مربوط به تحلیل الگوریتم،
+        ساختارهای داده و بهینه‌سازی عملکرد پایتون منتشر می‌شوند.
+    </p>
+
+    <a class="article-link" href="analysis-intro.html">
+        <strong>
+            تحلیل پیچیدگی زمانی و مقایسه عملکرد List و Set در پایتون
+        </strong>
+        بررسی پیچیدگی زمانی جست‌وجو، مقایسه ساختارهای داده
+        و طراحی آزمایش برای اندازه‌گیری عملکرد.
+        <br>
+        <span>مشاهده مقاله ←</span>
+    </a>
+</section>
+
+</main><footer>
+    <p>PyOptimize | تحلیل کد و بهینه‌سازی عملکرد</p>
+    <p>پروژه آموزشی برای یادگیری و مستندسازی فنی</p>
+</footer></body>
 </html>
