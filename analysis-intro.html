@@ -1,0 +1,363 @@
+<!DOCTYPE html><html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>تحلیل عملکرد List و Set در پایتون | PyOptimize</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Tahoma, Arial, sans-serif;
+        background: #f3f6fa;
+        color: #263445;
+        line-height: 2;
+    }
+
+    header {
+        background: #142d4e;
+        color: white;
+        padding: 28px 16px;
+        text-align: center;
+    }
+
+    header h1 {
+        color: #66e3b4;
+        margin-bottom: 5px;
+    }
+
+    nav {
+        background: #204568;
+        text-align: center;
+        padding: 12px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+
+    main {
+        max-width: 900px;
+        margin: 25px auto;
+        padding: 0 16px;
+    }
+
+    article, .info {
+        background: white;
+        padding: 24px;
+        margin-bottom: 22px;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px #152d4e0d;
+    }
+
+    h2 {
+        color: #087f70;
+        border-bottom: 2px solid #e5edf3;
+        padding-bottom: 8px;
+    }
+
+    h3 {
+        color: #204568;
+    }
+
+    pre {
+        direction: ltr;
+        text-align: left;
+        background: #172435;
+        color: #d7f9e9;
+        padding: 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    code {
+        font-family: monospace;
+    }
+
+    .note {
+        background: #e9f8f2;
+        border-right: 4px solid #087f70;
+        padding: 14px;
+        margin: 18px 0;
+    }
+
+    .warning {
+        background: #fff5df;
+        border-right: 4px solid #d99a21;
+        padding: 14px;
+        margin: 18px 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 18px 0;
+    }
+
+    th, td {
+        border: 1px solid #d9e1ea;
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background: #e9f0f6;
+    }
+
+    footer {
+        background: #142d4e;
+        color: white;
+        text-align: center;
+        padding: 22px;
+        margin-top: 35px;
+    }
+
+    @media (max-width: 600px) {
+        article, .info {
+            padding: 16px;
+        }
+
+        pre {
+            font-size: 12px;
+        }
+    }
+</style>
+
+</head><body><header>
+    <h1>PyOptimize</h1>
+    <p>تحلیل علمی کد و بهینه‌سازی عملکرد در پایتون</p>
+</header><nav>
+    <a href="index.html">صفحه اصلی</a>
+    <a href="#theory">مبانی نظری</a>
+    <a href="#experiment">آزمایش</a>
+    <a href="#conclusion">نتیجه‌گیری</a>
+</nav><main><div class="info">
+    <p><strong>عنوان مقاله:</strong> تحلیل پیچیدگی زمانی و مقایسه عملکرد List و Set در پایتون</p>
+    <p><strong>حوزه:</strong> تحلیل الگوریتم و ساختار داده</p>
+    <p><strong>نوع مطالعه:</strong> بررسی نظری همراه با آزمایش تجربی</p>
+    <p><strong>هدف:</strong> بررسی تأثیر انتخاب ساختار داده بر زمان جست‌وجو</p>
+</div>
+
+<article>
+    <h2>۱. چکیده</h2>
+
+    <p>
+        انتخاب ساختار داده مناسب یکی از عوامل مؤثر بر کارایی
+        نرم‌افزار است. در این مقاله، عملکرد عملیات بررسی وجود
+        یک عنصر در دو ساختار داده list و set در زبان پایتون
+        از نظر پیچیدگی زمانی و روش اندازه‌گیری تجربی بررسی می‌شود.
+        همچنین محدودیت‌های مقایسه و عوامل مؤثر بر نتایج توضیح داده
+        خواهند شد.
+    </p>
+
+    <h2 id="theory">۲. مبانی نظری</h2>
+
+    <h3>۲.۱. ساختار List</h3>
+
+    <p>
+        لیست در پایتون یک مجموعه مرتب از عناصر است که امکان
+        دسترسی به عناصر با اندیس را فراهم می‌کند. برای بررسی
+        وجود یک مقدار، ممکن است لازم باشد عناصر به‌ترتیب بررسی
+        شوند تا مقدار موردنظر پیدا شود یا لیست به پایان برسد.
+    </p>
+
+    <p>
+        پیچیدگی زمانی جست‌وجوی یک مقدار در لیست در بدترین حالت
+        برابر O(n) است؛ در اینجا n تعداد عناصر لیست است.
+    </p>
+
+    <h3>۲.۲. ساختار Set</h3>
+
+    <p>
+        مجموعه set برای نگهداری عناصر یکتا طراحی شده و در
+        پیاده‌سازی معمول پایتون از جدول درهم‌سازی استفاده می‌کند.
+        بررسی عضویت در set به‌طور میانگین پیچیدگی O(1) دارد.
+        با این حال، در بدترین حالت پیچیدگی می‌تواند O(n) شود.
+    </p>
+
+    <table>
+        <tr>
+            <th>ویژگی</th>
+            <th>List</th>
+            <th>Set</th>
+        </tr>
+        <tr>
+            <td>ترتیب عناصر</td>
+            <td>حفظ می‌شود</td>
+            <td>برای ترتیب‌دهی مناسب نیست</td>
+        </tr>
+        <tr>
+            <td>عناصر تکراری</td>
+            <td>مجاز</td>
+            <td>نگهداری نمی‌شوند</td>
+        </tr>
+        <tr>
+            <td>جست‌وجوی میانگین</td>
+            <td>O(n)</td>
+            <td>O(1)</td>
+        </tr>
+        <tr>
+            <td>حافظه</td>
+            <td>معمولاً کمتر برای همین عناصر</td>
+            <td>معمولاً بیشتر به دلیل ساختار درهم‌سازی</td>
+        </tr>
+    </table>
+
+    <h2>۳. پیاده‌سازی اولیه</h2>
+
+    <p>
+        در مثال زیر، وجود عدد ۷۵۰۰۰ در یک لیست بررسی می‌شود.
+    </p>
+
+    <pre><code>numbers = list(range(100_000))
+
+target = 75_000
+
+found = target in numbers
+
+print(found)</code></pre>
+
+    <p>
+        در این مثال، پایتون عناصر لیست را از ابتدا بررسی می‌کند
+        تا به مقدار هدف برسد. چون مقدار هدف نزدیک انتهای لیست
+        قرار دارد، تعداد زیادی از عناصر بررسی می‌شوند.
+    </p>
+
+    <h2>۴. پیاده‌سازی مبتنی بر Set</h2>
+
+    <pre><code>numbers = set(range(100_000))
+
+target = 75_000
+
+found = target in numbers
+
+print(found)</code></pre>
+
+    <p>
+        در این نسخه، ساختار set برای بررسی عضویت استفاده شده است.
+        بررسی عضویت در این ساختار به‌طور میانگین سریع‌تر است،
+        اما ساخت خود set نیز زمان و حافظه مصرف می‌کند.
+    </p>
+
+    <div class="note">
+        <strong>نکته علمی:</strong>
+        اگر قرار است فقط یک بار جست‌وجو انجام شود، هزینه ساخت
+        set ممکن است مزیت آن را کاهش دهد. اگر جست‌وجوهای زیادی
+        روی داده‌های یکسان انجام شوند، استفاده از set می‌تواند
+        سودمندتر باشد.
+    </div>
+
+    <h2 id="experiment">۵. طراحی آزمایش تجربی</h2>
+
+    <p>
+        برای مقایسه معتبر، باید اندازه داده، مقدار مورد جست‌وجو،
+        تعداد تکرارها و هزینه ساخت ساختار داده مشخص باشند.
+        کد زیر زمان جست‌وجو را جدا از زمان ساخت list و set
+        اندازه‌گیری می‌کند.
+    </p>
+
+    <pre><code>from timeit import repeat
+
+sizes = [1_000, 10_000, 100_000]
+repetitions = 5
+number = 1_000
+
+for size in sizes:
+data_list = list(range(size))
+data_set = set(data_list)
+target = size - 1
+
+list_times = repeat(
+    stmt="target in data_list",
+    globals=globals(),
+    repeat=repetitions,
+    number=number
+)
+
+set_times = repeat(
+    stmt="target in data_set",
+    globals=globals(),
+    repeat=repetitions,
+    number=number
+)
+
+list_best = min(list_times) / number
+set_best = min(set_times) / number
+
+print(f"Size: {size}")
+print(f"List search: {list_best:.8f} seconds")
+print(f"Set search:  {set_best:.8f} seconds")
+print()</code></pre>
+
+    <div class="warning">
+        <strong>محدودیت آزمایش:</strong>
+        این کد زمان جست‌وجو را اندازه می‌گیرد، نه هزینه ساخت
+        ساختارها را. همچنین انتخاب آخرین عنصر باعث می‌شود
+        جست‌وجوی لیست تقریباً تمام عناصر را بررسی کند.
+        برای مطالعه کامل‌تر باید موقعیت‌های مختلف عنصر،
+        داده‌های تصادفی و هزینه ساخت set نیز بررسی شوند.
+    </div>
+
+    <h2>۶. تحلیل نتایج</h2>
+
+    <p>
+        پیش از اجرای آزمایش، انتظار نظری این است که با افزایش
+        اندازه لیست، زمان جست‌وجو به‌طور تقریبی متناسب با تعداد
+        عناصر افزایش یابد. در مقابل، زمان جست‌وجو در set در
+        حالت میانگین معمولاً رشد بسیار کمتری خواهد داشت.
+    </p>
+
+    <p>
+        این پیش‌بینی جایگزین داده‌های واقعی نیست. برای نتیجه‌گیری
+        علمی باید خروجی اجرای آزمایش ثبت شود و شرایط محیط اجرا،
+        نسخه پایتون و تعداد تکرارها نیز گزارش شوند.
+    </p>
+
+    <h2 id="conclusion">۷. نتیجه‌گیری</h2>
+
+    <p>
+        انتخاب میان list و set به نوع مسئله بستگی دارد. لیست
+        برای حفظ ترتیب، نگهداری مقادیر تکراری و دسترسی اندیسی
+        مناسب است؛ درحالی‌که set برای بررسی مکرر عضویت در میانگین
+        شرایط کارایی بالایی دارد.
+    </p>
+
+    <p>
+        بهینه‌سازی معتبر فقط انتخاب ساختاری با پیچیدگی نظری بهتر
+        نیست؛ هزینه ساخت، مصرف حافظه، ویژگی‌های داده و نتایج
+        اندازه‌گیری واقعی نیز باید در تصمیم نهایی لحاظ شوند.
+    </p>
+
+    <h2>۸. منابع</h2>
+
+    <ul>
+        <li>
+            <a href="https://docs.python.org/3/tutorial/datastructures.html">
+                مستندات رسمی پایتون: ساختارهای داده
+            </a>
+        </li>
+        <li>
+            <a href="https://docs.python.org/3/library/timeit.html">
+                مستندات رسمی پایتون: ابزار timeit
+            </a>
+        </li>
+        <li>
+            <a href="https://wiki.python.org/moin/TimeComplexity">
+                جدول پیچیدگی زمانی عملیات در پایتون
+            </a>
+        </li>
+    </ul>
+
+</article>
+
+</main><footer>
+    <p>PyOptimize | تحلیل کد و بهینه‌سازی عملکرد</p>
+    <p>پروژه آموزشی برای یادگیری و مستندسازی فنی</p>
+</footer></body>
+</html>
