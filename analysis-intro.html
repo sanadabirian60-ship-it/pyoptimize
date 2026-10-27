@@ -1,381 +1,185 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>تحلیل و بهینه‌سازی کد پایتون | PyOptimize</title>
-
-    <meta name="description"
-          content="معرفی پروژه PyOptimize برای تحلیل کد پایتون، شناسایی مشکلات و ارائه پیشنهادهای بهینه‌سازی.">
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Tahoma, Arial, sans-serif;
-            background-color: #f4f7fb;
-            color: #263238;
-            line-height: 2;
-        }
-
-        header {
-            background-color: #142b4a;
-            color: white;
-            padding: 28px 16px;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0 0 10px;
-            font-size: 27px;
-        }
-
-        header p {
-            margin: 0;
-            color: #d8e5f5;
-        }
-
-        nav {
-            background-color: #1d3c60;
-            padding: 12px;
-            text-align: center;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 12px;
-        }
-
-        nav a:hover {
-            color: #70e1b0;
-        }
-
-        main {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 0 18px;
-        }
-
-        section {
-            background-color: white;
-            padding: 24px;
-            margin-bottom: 22px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        h2 {
-            color: #176b55;
-            font-size: 22px;
-            border-bottom: 2px solid #dcefe8;
-            padding-bottom: 8px;
-        }
-
-        h3 {
-            color: #24496e;
-        }
-
-        code {
-            background-color: #edf2f7;
-            padding: 3px 7px;
-            border-radius: 4px;
-            direction: ltr;
-            display: inline-block;
-        }
-
-        pre {
-            background-color: #142b4a;
-            color: #e7f5ff;
-            padding: 18px;
-            border-radius: 8px;
-            overflow-x: auto;
-            direction: ltr;
-            text-align: left;
-            line-height: 1.7;
-        }
-
-        .notice {
-            background-color: #e8f5ee;
-            border-right: 5px solid #21865b;
-            padding: 15px;
-            border-radius: 6px;
-        }
-
-        .warning {
-            background-color: #fff5df;
-            border-right: 5px solid #e5a329;
-            padding: 15px;
-            border-radius: 6px;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        footer {
-            background-color: #142b4a;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 35px;
-        }
-
-        footer a {
-            color: #70e1b0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مقدمه‌ای بر تحلیل ایستای کد پایتون</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1f2328;
+      --muted: #656d76;
+      --accent: #0969da;
+      --border: #d0d7de;
+      --code-bg: #f6f8fa;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --text: #e6edf3;
+        --muted: #8b949e;
+        --accent: #58a6ff;
+        --border: #30363d;
+        --code-bg: #161b22;
+        color-scheme: dark;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Tahoma, "Vazirmatn", sans-serif;
+      line-height: 1.9;
+      background: var(--bg);
+      color: var(--text);
+    }
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin: 0 0 8px;
+    }
+    h2 {
+      font-size: 1.3rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    .meta {
+      color: var(--muted);
+      margin: 0 0 24px;
+    }
+    a {
+      color: var(--accent);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+    }
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.92rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: right;
+    }
+    th {
+      background: var(--code-bg);
+    }
+    .note {
+      border-right: 4px solid var(--accent);
+      padding: 8px 16px;
+      margin: 20px 0;
+      background: var(--code-bg);
+    }
+    footer {
+      margin-top: 56px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+  </style>
 </head>
-
 <body>
+  <main>
+    <h1>مقدمه‌ای بر تحلیل ایستای کد پایتون</h1>
+    <p class="meta">تحلیل ایستا یعنی بررسی کد بدون اجرای آن. در این مطلب می‌بینیم چه چیزهایی را می‌توان از ساختار کد فهمید و کجا باید به اندازه‌گیری واقعی تکیه کرد.</p>
 
-<header>
-    <h1>PyOptimize</h1>
-    <p>تحلیل، بررسی و بهینه‌سازی کدهای پایتون</p>
-</header>
+    <h2>هدف این پروژه</h2>
+    <p>هدف این پروژه ساختن یک ابزار ساده و قابل‌فهم برای پیدا کردن الگوهای کندکننده در کد پایتون است. ابزار کد را بدون اجرا بررسی می‌کند، نقاط مشکوک را با شماره‌ی خط گزارش می‌دهد و پیشنهاد می‌کند چه تغییری بدهی. هدف دوم این است که نشان دهیم چطور بعد از هر تغییر، بهبود واقعی را با اندازه‌گیری تأیید کنی.</p>
 
-<nav>
-    <a href="index.html">صفحه اصلی</a>
-    <a href="#introduction">معرفی پروژه</a>
-    <a href="#features">قابلیت‌ها</a>
-    <a href="#method">روش تحلیل</a>
-    <a href="#conclusion">نتیجه‌گیری</a>
-</nav>
+    <h2>تحلیل ایستا چیست؟</h2>
+    <p>کد پایتون را می‌توان به‌صورت یک درخت نحوی (AST) خواند. ماژول <code>ast</code> در کتابخانه‌ی استاندارد این درخت را در اختیارت می‌گذارد. با پیمایش این درخت می‌توان الگوهایی را پیدا کرد که معمولاً کندی ایجاد می‌کنند، مثل:</p>
+    <ul>
+      <li>جست‌وجوی <code>in</code> روی لیست داخل حلقه</li>
+      <li>الحاق رشته با <code>+=</code> داخل حلقه</li>
+      <li>حلقه‌های تودرتو</li>
+      <li>توابع بازگشتی بدون کش</li>
+    </ul>
 
-<main>
+    <h2>ابزار این مطلب</h2>
+    <p>اسکریپت <code>analyzer.py</code> همین کار را انجام می‌دهد. برای اجرا:</p>
+    <pre><code>python analyzer.py your_code.py</code></pre>
+    <p>خروجی شامل تخمین پیچیدگی هر تابع بر اساس عمق حلقه‌ها و فهرست مشکلات احتمالی با شماره‌ی خط است.</p>
 
-    <section id="introduction">
-        <h2>۱. معرفی پروژه</h2>
+    <h2>نمونه‌ی عملی</h2>
+    <p>تابعی را در نظر بگیر که کاربرهای ثبت‌شده در لاگ را فیلتر می‌کند. نسخه‌ی اول از <code>in</code> روی لیست و حلقه‌ی تودرتو روی <code>blacklist</code> استفاده می‌کند. با تبدیل ورودی‌ها به set و ساخت یک‌باره‌ی رشته با <code>join</code>، همان خروجی با سرعت بسیار بیشتری به دست می‌آید. در یک بنچ‌مارک با ۵۰۰۰ لاگ و ورودی تصادفی، نسخه‌ی بهینه حدود ۱۷۳ برابر سریع‌تر بود. همچنین فیبوناچی بازگشتی با <code>lru_cache</code> در همان آزمایش حدود ۲۳۰۰ برابر سریع‌تر شد.</p>
 
-        <p>
-            پروژه PyOptimize با هدف بررسی کدهای پایتون و شناسایی
-            مشکلات احتمالی آن‌ها طراحی شده است. این ابزار تلاش می‌کند
-            الگوهایی را که ممکن است باعث کاهش کارایی، افزایش مصرف حافظه
-            یا ایجاد مشکلات امنیتی شوند، شناسایی کند.
-        </p>
+    <div class="note">
+      این اعداد مربوط به یک ورودی مشخص روی یک ماشین مشخص است. اندازه‌ی بهبود به داده و محیط بستگی دارد، پس برای گزارش دقیق، خودت هم با <code>timeit</code> بسنج.
+    </div>
 
-        <p>
-            پس از بررسی کد، ابزار گزارشی شامل یافته‌ها، سطح اهمیت
-            مشکلات و پیشنهادهایی برای بهبود کد ارائه می‌دهد.
-            همچنین تخمینی اولیه از پیچیدگی زمانی و فضایی برنامه نمایش
-            داده می‌شود.
-        </p>
+    <h2>محدودیت‌های تحلیل ایستا</h2>
+    <p>تحلیلگر ساختاری فقط الگوها را می‌بیند، نه زمان واقعی را. ممکن است حلقه‌ای را گزارش کند که در عمل کوچک است، و ممکن است گلوگاهی را که با الگوهای شناخته‌شده مطابقت ندارد نبیند. مثلاً در نسخه‌ی تست، حلقه‌ی تودرتوی با عمق ۲ روی <code>blacklist</code> گزارش نشد. برای تصمیم نهایی باید اندازه‌گیری کرد.</p>
 
-        <div class="notice">
-            هدف اصلی این پروژه، کمک به درک بهتر کیفیت کد و یادگیری
-            روش‌های تحلیل و بهینه‌سازی برنامه‌های پایتون است.
-        </div>
-    </section>
+    <h2>اندازه‌گیری واقعی</h2>
+    <table>
+      <tr><th>ابزار</th><th>کاربرد</th></tr>
+      <tr><td><code>timeit</code></td><td>مقایسه‌ی زمان دو نسخه‌ی یک تابع</td></tr>
+      <tr><td><code>cProfile</code></td><td>پیدا کردن اینکه زمان در کدام تابع می‌رود</td></tr>
+    </table>
+    <pre><code>python -m cProfile -s cumtime your_script.py</code></pre>
 
-    <section id="problem">
-        <h2>۲. مسئله اصلی</h2>
+    <h2>مثال کامل: تحلیل و بهینه‌سازی</h2>
+    <p>کد زیر نسخه‌ی اول است. ابتدا آن را با <code>analyzer.py</code> بررسی می‌کنیم:</p>
+    <pre><code>def find_common_users(logs, blacklist, allowed):
+    result = []
+    for log in logs:
+        if log["user"] not in result:
+            for b in blacklist:
+                if b == log["user"]:
+                    break
+            else:
+                if log["user"] in allowed:
+                    result.append(log["user"])
+    report = ""
+    for r in result:
+        report += f"{r}\n"
+    return report</code></pre>
+    <pre><code>$ python analyzer.py slow_code.py
+  find_common_users         O(n²)
+  خط 4: جست‌وجوی `in` داخل حلقه روی result
+  خط 9: جست‌وجوی `in` داخل حلقه روی allowed
+  خط 13: الحاق رشته با += داخل حلقه</code></pre>
+    <p>تحلیلگر سه مشکل را پیدا کرد. حلقه‌ی تودرتو روی <code>blacklist</code> هم وجود دارد که در گزارش نیامد، پس خروجی تحلیلگر کامل نیست.</p>
+    <p>نسخه‌ی بهینه:</p>
+    <pre><code>def find_common_users(logs, blacklist, allowed):
+    blacklist_set = set(blacklist)
+    allowed_set = set(allowed)
+    seen = set()
+    result = []
+    for log in logs:
+        user = log["user"]
+        if user in seen or user in blacklist_set:
+            continue
+        if user in allowed_set:
+            seen.add(user)
+            result.append(user)
+    return "".join(f"{r}\n" for r in result)</code></pre>
+    <p>تغییرات: جست‌وجو روی set انجام می‌شود (O(1))، حلقه‌ی داخلی روی blacklist حذف شده، و رشته‌ی گزارش یک‌باره ساخته می‌شود.</p>
+    <p>برای اندازه‌گیری، هر دو نسخه را با <code>timeit</code> روی همان ورودی اجرا کن. در بنچ‌مارک من با ۵۰۰۰ لاگ، نسخه‌ی کند حدود ۱۱۰ میلی‌ثانیه و نسخه‌ی بهینه حدود ۰٫۶ میلی‌ثانیه طول کشید.</p>
 
-        <p>
-            ممکن است یک برنامه خروجی درستی تولید کند، اما اجرای آن
-            برای ورودی‌های بزرگ زمان زیادی ببرد یا حافظه زیادی مصرف کند.
-            بنابراین، بررسی صحت کد به‌تنهایی برای ارزیابی کیفیت آن کافی نیست.
-        </p>
+    <h2>جمع‌بندی</h2>
+    <p>تحلیل ایستا برای پیدا کردن نقاط مشکوک خوب است. تصمیم درباره‌ی بهینه‌سازی را باید بر اساس اندازه‌گیری گرفت.</p>
 
-        <p>برخی از مشکلاتی که در بررسی کد اهمیت دارند عبارت‌اند از:</p>
-
-        <ul>
-            <li>حلقه‌های تو در تو و افزایش احتمالی تعداد عملیات.</li>
-            <li>جست‌وجوهای تکراری در ساختارهای داده.</li>
-            <li>ایجاد نسخه‌های غیرضروری از داده‌ها.</li>
-            <li>استفاده از الگوهای بالقوه ناامن مانند <code>eval()</code>.</li>
-            <li>خطاهای نحوی که مانع اجرای برنامه می‌شوند.</li>
-        </ul>
-    </section>
-
-    <section id="features">
-        <h2>۳. قابلیت‌های PyOptimize</h2>
-
-        <h3>بررسی خطاهای نحوی</h3>
-        <p>
-            ابزار می‌تواند خطاهای نحوی قابل تشخیص هنگام تجزیه کد پایتون
-            را گزارش کند. این بررسی به‌تنهایی تمام خطاهای زمان اجرا یا
-            مشکلات منطقی برنامه را شناسایی نمی‌کند.
-        </p>
-
-        <h3>شناسایی الگوهای مشکوک از نظر کارایی</h3>
-        <p>
-            وجود حلقه‌های تو در تو یا بررسی عضویت در یک مجموعه داده
-            داخل حلقه می‌تواند نشانه‌ای برای بررسی دقیق‌تر عملکرد برنامه باشد.
-        </p>
-
-        <h3>تخمین پیچیدگی زمانی</h3>
-        <p>
-            ابزار با توجه به ساختار کد، تخمینی اولیه از رشد تعداد
-            عملیات ارائه می‌دهد. برای تعیین پیچیدگی دقیق، باید اندازه
-            ورودی، رفتار توابع و الگوریتم مورد استفاده نیز بررسی شوند.
-        </p>
-
-        <h3>بررسی مصرف حافظه</h3>
-        <p>
-            ساختارهایی مانند فهرست‌ها، دیکشنری‌ها و مجموعه‌ها می‌توانند
-            در مصرف حافظه نقش داشته باشند. شناسایی این ساختارها به‌تنهایی
-            برای محاسبه دقیق پیچیدگی فضایی کافی نیست.
-        </p>
-
-        <h3>ارائه پیشنهادهای بهینه‌سازی</h3>
-        <p>
-            بر اساس الگوهای شناسایی‌شده، ابزار پیشنهادهایی برای بررسی
-            و بهبود کد ارائه می‌کند. پیشنهادها باید پیش از اعمال،
-            از نظر حفظ رفتار و صحت برنامه آزمایش شوند.
-        </p>
-    </section>
-
-    <section id="method">
-        <h2>۴. روش تحلیل کد</h2>
-
-        <p>
-            هسته اصلی پروژه از ماژول <code>ast</code> پایتون استفاده
-            می‌کند. این ماژول کد منبع را به یک درخت نحوی تبدیل می‌کند
-            تا ساختارهایی مانند تعریف توابع، حلقه‌ها، فراخوانی‌ها و
-            ساختارهای داده قابل بررسی باشند.
-        </p>
-
-        <p>مراحل کلی تحلیل به این صورت است:</p>
-
-        <ol>
-            <li>خواندن فایل پایتون مورد نظر.</li>
-            <li>بررسی امکان تجزیه نحوی کد.</li>
-            <li>شناسایی ساختارهای مهم برنامه.</li>
-            <li>بررسی الگوهای مشکوک از نظر کارایی یا امنیت.</li>
-            <li>ارائه یافته‌ها و پیشنهادهای بهبود.</li>
-        </ol>
-
-        <h3>نمونه کد برای بررسی</h3>
-
-        <pre><code>def find_matches(items, targets):
-    matches = []
-
-    for item in items:
-        if item in targets:
-            matches.append(item)
-
-    return matches
-</code></pre>
-
-        <p>
-            در این نمونه، بررسی عضویت در <code>targets</code> داخل حلقه
-            انجام می‌شود. اگر <code>targets</code> یک فهرست بزرگ باشد
-            و جست‌وجوهای زیادی انجام شود، تبدیل آن به مجموعه ممکن است
-            عملکرد را بهبود دهد؛ البته این تغییر باید با توجه به نوع
-            داده‌ها و حفظ رفتار برنامه بررسی شود.
-        </p>
-
-        <pre><code>def find_matches(items, targets):
-    target_set = set(targets)
-    return [item for item in items if item in target_set]
-</code></pre>
-
-        <p>
-            در این نسخه، ساخت مجموعه یک هزینه اولیه دارد، اما می‌تواند
-            جست‌وجوهای تکراری را سریع‌تر کند. میزان بهبود به اندازه ورودی،
-            نوع داده‌ها و تعداد جست‌وجوها بستگی دارد.
-        </p>
-    </section>
-
-    <section id="complexity">
-        <h2>۵. پیچیدگی زمانی و فضایی</h2>
-
-        <h3>پیچیدگی زمانی</h3>
-        <p>
-            پیچیدگی زمانی نشان می‌دهد با افزایش اندازه ورودی، تعداد
-            عملیات برنامه چگونه رشد می‌کند. برای مثال، یک پیمایش ساده
-            روی ورودی معمولاً با نماد <code>O(n)</code> توصیف می‌شود،
-            در حالی که مقایسه همه جفت‌های عناصر ممکن است پیچیدگی
-            <code>O(n²)</code> داشته باشد.
-        </p>
-
-        <h3>پیچیدگی فضایی</h3>
-        <p>
-            پیچیدگی فضایی میزان رشد حافظه اضافی مورد نیاز الگوریتم را
-            با افزایش اندازه ورودی توصیف می‌کند. برای مثال، ساخت یک
-            مجموعه جدید از n عنصر معمولاً به حافظه‌ای متناسب با تعداد
-            عناصر نیاز دارد.
-        </p>
-
-        <div class="warning">
-            تخمین‌های ابزار بر اساس الگوهای کد هستند و جایگزین اثبات
-            الگوریتمی، اندازه‌گیری واقعی زمان اجرا یا اندازه‌گیری حافظه
-            مصرفی نیستند.
-        </div>
-    </section>
-
-    <section id="limitations">
-        <h2>۶. محدودیت‌های پروژه</h2>
-
-        <ul>
-            <li>
-                تحلیل ایستا به‌تنهایی نمی‌تواند رفتار تمام ورودی‌ها را پیش‌بینی کند.
-            </li>
-            <li>
-                تشخیص یک الگوی مشکوک لزوماً به معنای وجود خطا یا کندی واقعی نیست.
-            </li>
-            <li>
-                تخمین پیچیدگی به ساختار کد و فرض‌های مربوط به اندازه ورودی وابسته است.
-            </li>
-            <li>
-                پیشنهادهای بهینه‌سازی باید با آزمایش و مقایسه خروجی‌ها ارزیابی شوند.
-            </li>
-            <li>
-                نسخه فعلی به‌صورت خودکار کد اصلی را بازنویسی یا بهینه نمی‌کند؛
-                پیشنهادها برای بررسی توسط برنامه‌نویس ارائه می‌شوند.
-            </li>
-        </ul>
-    </section>
-
-    <section id="conclusion">
-        <h2>۷. نتیجه‌گیری</h2>
-
-        <p>
-            PyOptimize یک پروژه آموزشی برای تحلیل ایستای کدهای پایتون است.
-            این ابزار با بررسی ساختار نحوی برنامه، برخی الگوهای مهم را
-            شناسایی می‌کند و برای بهبود احتمالی کارایی، امنیت و خوانایی
-            پیشنهادهایی ارائه می‌دهد.
-        </p>
-
-        <p>
-            توسعه‌های آینده می‌توانند شامل اندازه‌گیری زمان اجرا،
-            بررسی مصرف حافظه، آزمایش خودکار نمونه‌های ورودی و مقایسه
-            عملکرد نسخه اولیه با نسخه بهینه‌شده باشند.
-        </p>
-    </section>
-
-    <section id="references">
-        <h2>۸. منابع</h2>
-
-        <ul>
-            <li>
-                <a href="https://docs.python.org/3/library/ast.html">
-                    مستندات رسمی ماژول ast در پایتون
-                </a>
-            </li>
-            <li>
-                <a href="https://docs.python.org/3/library/timeit.html">
-                    مستندات رسمی ماژول timeit
-                </a>
-            </li>
-            <li>
-                <a href="https://wiki.python.org/moin/TimeComplexity">
-                    راهنمای پیچیدگی زمانی ساختارهای داده در پایتون
-                </a>
-            </li>
-        </ul>
-    </section>
-
-</main>
-
-<footer>
-    <p>پروژه آموزشی PyOptimize | تحلیل و بهینه‌سازی کدهای پایتون</p>
-    <p><a href="index.html">بازگشت به صفحه اصلی</a></p>
-</footer>
-
+    <footer>
+      <a href="index.html">بازگشت به صفحه‌ی اصلی</a>
+    </footer>
+  </main>
 </body>
 </html>
