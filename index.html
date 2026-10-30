@@ -1,396 +1,204 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ابزار آموزشی تحلیل و بهینه‌سازی کد پایتون">
+<title>PyOptimize | تحلیل کد پایتون</title>
 
-  <title>PyOptimize | تحلیل و بهینه‌سازی کد پایتون</title>
-  <meta name="description"
-        content="تحلیل اولیه کد پایتون، شناسایی الگوهای احتمالی کند و ارائه پیشنهادهای بهینه‌سازی.">
+<style>
+:root {
+  --bg:#0b1020;
+  --panel:#121a2d;
+  --light:#19243a;
+  --text:#edf2ff;
+  --muted:#a6b2cc;
+  --primary:#7c8cff;
+  --green:#42d6b5;
+  --border:#293651;
+  --warning:#ffd166;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Tahoma,Arial,sans-serif;
+  line-height:1.9;
+}
+a { color:inherit; text-decoration:none; }
+.container { width:min(1100px,92%); margin:auto; }
 
-  <style>
-    :root {
-      --bg: #0b1020;
-      --panel: #121a2d;
-      --panel-light: #19243a;
-      --text: #edf2ff;
-      --muted: #a6b2cc;
-      --primary: #7c8cff;
-      --secondary: #42d6b5;
-      --border: #293651;
-      --danger: #ff8290;
-      --warning: #ffd166;
-    }
+header {
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:#0b1020;
+  border-bottom:1px solid var(--border);
+}
+.nav {
+  min-height:75px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+.logo {
+  font-size:25px;
+  font-weight:bold;
+  direction:ltr;
+}
+.logo span,h1 span { color:var(--green); }
+.nav-links {
+  display:flex;
+  flex-wrap:wrap;
+  gap:20px;
+  color:var(--muted);
+}
+.nav-links a:hover { color:var(--green); }
 
-    * {
-      box-sizing: border-box;
-    }
+.hero {
+  padding:75px 0;
+  text-align:center;
+  background:radial-gradient(ellipse at top,#202b53,transparent 70%);
+}
+.badge {
+  display:inline-block;
+  border:1px solid #3d5077;
+  color:var(--green);
+  border-radius:30px;
+  padding:5px 15px;
+}
+h1 { font-size:clamp(30px,5vw,52px); }
+.hero p {
+  max-width:700px;
+  margin:20px auto 30px;
+  color:var(--muted);
+  font-size:17px;
+}
+.button {
+  display:inline-block;
+  border:0;
+  border-radius:10px;
+  padding:12px 22px;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+.button.secondary {
+  background:var(--light);
+  border:1px solid var(--border);
+}
+section { padding:45px 0; }
+.section-title { font-size:28px; }
+.section-description { color:var(--muted); }
 
-    html {
-      scroll-behavior: smooth;
-    }
+.analyzer,.card,.about-box {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:22px;
+}
+.editor-label {
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.editor-label small { color:var(--muted); }
 
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Tahoma, Arial, sans-serif;
-      line-height: 1.9;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button,
-    textarea {
-      font: inherit;
-    }
-
-    .container {
-      width: min(1120px, 92%);
-      margin: auto;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(11, 16, 32, 0.94);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav {
-      min-height: 76px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-      direction: ltr;
-      white-space: nowrap;
-    }
-
-    .logo span {
-      color: var(--secondary);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 22px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .nav-links a:hover {
-      color: var(--secondary);
-    }
-
-    .hero {
-      padding: 85px 0 65px;
-      text-align: center;
-      background:
-        radial-gradient(ellipse at top, #202b53 0%, transparent 65%);
-    }
-
-    .badge {
-      display: inline-block;
-      border: 1px solid #3d5077;
-      color: var(--secondary);
-      border-radius: 30px;
-      padding: 5px 15px;
-      font-size: 13px;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: clamp(30px, 5vw, 54px);
-      line-height: 1.5;
-      margin: 0 auto 20px;
-      max-width: 850px;
-    }
-
-    h1 span {
-      color: var(--secondary);
-    }
-
-    .hero p {
-      max-width: 700px;
-      margin: 0 auto 30px;
-      color: var(--muted);
-      font-size: 17px;
-    }
-
-    .button {
-      display: inline-block;
-      border: 0;
-      border-radius: 10px;
-      padding: 12px 23px;
-      background: var(--primary);
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-      transition: transform 0.2s, opacity 0.2s;
-    }
-
-    .button:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
-    }
-
-    .button.secondary {
-      background: var(--panel-light);
-      border: 1px solid var(--border);
-    }
-
-    section {
-      padding: 48px 0;
-    }
-
-    .section-title {
-      font-size: 28px;
-      margin: 0 0 10px;
-    }
-
-    .section-description {
-      color: var(--muted);
-      margin: 0 0 28px;
-    }
-
-    .analyzer {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.16);
-    }
-
-    .editor-label {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-
-    .editor-label small {
-      color: var(--muted);
-    }
-
-    textarea {
-      display: block;
-      width: 100%;
-      min-height: 280px;
-      resize: vertical;
-      direction: ltr;
-      text-align: left;
-      background: #080d19;
-      color: #d8e5ff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px;
-      outline: none;
-      font: 14px/1.8 Consolas, Monaco, monospace;
-      tab-size: 4;
-    }
-
-    textarea:focus {
-      border-color: var(--primary);
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .notice {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 14px;
-    }
-
-    .results {
-      display: none;
-      margin-top: 25px;
-      border-top: 1px solid var(--border);
-      padding-top: 20px;
-    }
-
-    .results h3 {
-      margin-top: 0;
-    }
-
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 18px 0;
-    }
-
-    .metric {
-      background: var(--panel-light);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-    }
-
-    .metric strong {
-      display: block;
-      font-size: 23px;
-      direction: ltr;
-      text-align: right;
-    }
-
-    .metric span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .finding {
-      border-right: 3px solid var(--primary);
-      background: var(--panel-light);
-      padding: 12px 15px;
-      margin: 10px 0;
-      border-radius: 8px;
-      overflow-wrap: anywhere;
-    }
-
-    .finding.warning {
-      border-color: var(--warning);
-    }
-
-    .finding.error {
-      border-color: var(--danger);
-    }
-
-    .finding.success {
-      border-color: var(--secondary);
-    }
-
-    .finding p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .code-output {
-      direction: ltr;
-      text-align: left;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-      background: #080d19;
-      padding: 16px;
-      border-radius: 10px;
-      color: #d8e5ff;
-      font: 13px/1.8 Consolas, Monaco, monospace;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 23px;
-    }
-
-    .card .icon {
-      font-size: 27px;
-    }
-
-    .card h3 {
-      margin: 8px 0;
-    }
-
-    .card p {
-      margin-bottom: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .article-card {
-      display: block;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .article-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-3px);
-    }
-
-    .article-card .read-more {
-      color: var(--secondary);
-      display: inline-block;
-      margin-top: 12px;
-    }
-
-    .about-box {
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 25px;
-      background: linear-gradient(135deg, var(--panel), #101a30);
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 25px 0;
-      color: var(--muted);
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .ltr {
-      direction: ltr;
-      unicode-bidi: isolate;
-      display: inline-block;
-    }
-
-    @media (max-width: 750px) {
-      .nav {
-        padding: 12px 0;
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .nav-links {
-        gap: 12px;
-      }
-
-      .hero {
-        padding: 55px 0 35px;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .metrics {
-        grid-template-columns: 1fr;
-      }
-
-      .analyzer {
-        padding: 15px;
-      }
-
-      textarea {
-        min-height: 240px;
-      }
-    }
-  </style>
+textarea {
+  width:100%;
+  min-height:260px;
+  resize:vertical;
+  direction:ltr;
+  text-align:left;
+  background:#080d19;
+  color:#d8e5ff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:17px;
+  font:14px/1.8 Consolas,monospace;
+  tab-size:4;
+}
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:15px;
+}
+.notice,.small-note {
+  color:var(--muted);
+  font-size:13px;
+}
+.results {
+  display:none;
+  margin-top:25px;
+  border-top:1px solid var(--border);
+  padding-top:20px;
+}
+.metrics {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.metric {
+  background:var(--light);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:15px;
+}
+.metric strong {
+  display:block;
+  font-size:23px;
+}
+.metric span { color:var(--muted); font-size:13px; }
+.finding {
+  background:var(--light);
+  border-right:3px solid var(--primary);
+  border-radius:8px;
+  padding:13px;
+  margin:12px 0;
+}
+.finding.warning { border-color:var(--warning); }
+.finding.success { border-color:var(--green); }
+.finding p { color:var(--muted); margin:5px 0 0; }
+.code-output {
+  direction:ltr;
+  text-align:left;
+  white-space:pre;
+  overflow:auto;
+  background:#080d19;
+  color:#d8e5ff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:15px;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.card h3 { margin:8px 0; }
+.card p { color:var(--muted); font-size:14px; }
+.read-more { color:var(--green); }
+.about-box p { color:var(--muted); }
+footer {
+  border-top:1px solid var(--border);
+  text-align:center;
+  padding:25px;
+  color:var(--muted);
+}
+@media(max-width:750px) {
+  .nav { align-items:flex-start; flex-direction:column; padding:12px 0; }
+  .nav-links { gap:12px; }
+  .grid,.metrics { grid-template-columns:1fr; }
+  .hero { padding:45px 0; }
+  .analyzer { padding:14px; }
+}
+</style>
 </head>
 
 <body>
@@ -398,8 +206,7 @@
 <header>
   <div class="container nav">
     <a href="./" class="logo">Py<span>Optimize</span></a>
-
-    <nav class="nav-links" aria-label="منوی اصلی">
+    <nav class="nav-links">
       <a href="#analyzer">تحلیل کد</a>
       <a href="#features">قابلیت‌ها</a>
       <a href="#articles">مقالات</a>
@@ -410,44 +217,32 @@
 
 <main>
 
-  <section class="hero">
-    <div class="container">
-      <div class="badge">ابزار آموزشی تحلیل کد پایتون</div>
+<section class="hero">
+  <div class="container">
+    <div class="badge">ابزار آموزشی تحلیل کد پایتون</div>
+    <h1>کدت را بررسی کن، <span>بهترش کن.</span></h1>
+    <p>
+      با PyOptimize الگوهای احتمالی کندی کد را بررسی کن،
+      پیچیدگی الگوریتم را بشناس و پیشنهادهای بهینه‌سازی دریافت کن.
+    </p>
+    <a href="#analyzer" class="button">شروع تحلیل کد ←</a>
+  </div>
+</section>
 
-      <h1>
-        کدت را بررسی کن،
-        <span>بهترش کن.</span>
-      </h1>
+<section id="analyzer">
+<div class="container">
+  <h2 class="section-title">تحلیل‌گر کد پایتون</h2>
+  <p class="section-description">
+    کد پایتون خود را وارد کن و دکمه تحلیل را بزن.
+  </p>
 
-      <p>
-        با PyOptimize الگوهای احتمالی کندی کد را بررسی کن،
-        پیچیدگی الگوریتمت را بهتر بشناس و برای بهبود عملکرد
-        برنامه پیشنهادهای کاربردی دریافت کن.
-      </p>
-
-      <a href="#analyzer" class="button">شروع تحلیل کد ←</a>
+  <div class="analyzer">
+    <div class="editor-label">
+      <strong>کد منبع Python</strong>
+      <small>تحلیل ایستا و آموزشی</small>
     </div>
-  </section>
 
-  <section id="analyzer">
-    <div class="container">
-      <h2 class="section-title">تحلیل‌گر کد پایتون</h2>
-
-      <p class="section-description">
-        کدت را وارد کن و دکمه تحلیل را بزن.
-        بررسی‌ها در همین مرورگر انجام می‌شوند.
-      </p>
-
-      <div class="analyzer">
-        <div class="editor-label">
-          <strong>کد منبع Python</strong>
-          <small>تحلیل ایستا و مبتنی بر الگوهای متنی</small>
-        </div>
-
-        <textarea id="codeInput"
-          spellcheck="false"
-          aria-label="کد پایتون برای تحلیل"
-          placeholder="کد پایتون خود را اینجا وارد کنید...">def find_common_elements(list_a, list_b):
+    <textarea id="codeInput" spellcheck="false">def find_common_elements(list_a, list_b):
     result = []
 
     for item in list_a:
@@ -457,176 +252,143 @@
 
     return result</textarea>
 
-        <div class="actions">
-          <button class="button" id="analyzeBtn">
-            تحلیل کد
-          </button>
+    <div class="actions">
+      <button class="button" id="analyzeBtn">تحلیل کد</button>
+      <button class="button secondary" id="exampleBtn">بارگذاری مثال</button>
+      <button class="button secondary" id="clearBtn">پاک کردن</button>
+    </div>
 
-          <button class="button secondary" id="exampleBtn">
-            بارگذاری مثال
-          </button>
+    <p class="notice">
+      این نسخه مفسر کامل پایتون نیست. کد اجرا یا به سرور ارسال نمی‌شود.
+      نتایج بر اساس الگوهای محدود متنی تولید می‌شوند.
+    </p>
 
-          <button class="button secondary" id="clearBtn">
-            پاک کردن
-          </button>
+    <div class="results" id="results" aria-live="polite">
+      <h3>نتایج تحلیل</h3>
+
+      <div class="metrics">
+        <div class="metric">
+          <strong id="lineCount">۰</strong>
+          <span>خطوط غیرخالی</span>
         </div>
-
-        <p class="notice">
-          توجه: این نسخه مفسر کامل پایتون نیست؛ نتیجه‌ها تخمینی هستند.
-          کد واردشده اجرا نمی‌شود و به سرور ارسال نمی‌شود.
-        </p>
-
-        <div id="results" class="results" aria-live="polite">
-          <h3>نتایج تحلیل</h3>
-
-          <div class="metrics">
-            <div class="metric">
-              <strong id="lineCount">۰</strong>
-              <span>تعداد خطوط غیرخالی</span>
-            </div>
-
-            <div class="metric">
-              <strong id="loopCount">۰</strong>
-              <span>تعداد حلقه‌های شناسایی‌شده</span>
-            </div>
-
-            <div class="metric">
-              <strong id="findingCount">۰</strong>
-              <span>تعداد پیشنهادها و هشدارها</span>
-            </div>
-          </div>
-
-          <div id="findings"></div>
-
-          <h3>جمع‌بندی پیچیدگی</h3>
-          <div id="complexity" class="finding"></div>
+        <div class="metric">
+          <strong id="loopCount">۰</strong>
+          <span>تعداد حلقه‌ها</span>
+        </div>
+        <div class="metric">
+          <strong id="findingCount">۰</strong>
+          <span>هشدارها و پیشنهادها</span>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section id="features">
-    <div class="container">
-      <h2 class="section-title">قابلیت‌های PyOptimize</h2>
+      <div id="findings"></div>
 
-      <p class="section-description">
-        ابزارهای آموزشی برای درک بهتر کیفیت و عملکرد کد.
-      </p>
+      <h3>پیچیدگی الگوریتم</h3>
+      <div class="finding" id="complexity"></div>
 
-      <div class="grid">
-        <article class="card">
-          <div class="icon">🔍</div>
-          <h3>تحلیل ایستا</h3>
-          <p>
-            شناسایی برخی الگوهای رایج در کد، بدون اجرای برنامه.
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="icon">⚡</div>
-          <h3>پیشنهاد بهینه‌سازی</h3>
-          <p>
-            مشاهده پیشنهادهایی برای بررسی حلقه‌ها و جست‌وجوهای
-            تکراری و انتخاب ساختار داده مناسب.
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="icon">📊</div>
-          <h3>پیچیدگی الگوریتم</h3>
-          <p>
-            آشنایی با مفاهیم پیچیدگی زمانی و حافظه و اهمیت
-            اندازه ورودی در عملکرد برنامه.
-          </p>
-        </article>
+      <div id="optimizationBox" hidden>
+        <h3>کد پیشنهادی بهینه‌شده</h3>
+        <div class="finding success" id="optimizationDescription"></div>
+        <pre class="code-output" id="optimizedCode"></pre>
+        <button class="button secondary" id="copyBtn">کپی کد پیشنهادی</button>
       </div>
     </div>
-  </section>
+  </div>
+</div>
+</section>
 
-  <section id="articles">
-    <div class="container">
-      <h2 class="section-title">مقالات آموزشی</h2>
+<section id="features">
+<div class="container">
+  <h2 class="section-title">قابلیت‌های PyOptimize</h2>
+  <p class="section-description">ابزارهای آموزشی برای درک بهتر عملکرد کد.</p>
 
-      <p class="section-description">
-        تحلیل الگوریتم‌ها را با مثال‌های عملی یاد بگیر.
-      </p>
+  <div class="grid">
+    <article class="card">
+      <div>🔍</div>
+      <h3>تحلیل ایستا</h3>
+      <p>شناسایی برخی الگوهای رایج بدون اجرای برنامه.</p>
+    </article>
 
-      <div class="grid">
-        <a class="card article-card" href="analysis-intro.html">
-          <div class="icon">📘</div>
-          <h3>مقدمه‌ای بر تحلیل کد</h3>
-          <p>
-            آشنایی با تحلیل ایستا، پیچیدگی زمانی،
-            مشکلات عملکردی و محدودیت‌های تحلیل خودکار.
-          </p>
-          <span class="read-more">مطالعه مقاله ←</span>
-        </a>
+    <article class="card">
+      <div>⚡</div>
+      <h3>پیشنهاد بهینه‌سازی</h3>
+      <p>پیشنهاد استفاده از ساختار داده مناسب برای برخی الگوریتم‌ها.</p>
+    </article>
 
-        <a class="card article-card" href="#analyzer">
-          <div class="icon">🧠</div>
-          <h3>بررسی یک الگوریتم واقعی</h3>
-          <p>
-            بررسی روش پیدا کردن عناصر مشترک دو لیست
-            و استفاده از مجموعه‌ها برای بهبود عملکرد.
-          </p>
-          <span class="read-more">آزمایش کد ←</span>
-        </a>
+    <article class="card">
+      <div>📊</div>
+      <h3>پیچیدگی الگوریتم</h3>
+      <p>آشنایی با پیچیدگی زمانی و حافظه و نماد O بزرگ.</p>
+    </article>
+  </div>
+</div>
+</section>
 
-        <a class="card article-card" href="#features">
-          <div class="icon">📈</div>
-          <h3>پیچیدگی زمانی و حافظه</h3>
-          <p>
-            با نماد O بزرگ و تفاوت تحلیل نظری با
-            اندازه‌گیری تجربی آشنا شو.
-          </p>
-          <span class="read-more">مشاهده قابلیت‌ها ←</span>
-        </a>
-      </div>
-    </div>
-  </section>
+<section id="articles">
+<div class="container">
+  <h2 class="section-title">مقالات آموزشی</h2>
+  <p class="section-description">تحلیل الگوریتم‌ها را با مثال‌های عملی یاد بگیر.</p>
 
-  <section id="about">
-    <div class="container">
-      <div class="about-box">
-        <h2>درباره PyOptimize</h2>
+  <div class="grid">
+    <a class="card" href="analysis-intro.html">
+      <div>📘</div>
+      <h3>مقدمه‌ای بر تحلیل کد</h3>
+      <p>آشنایی با تحلیل ایستا و پیچیدگی زمانی.</p>
+      <span class="read-more">مطالعه مقاله ←</span>
+    </a>
 
-        <p>
-          PyOptimize یک پروژه آموزشی برای بررسی الگوهای کد
-          پایتون و یادگیری اصول بهینه‌سازی الگوریتم‌ها است.
-          هدف پروژه کمک به درک بهتر عملکرد کد و اهمیت انتخاب
-          ساختار داده مناسب است.
-        </p>
+    <a class="card" href="#analyzer">
+      <div>🧠</div>
+      <h3>بررسی یک الگوریتم واقعی</h3>
+      <p>پیدا کردن عناصر مشترک دو لیست و بهینه‌سازی آن.</p>
+      <span class="read-more">آزمایش کد ←</span>
+    </a>
 
-        <p>
-          نتایج این نسخه تخمینی هستند و جایگزین ابزارهای کامل
-          تحلیل کد، اجرای آزمون‌ها یا بنچمارک واقعی نمی‌شوند.
-        </p>
-      </div>
-    </div>
-  </section>
+    <a class="card" href="#features">
+      <div>📈</div>
+      <h3>پیچیدگی زمانی و حافظه</h3>
+      <p>آشنایی با تحلیل نظری الگوریتم‌ها.</p>
+      <span class="read-more">مشاهده قابلیت‌ها ←</span>
+    </a>
+  </div>
+</div>
+</section>
+
+<section id="about">
+<div class="container">
+  <div class="about-box">
+    <h2>درباره PyOptimize</h2>
+    <p>
+      PyOptimize یک پروژه آموزشی برای بررسی الگوهای کد پایتون
+      و یادگیری اصول بهینه‌سازی الگوریتم‌ها است.
+    </p>
+    <p>
+      این نسخه تحلیل‌گر محدود مبتنی بر متن است و جایگزین مفسر پایتون،
+      آزمون صحت یا بنچمارک واقعی نمی‌شود.
+    </p>
+  </div>
+</div>
+</section>
 
 </main>
 
 <footer>
-  <div class="container">
-    <div class="logo">Py<span>Optimize</span></div>
-    <p>پروژه‌ای آموزشی برای تحلیل و بهینه‌سازی کد پایتون.</p>
-    <p>© ۱۴۰۵ — PyOptimize</p>
-  </div>
+  <div class="logo">Py<span>Optimize</span></div>
+  <p>پروژه‌ای آموزشی برای تحلیل و بهینه‌سازی کد پایتون.</p>
+  <p>© ۱۴۰۵ — PyOptimize</p>
 </footer>
 
 <script>
-  "use strict";
+"use strict";
 
-  const codeInput = document.getElementById("codeInput");
-  const analyzeBtn = document.getElementById("analyzeBtn");
-  const exampleBtn = document.getElementById("exampleBtn");
-  const clearBtn = document.getElementById("clearBtn");
-  const results = document.getElementById("results");
-  const findingsElement = document.getElementById("findings");
-  const complexityElement = document.getElementById("complexity");
+const input = document.getElementById("codeInput");
+const results = document.getElementById("results");
+const findings = document.getElementById("findings");
+const complexity = document.getElementById("complexity");
+const optimizationBox = document.getElementById("optimizationBox");
+const optimizedCode = document.getElementById("optimizedCode");
 
-  const exampleCode = `def find_common_elements(list_a, list_b):
+const example = `def find_common_elements(list_a, list_b):
     result = []
 
     for item in list_a:
@@ -636,218 +398,50 @@
 
     return result`;
 
-  function addFinding(type, title, description) {
-    const box = document.createElement("div");
-    box.className = "finding " + type;
+function addFinding(type,title,description) {
+  const box = document.createElement("div");
+  box.className = "finding " + type;
 
-    const heading = document.createElement("strong");
-    heading.textContent = title;
+  const heading = document.createElement("strong");
+  heading.textContent = title;
 
-    const paragraph = document.createElement("p");
-    paragraph.textContent = description;
+  const paragraph = document.createElement("p");
+  paragraph.textContent = description;
 
-    box.appendChild(heading);
-    box.appendChild(paragraph);
-    findingsElement.appendChild(box);
-  }
+  box.append(heading,paragraph);
+  findings.appendChild(box);
+}
 
-  function analyzeCode() {
-    const code = codeInput.value;
-    findingsElement.replaceChildren();
-    complexityElement.textContent = "";
+function analyzeCode() {
+  const code = input.value;
+  findings.replaceChildren();
+  optimizationBox.hidden = true;
+  optimizedCode.textContent = "";
 
-    if (!code.trim()) {
-      results.style.display = "block";
-      addFinding(
-        "warning",
-        "کدی وارد نشده است",
-        "ابتدا کد پایتون را در کادر بالا وارد کن."
-      );
-
-      document.getElementById("lineCount").textContent = "۰";
-      document.getElementById("loopCount").textContent = "۰";
-      document.getElementById("findingCount").textContent = "۱";
-      return;
-    }
-
-    const lines = code.split(/\r?\n/);
-    const nonEmptyLines = lines.filter(
-      line => line.trim().length > 0
-    );
-
-    // این شمارش مبتنی بر الگوی متنی است و parser پایتون نیست.
-    const loopMatches = code.match(
-      /^\s*(?:for|while)\b/gm
-    ) || [];
-
-    const loopCount = loopMatches.length;
-    let findingCount = 0;
-
-    document.getElementById("lineCount").textContent =
-      String(nonEmptyLines.length);
-
-    document.getElementById("loopCount").textContent =
-      String(loopCount);
-
-    // بررسی جست‌وجوی عضویت در لیست
-    if (/\bin\s+\w+/.test(code) && loopCount > 0) {
-      addFinding(
-        "warning",
-        "بررسی عضویت در حلقه",
-        "اگر جست‌وجو روی یک لیست بزرگ داخل حلقه تکرار شود، " +
-        "ممکن است زمان اجرا افزایش یابد. در صورت سازگاری با " +
-        "رفتار برنامه، set را بررسی کن."
-      );
-      findingCount++;
-    }
-
-    // بررسی افزودن به ابتدای لیست
-    if (/\.\s*(?:insert\s*\(\s*0|pop\s*\(\s*0)/.test(code)) {
-      addFinding(
-        "warning",
-        "عملیات روی ابتدای لیست",
-        "درج یا حذف از ابتدای list معمولاً به جابه‌جایی " +
-        "عناصر نیاز دارد. ساختار داده مناسب را بررسی کن."
-      );
-      findingCount++;
-    }
-
-    // بررسی sorted داخل حلقه
-    if (/\bsorted\s*\(/.test(code) && loopCount > 0) {
-      addFinding(
-        "warning",
-        "بررسی مرتب‌سازی",
-        "اگر sorted داخل حلقه اجرا شود، ممکن است مرتب‌سازی " +
-        "بارها تکرار شود. بررسی کن که آیا می‌توان آن را " +
-        "خارج از حلقه انجام داد."
-      );
-      findingCount++;
-    }
-
-    // بررسی فراخوانی time.sleep صرفاً به‌عنوان الگوی متنی
-    if (/\btime\.sleep\s*\(/.test(code)) {
-      addFinding(
-        "warning",
-        "توقف صریح برنامه",
-        "کد شامل فراخوانی time.sleep است. بررسی کن که آیا " +
-        "این توقف برای هدف برنامه لازم است."
-      );
-      findingCount++;
-    }
-
-    // بررسی حلقه‌های تو در تو با تورفتگی تقریبی
-    const loopLines = lines
-      .map((line, index) => ({
-        line,
-        index,
-        indent: (line.match(/^\s*/) || [""])[0].length
-      }))
-      .filter(item => /^\s*(for|while)\b/.test(item.line));
-
-    let nestedLoopFound = false;
-
-    for (let i = 0; i < loopLines.length; i++) {
-      for (let j = i + 1; j < loopLines.length; j++) {
-        if (loopLines[j].indent > loopLines[i].indent) {
-          nestedLoopFound = true;
-          break;
-        }
-
-        if (loopLines[j].indent <= loopLines[i].indent) {
-          break;
-        }
-      }
-
-      if (nestedLoopFound) break;
-    }
-
-    if (nestedLoopFound) {
-      addFinding(
-        "warning",
-        "احتمال وجود حلقه‌های تو در تو",
-        "حلقه‌های تو در تو ممکن است تعداد عملیات را افزایش دهند. " +
-        "پیچیدگی واقعی به بدنه حلقه‌ها و اندازه ورودی بستگی دارد."
-      );
-      findingCount++;
-    }
-
-    if (findingCount === 0) {
-      addFinding(
-        "success",
-        "الگوی مشخصی شناسایی نشد",
-        "این نتیجه به معنی بی‌نقص بودن کد نیست؛ این نسخه فقط " +
-        "چند الگوی متنی محدود را بررسی می‌کند."
-      );
-    }
-
-    // جمع‌بندی پیچیدگی: فقط یک تخمین بسیار ابتدایی
-    if (nestedLoopFound) {
-      complexityElement.textContent =
-        "احتمال افزایش تعداد عملیات به دلیل حلقه‌های تو در تو وجود دارد. " +
-        "بدون تحلیل ساختار و اندازه ورودی، تعیین O دقیق ممکن نیست.";
-    } else if (loopCount > 0) {
-      complexityElement.textContent =
-        "در کد حلقه شناسایی شد. وجود حلقه به‌تنهایی برای تعیین " +
-        "پیچیدگی زمانی کافی نیست؛ باید عملیات داخل حلقه نیز بررسی شود.";
-    } else {
-      complexityElement.textContent =
-        "بر اساس الگوهای ساده این نسخه، حلقه‌ای شناسایی نشد. " +
-        "این موضوع پیچیدگی O(1) را اثبات نمی‌کند.";
-    }
-
-    document.getElementById("findingCount").textContent =
-      String(findingCount);
-
+  if (!code.trim()) {
     results.style.display = "block";
-    results.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+    addFinding("warning","کدی وارد نشده است","ابتدا کد پایتون را وارد کن.");
+    document.getElementById("lineCount").textContent = "۰";
+    document.getElementById("loopCount").textContent = "۰";
+    document.getElementById("findingCount").textContent = "۱";
+    return;
   }
 
-  analyzeBtn.addEventListener("click", analyzeCode);
+  const lines = code.split(/\r?\n/).filter(x => x.trim());
+  const loops = code.match(/^\s*(for|while)\b/gm) || [];
 
-  exampleBtn.addEventListener("click", () => {
-    codeInput.value = exampleCode;
-    analyzeCode();
-  });
+  document.getElementById("lineCount").textContent = lines.length;
+  document.getElementById("loopCount").textContent = loops.length;
 
-  clearBtn.addEventListener("click", () => {
-    codeInput.value = "";
-    findingsElement.replaceChildren();
-    complexityElement.textContent = "";
-    results.style.display = "none";
-    codeInput.focus();
-  });
+  let count = 0;
 
-  // امکان استفاده از کلید Tab برای تورفتگی در ویرایشگر
-  codeInput.addEventListener("keydown", event => {
-    if (event.key === "Tab") {
-      event.preventDefault();
+  // تشخیص الگوی مثال پیدا کردن عناصر مشترک
+  const signature = code.match(
+    /^\s*def\s+(\w+)\s*\s*(\w+)\s*,\s*(\w+)\s*\s*:/m
+  );
 
-      const start = codeInput.selectionStart;
-      const end = codeInput.selectionEnd;
-      const value = codeInput.value;
+  let matched = false;
 
-      codeInput.value =
-        value.substring(0, start) +
-        "    " +
-        value.substring(end);
-
-      codeInput.selectionStart =
-        codeInput.selectionEnd = start + 4;
-    }
-
-    // اجرای تحلیل با Ctrl+Enter یا Cmd+Enter
-    if (
-      event.key === "Enter" &&
-      (event.ctrlKey || event.metaKey)
-    ) {
-      event.preventDefault();
-      analyzeCode();
-    }
-  });
-</script>
-
-</body>
-  </html>
+  if (signature) {
+    const functionName = signature[1];
+    const
