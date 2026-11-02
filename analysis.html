@@ -1,1 +1,395 @@
 
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحلیل کد با هوش مصنوعی | PyOptimize</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: #0b1120;
+            color: #e5e7eb;
+            line-height: 1.9;
+        }
+
+        header {
+            background: #111c32;
+            padding: 18px 8%;
+            border-bottom: 1px solid #263653;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            color: #60a5fa;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #60a5fa;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 1100px;
+            margin: 55px auto;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .intro h1 {
+            color: #60a5fa;
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .intro p {
+            color: #aab8cc;
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .card {
+            background: #111c32;
+            border: 1px solid #263653;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            color: #93c5fd;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 260px;
+            resize: vertical;
+            background: #080e1b;
+            color: #dbeafe;
+            border: 1px solid #334766;
+            border-radius: 10px;
+            padding: 18px;
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            direction: ltr;
+            text-align: left;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #3b82f6;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 18px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary {
+            background: #334155;
+            margin-right: 8px;
+        }
+
+        .secondary:hover {
+            background: #475569;
+        }
+
+        #result {
+            display: none;
+            margin-top: 25px;
+        }
+
+        .result-item {
+            background: #0b1528;
+            border-right: 4px solid #3b82f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+
+        .result-item strong {
+            color: #93c5fd;
+        }
+
+        .result-item p {
+            color: #cbd5e1;
+            margin-top: 5px;
+        }
+
+        .notice {
+            color: #fbbf24;
+            background: #292313;
+            border: 1px solid #66501c;
+            border-radius: 9px;
+            padding: 13px;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .steps {
+            padding-right: 22px;
+            color: #cbd5e1;
+        }
+
+        .steps li {
+            margin: 8px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #8492a8;
+            border-top: 1px solid #263653;
+            margin-top: 60px;
+        }
+
+        @media(max-width: 700px) {
+            .container {
+                width: 92%;
+            }
+
+            header {
+                justify-content: center;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            .intro h1 {
+                font-size: 25px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">PyOptimize</div>
+
+    <nav>
+        <a href="index.html">صفحه اصلی</a>
+        <a href="analysis.html" class="active">تحلیل کد</a>
+        <a href="patterns.html">تشخیص الگوها</a>
+        <a href="optimization.html">بهینه‌سازی</a>
+        <a href="complexity.html">پیچیدگی</a>
+        <a href="comparison.html">مقایسه کد</a>
+        <a href="report.html">گزارش</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="intro">
+        <h1>تحلیل کد با استفاده از هوش مصنوعی</h1>
+        <p>
+            در این بخش می‌توانید کد Python خود را وارد کنید تا ساختار آن
+            بررسی شود و اطلاعات اولیه‌ای درباره تعداد توابع، حلقه‌ها
+            و الگوهای قابل بررسی به دست آورید.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>وارد کردن کد برنامه</h2>
+
+        <textarea id="codeInput" spellcheck="false"
+        placeholder="کد Python خود را اینجا وارد کنید..."></textarea>
+
+        <button onclick="analyzeCode()">شروع تحلیل کد</button>
+        <button class="secondary" onclick="clearCode()">پاک کردن</button>
+
+        <div class="notice">
+            توجه: تحلیل فعلی به‌صورت محلی و با قوانین ساده JavaScript انجام می‌شود
+            و هنوز به مدل هوش مصنوعی متصل نیست.
+        </div>
+    </section>
+
+    <section class="card" id="result">
+        <h2>نتیجه تحلیل کد</h2>
+        <div id="resultContent"></div>
+    </section>
+
+    <section class="card">
+        <h2>مراحل تحلیل کد</h2>
+
+        <ol class="steps">
+            <li>دریافت کد برنامه‌نویسی از کاربر</li>
+            <li>بررسی ساختار کلی کد</li>
+            <li>شناسایی توابع و حلقه‌ها</li>
+            <li>بررسی الگوهای احتمالی ناکارآمد</li>
+            <li>ارائه اطلاعات اولیه برای مراحل بعدی بهینه‌سازی</li>
+        </ol>
+    </section>
+
+</main>
+
+<footer>
+    پروژه تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی
+    <br>
+    PyOptimize
+</footer>
+
+<script>
+    function analyzeCode() {
+        const code = document.getElementById("codeInput").value;
+        const result = document.getElementById("result");
+        const content = document.getElementById("resultContent");
+
+        if (code.trim() === "") {
+            alert("لطفاً ابتدا کد خود را وارد کنید.");
+            return;
+        }
+
+        const lines = code.split("\n");
+
+        const functionCount =
+            (code.match(/^\s*def\s+\w+\s*\(/gm) || []).length;
+
+        const loopCount =
+            (code.match(/^\s*(for|while)\b/gm) || []).length;
+
+        const nestedLoopCount =
+            (code.match(/^\s{8,}(for|while)\b/gm) || []).length;
+
+        const classCount =
+            (code.match(/^\s*class\s+\w+/gm) || []).length;
+
+        const importCount =
+            (code.match(/^\s*(import|from)\s+/gm) || []).length;
+
+        const printCount =
+            (code.match(/\bprint\s*\(/g) || []).length;
+
+        let suggestions = [];
+
+        if (nestedLoopCount > 0) {
+            suggestions.push(
+                "حلقه‌های تو در تو شناسایی شدند. بهتر است پیچیدگی زمانی آن‌ها بررسی شود."
+            );
+        }
+
+        if (loopCount > 3) {
+            suggestions.push(
+                "تعداد حلقه‌ها نسبتاً زیاد است. امکان ساده‌سازی یا استفاده از ساختارهای داده مناسب را بررسی کنید."
+            );
+        }
+
+        if (functionCount === 0) {
+            suggestions.push(
+                "تابعی در کد شناسایی نشد. تقسیم برنامه به توابع کوچک‌تر می‌تواند خوانایی را بهتر کند."
+            );
+        }
+
+        if (printCount > 5) {
+            suggestions.push(
+                "تعداد دستورات print زیاد است. بررسی کنید کدام خروجی‌ها برای اجرای نهایی ضروری هستند."
+            );
+        }
+
+        if (suggestions.length === 0) {
+            suggestions.push(
+                "در بررسی اولیه الگوی مشخصی برای پیشنهاد بهینه‌سازی پیدا نشد. بررسی دقیق‌تر همچنان لازم است."
+            );
+        }
+
+        content.innerHTML = `
+            <div class="result-item">
+                <strong>تعداد خطوط:</strong>
+                <p>${lines.length}</p>
+            </div>
+
+            <div class="result-item">
+                <strong>تعداد توابع:</strong>
+                <p>${functionCount}</p>
+            </div>
+
+            <div class="result-item">
+                <strong>تعداد حلقه‌ها:</strong>
+                <p>${loopCount}</p>
+            </div>
+
+            <div class="result-item">
+                <strong>حلقه‌های تو در تو (بر اساس تورفتگی):</strong>
+                <p>${nestedLoopCount}</p>
+            </div>
+
+            <div class="result-item">
+                <strong>تعداد کلاس‌ها:</strong>
+                <p>${classCount}</p>
+            </div>
+
+            <div class="result-item">
+                <strong>تعداد دستورات import:</strong>
+                <p>${importCount}</p>
+            </div>
+
+            <div class="result-item">
+                <strong>پیشنهادهای اولیه:</strong>
+                ${suggestions.map(item => `<p>• ${item}</p>`).join("")}
+            </div>
+        `;
+
+        result.style.display = "block";
+        result.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function clearCode() {
+        document.getElementById("codeInput").value = "";
+        document.getElementById("result").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
