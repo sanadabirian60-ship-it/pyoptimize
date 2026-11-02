@@ -3,200 +3,259 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ابزار آموزشی تحلیل و بهینه‌سازی کد پایتون">
-<title>PyOptimize | تحلیل کد پایتون</title>
+
+<title>PyOptimize | تحلیل و بهینه‌سازی کد با AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg:#0b1020;
-  --panel:#121a2d;
-  --light:#19243a;
-  --text:#edf2ff;
-  --muted:#a6b2cc;
-  --primary:#7c8cff;
-  --green:#42d6b5;
-  --border:#293651;
-  --warning:#ffd166;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-* { box-sizing:border-box; }
-html { scroll-behavior:smooth; }
+
 body {
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Tahoma,Arial,sans-serif;
-  line-height:1.9;
+    font-family: 'Vazirmatn', sans-serif;
+    background: #080d19;
+    color: #f1f5f9;
+    line-height: 1.9;
 }
-a { color:inherit; text-decoration:none; }
-.container { width:min(1100px,92%); margin:auto; }
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
 header {
-  position:sticky;
-  top:0;
-  z-index:5;
-  background:#0b1020;
-  border-bottom:1px solid var(--border);
+    background: rgba(12, 20, 38, 0.96);
+    border-bottom: 1px solid #1e293b;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
-.nav {
-  min-height:75px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-}
+
 .logo {
-  font-size:25px;
-  font-weight:bold;
-  direction:ltr;
+    font-size: 25px;
+    font-weight: 800;
+    color: #38bdf8;
 }
-.logo span,h1 span { color:var(--green); }
-.nav-links {
-  display:flex;
-  flex-wrap:wrap;
-  gap:20px;
-  color:var(--muted);
+
+.logo span {
+    color: white;
 }
-.nav-links a:hover { color:var(--green); }
+
+nav {
+    display: flex;
+    gap: 25px;
+}
+
+nav a {
+    color: #cbd5e1;
+    font-size: 14px;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: #38bdf8;
+}
 
 .hero {
-  padding:75px 0;
-  text-align:center;
-  background:radial-gradient(ellipse at top,#202b53,transparent 70%);
+    min-height: 570px;
+    padding: 100px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background:
+    radial-gradient(circle at 50% 20%, #12375b 0%, transparent 45%),
+    #080d19;
 }
+
+.hero-content {
+    max-width: 850px;
+}
+
 .badge {
-  display:inline-block;
-  border:1px solid #3d5077;
-  color:var(--green);
-  border-radius:30px;
-  padding:5px 15px;
+    display: inline-block;
+    padding: 7px 20px;
+    border: 1px solid #0ea5e9;
+    border-radius: 30px;
+    color: #38bdf8;
+    font-size: 14px;
+    margin-bottom: 25px;
 }
-h1 { font-size:clamp(30px,5vw,52px); }
+
+.hero h1 {
+    font-size: clamp(30px, 5vw, 48px);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.hero h1 span {
+    color: #38bdf8;
+}
+
 .hero p {
-  max-width:700px;
-  margin:20px auto 30px;
-  color:var(--muted);
-  font-size:17px;
+    color: #aab8ca;
+    font-size: 17px;
+    margin-bottom: 35px;
 }
-.button {
-  display:inline-block;
-  border:0;
-  border-radius:10px;
-  padding:12px 22px;
-  background:var(--primary);
-  color:white;
-  cursor:pointer;
-  font-weight:bold;
-}
-.button.secondary {
-  background:var(--light);
-  border:1px solid var(--border);
-}
-section { padding:45px 0; }
-.section-title { font-size:28px; }
-.section-description { color:var(--muted); }
 
-.analyzer,.card,.about-box {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:22px;
+.main-button {
+    display: inline-block;
+    background: #0284c7;
+    padding: 13px 32px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    transition: .3s;
 }
-.editor-label {
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  margin-bottom:12px;
-}
-.editor-label small { color:var(--muted); }
 
-textarea {
-  width:100%;
-  min-height:260px;
-  resize:vertical;
-  direction:ltr;
-  text-align:left;
-  background:#080d19;
-  color:#d8e5ff;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:17px;
-  font:14px/1.8 Consolas,monospace;
-  tab-size:4;
+.main-button:hover {
+    background: #0369a1;
+    transform: translateY(-3px);
 }
-.actions {
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:15px;
+
+.container {
+    width: 85%;
+    max-width: 1200px;
+    margin: auto;
 }
-.notice,.small-note {
-  color:var(--muted);
-  font-size:13px;
+
+.section {
+    padding: 75px 0;
 }
-.results {
-  display:none;
-  margin-top:25px;
-  border-top:1px solid var(--border);
-  padding-top:20px;
+
+.section-title {
+    text-align: center;
+    font-size: 29px;
+    margin-bottom: 12px;
 }
-.metrics {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
+
+.section-description {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 45px;
 }
-.metric {
-  background:var(--light);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:15px;
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
 }
-.metric strong {
-  display:block;
-  font-size:23px;
+
+.card {
+    background: #111c30;
+    border: 1px solid #23344e;
+    border-radius: 17px;
+    padding: 27px;
+    transition: .3s;
+    display: flex;
+    flex-direction: column;
 }
-.metric span { color:var(--muted); font-size:13px; }
-.finding {
-  background:var(--light);
-  border-right:3px solid var(--primary);
-  border-radius:8px;
-  padding:13px;
-  margin:12px 0;
+
+.card:hover {
+    transform: translateY(-7px);
+    border-color: #0ea5e9;
+    box-shadow: 0 10px 35px #0284c722;
 }
-.finding.warning { border-color:var(--warning); }
-.finding.success { border-color:var(--green); }
-.finding p { color:var(--muted); margin:5px 0 0; }
-.code-output {
-  direction:ltr;
-  text-align:left;
-  white-space:pre;
-  overflow:auto;
-  background:#080d19;
-  color:#d8e5ff;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:15px;
+
+.card-icon {
+    font-size: 35px;
+    margin-bottom: 15px;
 }
-.grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
+
+.card h3 {
+    color: #38bdf8;
+    font-size: 19px;
+    margin-bottom: 12px;
 }
-.card h3 { margin:8px 0; }
-.card p { color:var(--muted); font-size:14px; }
-.read-more { color:var(--green); }
-.about-box p { color:var(--muted); }
+
+.card p {
+    color: #aab8ca;
+    font-size: 14px;
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.card-link {
+    display: inline-block;
+    color: #38bdf8;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.card-link:hover {
+    color: white;
+}
+
+.about {
+    background: #101a2c;
+    border: 1px solid #26364e;
+    border-radius: 18px;
+    padding: 35px;
+    margin-bottom: 75px;
+}
+
+.about h2 {
+    color: #38bdf8;
+    margin-bottom: 15px;
+}
+
+.about p {
+    color: #c0ccdc;
+}
+
 footer {
-  border-top:1px solid var(--border);
-  text-align:center;
-  padding:25px;
-  color:var(--muted);
+    background: #050914;
+    border-top: 1px solid #1e293b;
+    text-align: center;
+    padding: 30px 15px;
+    color: #8493a8;
+    font-size: 13px;
 }
-@media(max-width:750px) {
-  .nav { align-items:flex-start; flex-direction:column; padding:12px 0; }
-  .nav-links { gap:12px; }
-  .grid,.metrics { grid-template-columns:1fr; }
-  .hero { padding:45px 0; }
-  .analyzer { padding:14px; }
+
+footer strong {
+    color: #38bdf8;
+}
+
+@media(max-width: 850px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    nav {
+        gap: 12px;
+    }
+}
+
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding: 75px 6%;
+    }
+
+    .container {
+        width: 90%;
+    }
 }
 </style>
 </head>
@@ -204,244 +263,188 @@ footer {
 <body>
 
 <header>
-  <div class="container nav">
-    <a href="./" class="logo">Py<span>Optimize</span></a>
-    <nav class="nav-links">
-      <a href="#analyzer">تحلیل کد</a>
-      <a href="#features">قابلیت‌ها</a>
-      <a href="#articles">مقالات</a>
-      <a href="#about">درباره پروژه</a>
+    <a href="index.html" class="logo">
+        Py<span>Optimize</span>
+    </a>
+
+    <nav>
+        <a href="index.html">صفحه اصلی</a>
+        <a href="#services">بخش‌های پروژه</a>
+        <a href="#about">درباره پروژه</a>
     </nav>
-  </div>
 </header>
 
 <main>
 
 <section class="hero">
-  <div class="container">
-    <div class="badge">ابزار آموزشی تحلیل کد پایتون</div>
-    <h1>کدت را بررسی کن، <span>بهترش کن.</span></h1>
-    <p>
-      با PyOptimize الگوهای احتمالی کندی کد را بررسی کن،
-      پیچیدگی الگوریتم را بشناس و پیشنهادهای بهینه‌سازی دریافت کن.
-    </p>
-    <a href="#analyzer" class="button">شروع تحلیل کد ←</a>
-  </div>
+    <div class="hero-content">
+
+        <div class="badge">
+            Artificial Intelligence & Code Optimization
+        </div>
+
+        <h1>
+            تحلیل و بهینه‌سازی کد<br>
+            با استفاده از <span>هوش مصنوعی</span>
+        </h1>
+
+        <p>
+            سامانه‌ای برای بررسی کدهای برنامه‌نویسی،
+            شناسایی مشکلات و الگوهای ناکارآمد،
+            ارائه پیشنهادهای بهینه‌سازی و تحلیل عملکرد کد.
+        </p>
+
+        <a href="#services" class="main-button">
+            شروع بررسی پروژه
+        </a>
+
+    </div>
 </section>
 
-<section id="analyzer">
-<div class="container">
-  <h2 class="section-title">تحلیل‌گر کد پایتون</h2>
-  <p class="section-description">
-    کد پایتون خود را وارد کن و دکمه تحلیل را بزن.
-  </p>
 
-  <div class="analyzer">
-    <div class="editor-label">
-      <strong>کد منبع Python</strong>
-      <small>تحلیل ایستا و آموزشی</small>
+<section class="section" id="services">
+
+    <div class="container">
+
+        <h2 class="section-title">
+            بخش‌های اصلی PyOptimize
+        </h2>
+
+        <p class="section-description">
+            هر بخش دارای صفحه مستقل و قابلیت‌های مخصوص به خود است.
+        </p>
+
+        <div class="cards">
+
+            <article class="card">
+                <div class="card-icon">🤖</div>
+                <h3>۱. تحلیل کد با AI</h3>
+                <p>
+                    بررسی کد برنامه‌نویسی با کمک هوش مصنوعی،
+                    شناسایی مشکلات احتمالی و ارائه توضیحات
+                    درباره کیفیت و ساختار کد.
+                </p>
+                <a href="analysis.html" class="card-link">
+                    ورود به بخش تحلیل ←
+                </a>
+            </article>
+
+
+            <article class="card">
+                <div class="card-icon">🔍</div>
+                <h3>۲. تشخیص الگوها</h3>
+                <p>
+                    شناسایی الگوهای ناکارآمد در کد،
+                    بررسی ساختارهای تکراری و پیدا کردن
+                    فرصت‌های بهبود عملکرد.
+                </p>
+                <a href="patterns.html" class="card-link">
+                    ورود به بخش تشخیص الگوها ←
+                </a>
+            </article>
+
+
+            <article class="card">
+                <div class="card-icon">⚡</div>
+                <h3>۳. بهینه‌سازی کد با AI</h3>
+                <p>
+                    ارائه پیشنهادهای هوشمند برای بهبود کد،
+                    افزایش خوانایی و کاهش عملیات غیرضروری
+                    با حفظ عملکرد صحیح برنامه.
+                </p>
+                <a href="optimization.html" class="card-link">
+                    ورود به بخش بهینه‌سازی ←
+                </a>
+            </article>
+
+
+            <article class="card">
+                <div class="card-icon">📊</div>
+                <h3>۴. تحلیل پیچیدگی</h3>
+                <p>
+                    بررسی پیچیدگی زمانی و فضایی الگوریتم‌ها
+                    و ارزیابی تأثیر تغییرات کد بر زمان اجرا
+                    و مصرف حافظه.
+                </p>
+                <a href="complexity.html" class="card-link">
+                    ورود به بخش تحلیل پیچیدگی ←
+                </a>
+            </article>
+
+
+            <article class="card">
+                <div class="card-icon">⚖️</div>
+                <h3>۵. مقایسه کد</h3>
+                <p>
+                    مقایسه نسخه اولیه و نسخه بهینه‌شده،
+                    بررسی تفاوت ساختارها و نمایش تغییرات
+                    ایجادشده در کد.
+                </p>
+                <a href="comparison.html" class="card-link">
+                    ورود به بخش مقایسه ←
+                </a>
+            </article>
+
+
+            <article class="card">
+                <div class="card-icon">📑</div>
+                <h3>۶. گزارش تحلیل</h3>
+                <p>
+                    جمع‌بندی نتایج تحلیل، نمایش مشکلات
+                    شناسایی‌شده، پیشنهادهای بهینه‌سازی
+                    و توضیح تغییرات انجام‌شده.
+                </p>
+                <a href="report.html" class="card-link">
+                    ورود به بخش گزارش ←
+                </a>
+            </article>
+
+        </div>
     </div>
 
-    <textarea id="codeInput" spellcheck="false">def find_common_elements(list_a, list_b):
-    result = []
+</section>
 
-    for item in list_a:
-        if item in list_b:
-            if item not in result:
-                result.append(item)
 
-    return result</textarea>
+<section class="container" id="about">
 
-    <div class="actions">
-      <button class="button" id="analyzeBtn">تحلیل کد</button>
-      <button class="button secondary" id="exampleBtn">بارگذاری مثال</button>
-      <button class="button secondary" id="clearBtn">پاک کردن</button>
+    <div class="about">
+
+        <h2>درباره پروژه PyOptimize</h2>
+
+        <p>
+            PyOptimize پروژه‌ای با محوریت تحلیل و بهینه‌سازی
+            کد در هوش مصنوعی است. هدف این پروژه بررسی کدهای
+            برنامه‌نویسی، شناسایی الگوهای ناکارآمد و کمک به
+            بهبود کیفیت و عملکرد برنامه‌ها با استفاده از
+            روش‌های تحلیل الگوریتمی و قابلیت‌های هوش مصنوعی است.
+        </p>
+
+        <br>
+
+        <p>
+            این سامانه تلاش می‌کند فرایند تحلیل کد را به
+            شکل مرحله‌ای انجام دهد؛ از بررسی کد اولیه و
+            تشخیص مشکلات تا ارائه پیشنهادهای بهینه‌سازی،
+            مقایسه نتایج و تهیه گزارش نهایی.
+        </p>
+
     </div>
 
-    <p class="notice">
-      این نسخه مفسر کامل پایتون نیست. کد اجرا یا به سرور ارسال نمی‌شود.
-      نتایج بر اساس الگوهای محدود متنی تولید می‌شوند.
-    </p>
-
-    <div class="results" id="results" aria-live="polite">
-      <h3>نتایج تحلیل</h3>
-
-      <div class="metrics">
-        <div class="metric">
-          <strong id="lineCount">۰</strong>
-          <span>خطوط غیرخالی</span>
-        </div>
-        <div class="metric">
-          <strong id="loopCount">۰</strong>
-          <span>تعداد حلقه‌ها</span>
-        </div>
-        <div class="metric">
-          <strong id="findingCount">۰</strong>
-          <span>هشدارها و پیشنهادها</span>
-        </div>
-      </div>
-
-      <div id="findings"></div>
-
-      <h3>پیچیدگی الگوریتم</h3>
-      <div class="finding" id="complexity"></div>
-
-      <div id="optimizationBox" hidden>
-        <h3>کد پیشنهادی بهینه‌شده</h3>
-        <div class="finding success" id="optimizationDescription"></div>
-        <pre class="code-output" id="optimizedCode"></pre>
-        <button class="button secondary" id="copyBtn">کپی کد پیشنهادی</button>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
-
-<section id="features">
-<div class="container">
-  <h2 class="section-title">قابلیت‌های PyOptimize</h2>
-  <p class="section-description">ابزارهای آموزشی برای درک بهتر عملکرد کد.</p>
-
-  <div class="grid">
-    <article class="card">
-      <div>🔍</div>
-      <h3>تحلیل ایستا</h3>
-      <p>شناسایی برخی الگوهای رایج بدون اجرای برنامه.</p>
-    </article>
-
-    <article class="card">
-      <div>⚡</div>
-      <h3>پیشنهاد بهینه‌سازی</h3>
-      <p>پیشنهاد استفاده از ساختار داده مناسب برای برخی الگوریتم‌ها.</p>
-    </article>
-
-    <article class="card">
-      <div>📊</div>
-      <h3>پیچیدگی الگوریتم</h3>
-      <p>آشنایی با پیچیدگی زمانی و حافظه و نماد O بزرگ.</p>
-    </article>
-  </div>
-</div>
-</section>
-
-<section id="articles">
-<div class="container">
-  <h2 class="section-title">مقالات آموزشی</h2>
-  <p class="section-description">تحلیل الگوریتم‌ها را با مثال‌های عملی یاد بگیر.</p>
-
-  <div class="grid">
-    <a class="card" href="analysis-intro.html">
-      <div>📘</div>
-      <h3>مقدمه‌ای بر تحلیل کد</h3>
-      <p>آشنایی با تحلیل ایستا و پیچیدگی زمانی.</p>
-      <span class="read-more">مطالعه مقاله ←</span>
-    </a>
-
-    <a class="card" href="#analyzer">
-      <div>🧠</div>
-      <h3>بررسی یک الگوریتم واقعی</h3>
-      <p>پیدا کردن عناصر مشترک دو لیست و بهینه‌سازی آن.</p>
-      <span class="read-more">آزمایش کد ←</span>
-    </a>
-
-    <a class="card" href="#features">
-      <div>📈</div>
-      <h3>پیچیدگی زمانی و حافظه</h3>
-      <p>آشنایی با تحلیل نظری الگوریتم‌ها.</p>
-      <span class="read-more">مشاهده قابلیت‌ها ←</span>
-    </a>
-  </div>
-</div>
-</section>
-
-<section id="about">
-<div class="container">
-  <div class="about-box">
-    <h2>درباره PyOptimize</h2>
-    <p>
-      PyOptimize یک پروژه آموزشی برای بررسی الگوهای کد پایتون
-      و یادگیری اصول بهینه‌سازی الگوریتم‌ها است.
-    </p>
-    <p>
-      این نسخه تحلیل‌گر محدود مبتنی بر متن است و جایگزین مفسر پایتون،
-      آزمون صحت یا بنچمارک واقعی نمی‌شود.
-    </p>
-  </div>
-</div>
 </section>
 
 </main>
 
+
 <footer>
-  <div class="logo">Py<span>Optimize</span></div>
-  <p>پروژه‌ای آموزشی برای تحلیل و بهینه‌سازی کد پایتون.</p>
-  <p>© ۱۴۰۵ — PyOptimize</p>
+    <p>
+        <strong>PyOptimize</strong>
+        | پروژه تحلیل و بهینه‌سازی کد در هوش مصنوعی
+    </p>
+
+    <p>
+        طراحی و توسعه با هدف بررسی و بهبود کیفیت کدهای برنامه‌نویسی
+    </p>
 </footer>
 
-<script>
-"use strict";
-
-const input = document.getElementById("codeInput");
-const results = document.getElementById("results");
-const findings = document.getElementById("findings");
-const complexity = document.getElementById("complexity");
-const optimizationBox = document.getElementById("optimizationBox");
-const optimizedCode = document.getElementById("optimizedCode");
-
-const example = `def find_common_elements(list_a, list_b):
-    result = []
-
-    for item in list_a:
-        if item in list_b:
-            if item not in result:
-                result.append(item)
-
-    return result`;
-
-function addFinding(type,title,description) {
-  const box = document.createElement("div");
-  box.className = "finding " + type;
-
-  const heading = document.createElement("strong");
-  heading.textContent = title;
-
-  const paragraph = document.createElement("p");
-  paragraph.textContent = description;
-
-  box.append(heading,paragraph);
-  findings.appendChild(box);
-}
-
-function analyzeCode() {
-  const code = input.value;
-  findings.replaceChildren();
-  optimizationBox.hidden = true;
-  optimizedCode.textContent = "";
-
-  if (!code.trim()) {
-    results.style.display = "block";
-    addFinding("warning","کدی وارد نشده است","ابتدا کد پایتون را وارد کن.");
-    document.getElementById("lineCount").textContent = "۰";
-    document.getElementById("loopCount").textContent = "۰";
-    document.getElementById("findingCount").textContent = "۱";
-    return;
-  }
-
-  const lines = code.split(/\r?\n/).filter(x => x.trim());
-  const loops = code.match(/^\s*(for|while)\b/gm) || [];
-
-  document.getElementById("lineCount").textContent = lines.length;
-  document.getElementById("loopCount").textContent = loops.length;
-
-  let count = 0;
-
-  // تشخیص الگوی مثال پیدا کردن عناصر مشترک
-  const signature = code.match(
-    /^\s*def\s+(\w+)\s*\s*(\w+)\s*,\s*(\w+)\s*\s*:/m
-  );
-
-  let matched = false;
-
-  if (signature) {
-    const functionName = signature[1];
-    const
+</body>
+  </html>
