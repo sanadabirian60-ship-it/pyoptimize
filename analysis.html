@@ -1,118 +1,314 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحلیل کد با AI | PyOptimize</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Vazirmatn', sans-serif;
+            background: #0b1120;
+            color: #e5e7eb;
+            line-height: 1.9;
+        }
+
+        header {
+            background: #111c32;
+            padding: 18px 7%;
+            border-bottom: 1px solid #263550;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        nav a {
+            color: #dbeafe;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 800;
+            color: #38bdf8;
+        }
+
+        main {
+            width: 90%;
+            max-width: 950px;
+            margin: 45px auto;
+        }
+
+        .card {
+            background: #111c32;
+            border: 1px solid #263550;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        h1, h2, h3 {
+            color: #38bdf8;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 250px;
+            padding: 16px;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            background: #080e1b;
+            color: #dbeafe;
+            font-family: monospace;
+            font-size: 14px;
+            direction: ltr;
+            text-align: left;
+            resize: vertical;
+        }
+
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 12px 24px;
+            margin-top: 15px;
+            margin-left: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .analyze-btn {
+            background: #0284c7;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #334155;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .result-box {
+            background: #080e1b;
+            border: 1px solid #263550;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 15px;
+        }
+
+        .result-box li {
+            margin-bottom: 8px;
+        }
+
+        .notice {
+            color: #fbbf24;
+            font-size: 14px;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .error {
+            color: #f87171;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            border-top: 1px solid #263550;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                width: 94%;
+                margin-top: 25px;
+            }
+
+            .card {
+                padding: 17px;
+            }
+
+            nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">PyOptimize</div>
+        <div>
+            <a href="index.html">صفحه اصلی</a>
+            <a href="analysis.html">تحلیل کد</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+
+    <section class="card">
+        <h1>تحلیل کد با هوش مصنوعی</h1>
+
+        <p>
+            کد پایتون خود را وارد کنید تا ساختار آن بررسی شود،
+            بخش‌های مهم برنامه شناسایی شوند و پیشنهادهایی برای
+            بهبود کیفیت و کارایی کد دریافت کنید.
+        </p>
+
+        <p class="notice">
+            توجه: نسخه فعلی از تحلیل الگوها و قواعد ساده استفاده می‌کند
+            و هنوز به مدل هوش مصنوعی واقعی متصل نیست.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>ورود کد پایتون</h2>
+
+        <textarea id="codeInput"
+            placeholder="کد پایتون خود را اینجا وارد کنید..."></textarea>
+
+        <br>
+
+        <button class="analyze-btn" id="analyzeButton">
+            شروع تحلیل کد
+        </button>
+
+        <button class="clear-btn" id="clearButton">
+            پاک کردن
+        </button>
+    </section>
+
+    <section class="card" id="result" hidden>
+        <h2>نتیجه تحلیل کد</h2>
+        <div id="resultContent"></div>
+    </section>
+
+</main>
+
+<footer>
+    پروژه تحلیل و بهینه‌سازی کد با AI | PyOptimize
+</footer>
+
+<script>
+"use strict";
+
+const codeInput = document.getElementById("codeInput");
+const result = document.getElementById("result");
+const resultContent = document.getElementById("resultContent");
+
+document.getElementById("analyzeButton").addEventListener("click", analyzeCode);
+document.getElementById("clearButton").addEventListener("click", clearCode);
+
+function countMatches(code, regex) {
+    const matches = code.match(regex);
+    return matches ? matches.length : 0;
+}
+
 function analyzeCode() {
-    const code = document.getElementById("codeInput").value;
-    const result = document.getElementById("result");
-    const content = document.getElementById("resultContent");
+    const code = codeInput.value;
 
     if (!code.trim()) {
-        alert("لطفاً ابتدا کد خود را وارد کنید.");
+        alert("لطفاً ابتدا کد پایتون خود را وارد کنید.");
         return;
     }
 
     const lines = code.split("\n");
+    const functionCount = countMatches(code, /^\s*def\s+\w+/gm);
+    const loopCount = countMatches(code, /^\s*(for|while)\b/gm);
+    const classCount = countMatches(code, /^\s*class\s+\w+/gm);
+    const importCount = countMatches(code, /^\s*(import|from)\s+/gm);
+    const conditionCount = countMatches(code, /^\s*(if|elif|else)\b/gm);
+    const returnCount = countMatches(code, /^\s*return\b/gm);
+    const printCount = countMatches(code, /\bprint\s*\(/g);
 
-    const functionCount =
-        (code.match(/^\s*def\s+\w+\s*\(/gm) || []).length;
-
-    const loopCount =
-        (code.match(/^\s*(for|while)\b/gm) || []).length;
-
-    const classCount =
-        (code.match(/^\s*class\s+\w+/gm) || []).length;
-
-    const importCount =
-        (code.match(/^\s*(import|from)\s+/gm) || []).length;
-
-    const conditionCount =
-        (code.match(/^\s*(if|elif|else)\b/gm) || []).length;
-
-    const returnCount =
-        (code.match(/\breturn\b/g) || []).length;
-
-    const printCount =
-        (code.match(/\bprint\s*\(/g) || []).length;
-
-    let explanations = [];
-    let problems = [];
-    let suggestions = [];
-
-    // بررسی هدف احتمالی برنامه
-    if (/input\s*\(/.test(code)) {
-        explanations.push(
-            "برنامه از کاربر ورودی دریافت می‌کند و احتمالاً بر اساس اطلاعات واردشده عملیاتی انجام می‌دهد."
-        );
-    }
-
-    if (/append\s*\(/.test(code)) {
-        explanations.push(
-            "در برنامه از append برای اضافه کردن اطلاعات به یک لیست استفاده شده است."
-        );
-    }
-
-    if (/sort\s*\(|sorted\s*\(/.test(code)) {
-        explanations.push(
-            "برنامه شامل عملیات مرتب‌سازی داده‌ها است."
-        );
-    }
-
-    if (/sum\s*\(/.test(code)) {
-        explanations.push(
-            "از تابع sum برای محاسبه مجموع مقادیر استفاده شده است."
-        );
-    }
-
-    if (/max\s*\(|min\s*\(/.test(code)) {
-        explanations.push(
-            "برنامه برای پیدا کردن بزرگ‌ترین یا کوچک‌ترین مقدار از توابع max یا min استفاده می‌کند."
-        );
-    }
-
-    if (/return\b/.test(code)) {
-        explanations.push(
-            "برنامه با استفاده از return نتیجه یک یا چند عملیات را از تابع برمی‌گرداند."
-        );
-    }
-
-    if (/print\s*\(/.test(code)) {
-        explanations.push(
-            "نتایج برنامه با استفاده از دستور print در خروجی نمایش داده می‌شوند."
-        );
-    }
+    const explanations = [];
+    const problems = [];
+    const suggestions = [];
 
     // بررسی ساختار برنامه
+
+    explanations.push(
+        "برنامه از " + lines.length + " خط تشکیل شده است."
+    );
+
     if (functionCount > 0) {
         explanations.push(
-            `برنامه دارای ${functionCount} تابع است که برای تقسیم عملیات به بخش‌های مستقل استفاده شده‌اند.`
+            "در برنامه " + functionCount + " تابع تعریف شده است."
+        );
+    } else {
+        explanations.push(
+            "تابعی در برنامه شناسایی نشد."
         );
     }
 
     if (loopCount > 0) {
         explanations.push(
-            `تعداد ${loopCount} حلقه در برنامه شناسایی شد. این حلقه‌ها برای تکرار عملیات یا پیمایش داده‌ها استفاده می‌شوند.`
-        );
-    }
-
-    if (conditionCount > 0) {
-        explanations.push(
-            `تعداد ${conditionCount} دستور شرطی وجود دارد که مسیر اجرای برنامه را بر اساس شرایط مشخص می‌کنند.`
+            "برنامه دارای " + loopCount + " حلقه تکرار است."
         );
     }
 
     if (classCount > 0) {
         explanations.push(
-            `برنامه دارای ${classCount} کلاس است که برای سازمان‌دهی داده‌ها و رفتارهای مرتبط استفاده می‌شوند.`
+            "در برنامه " + classCount + " کلاس تعریف شده است."
+        );
+    }
+
+    if (conditionCount > 0) {
+        explanations.push(
+            "برنامه دارای " + conditionCount + " شرط است."
         );
     }
 
     if (importCount > 0) {
         explanations.push(
-            `تعداد ${importCount} دستور واردسازی کتابخانه یا ماژول شناسایی شد.`
+            importCount + " دستور import در برنامه وجود دارد."
         );
     }
 
-    // بررسی مشکلات احتمالی
-    if (/eval\s*\(/.test(code)) {
+    if (returnCount > 0) {
+        explanations.push(
+            "تعداد دستورات return برابر " + returnCount + " است."
+        );
+    }
+
+    if (printCount > 0) {
+        explanations.push(
+            "برنامه از دستور print برای نمایش خروجی استفاده می‌کند."
+        );
+    }
+
+    // بررسی الگوهای احتمالی مشکل‌دار
+
+    if (/\beval\s*\(/.test(code)) {
         problems.push(
-            "استفاده از eval شناسایی شد. اجرای ورودی نامطمئن با این دستور می‌تواند خطر امنیتی داشته باشد."
+            "استفاده از eval شناسایی شد. این دستور در صورت دریافت ورودی نامطمئن می‌تواند خطر امنیتی داشته باشد."
         );
 
         suggestions.push(
@@ -120,88 +316,145 @@ function analyzeCode() {
         );
     }
 
-    if (/for\s+\w+\s+in[\s\S]*?if[\s\S]*?not in/.test(code)) {
+    if (/for\s+\w+\s+in\s+[\w.]+\s*:\s*\n\s+for\s+/m.test(code)) {
         problems.push(
-            "احتمال وجود جست‌وجوی تکراری در یک ساختار داده وجود دارد."
+            "حلقه‌های تودرتو شناسایی شدند. بهتر است تعداد تکرارها و ضرورت این ساختار بررسی شود."
         );
 
         suggestions.push(
-            "در صورت مناسب بودن نوع داده، استفاده از set می‌تواند بررسی عضویت را سریع‌تر کند."
+            "در صورت امکان، الگوریتم حلقه‌های تودرتو را بازبینی کنید."
         );
     }
 
-    if (loopCount >= 2) {
+    if (/for\s+\w+\s+in\s+[\w.]+\s*:\s*\n\s+if\s+.*\bnot\s+in\b/m.test(code)) {
         problems.push(
-            "چند حلقه در برنامه وجود دارد. باید بررسی شود که آیا حلقه‌ها تو در تو هستند یا عملیات تکراری انجام می‌دهند."
+            "احتمال بررسی مکرر عضویت در یک حلقه وجود دارد."
         );
 
         suggestions.push(
-            "امکان ساده‌سازی حلقه‌ها و کاهش عملیات غیرضروری را بررسی کنید."
+            "اگر شرایط برنامه اجازه می‌دهد، استفاده از set را برای بررسی عضویت بررسی کنید."
         );
     }
 
-    if (explanations.length === 0) {
+    if (/\binput\s*\(/.test(code)) {
         explanations.push(
-            "ساختار کد شناسایی شد، اما برای توضیح دقیق‌تر منطق برنامه به تحلیل معنایی و بررسی ارتباط دستورات نیاز است."
+            "برنامه برای دریافت اطلاعات از کاربر از input استفاده می‌کند."
         );
     }
 
-    if (problems.length === 0) {
-        problems.push(
-            "در بررسی اولیه الگوی مشخصی از مشکلات شناسایی نشد. این نتیجه به معنی بدون‌اشکال بودن کامل برنامه نیست."
+    if (/\bappend\s*\(/.test(code)) {
+        explanations.push(
+            "برنامه از append برای افزودن عنصر به لیست استفاده می‌کند."
+        );
+    }
+
+    if (/\bsorted\s*\(|\.sort\s*\(/.test(code)) {
+        explanations.push(
+            "در برنامه عملیات مرتب‌سازی داده‌ها شناسایی شد."
+        );
+    }
+
+    if (/\bsum\s*\(/.test(code)) {
+        explanations.push(
+            "از تابع sum برای محاسبه مجموع مقادیر استفاده شده است."
+        );
+    }
+
+    if (/\bmax\s*\(|\bmin\s*\(/.test(code)) {
+        explanations.push(
+            "از تابع max یا min برای یافتن مقدار بیشینه یا کمینه استفاده شده است."
+        );
+    }
+
+    // پیشنهادهای عمومی
+
+    if (loopCount > 0) {
+        suggestions.push(
+            "حلقه‌ها را از نظر تعداد تکرار و عملیات غیرضروری بررسی کنید."
+        );
+    }
+
+    if (functionCount === 0 && lines.length > 10) {
+        suggestions.push(
+            "تقسیم برنامه به توابع کوچک‌تر می‌تواند خوانایی و نگهداری کد را بهتر کند."
         );
     }
 
     if (suggestions.length === 0) {
         suggestions.push(
-            "برای بهبود برنامه، خوانایی، مدیریت خطاها، ساختار داده‌ها و پیچیدگی الگوریتم را بررسی کنید."
+            "در الگوهای بررسی‌شده پیشنهاد ویژه‌ای شناسایی نشد. برای ارزیابی دقیق‌تر، کد باید از نظر منطق و عملکرد نیز بررسی شود."
         );
     }
 
-    // تولید گزارش
-    content.innerHTML = `
-        <div class="result-item">
-            <strong>۱. توضیح عملکرد برنامه</strong>
-            ${explanations.map(x => `<p>${x}</p>`).join("")}
-        </div>
+    if (problems.length === 0) {
+        problems.push(
+            "با قواعد ساده این نسخه، مشکل مشخصی شناسایی نشد. این موضوع به معنی بدون‌خطا بودن برنامه نیست."
+        );
+    }
 
-        <div class="result-item">
-            <strong>۲. ساختار کد</strong>
-            <p>تعداد خطوط: ${lines.length}</p>
-            <p>تعداد توابع: ${functionCount}</p>
-            <p>تعداد حلقه‌ها: ${loopCount}</p>
-            <p>تعداد شرط‌ها: ${conditionCount}</p>
-            <p>تعداد کلاس‌ها: ${classCount}</p>
-            <p>تعداد import: ${importCount}</p>
-            <p>تعداد return: ${returnCount}</p>
-            <p>تعداد print: ${printCount}</p>
-        </div>
+    // نمایش نتیجه
 
-        <div class="result-item">
-            <strong>۳. مشکلات احتمالی</strong>
-            ${problems.map(x => `<p>⚠️ ${x}</p>`).join("")}
-        </div>
+    resultContent.replaceChildren();
 
-        <div class="result-item">
-            <strong>۴. پیشنهادهای بهینه‌سازی</strong>
-            ${suggestions.map(x => `<p>💡 ${x}</p>`).join("")}
-        </div>
+    addSection("۱. توضیح برنامه", explanations);
+    addSection("۲. ساختار کد", [
+        "تعداد خطوط: " + lines.length,
+        "تعداد توابع: " + functionCount,
+        "تعداد حلقه‌ها: " + loopCount,
+        "تعداد شرط‌ها: " + conditionCount,
+        "تعداد کلاس‌ها: " + classCount,
+        "تعداد دستورات import: " + importCount,
+        "تعداد دستورات return: " + returnCount,
+        "تعداد دستورات print: " + printCount
+    ]);
 
-        <div class="result-item">
-            <strong>۵. جمع‌بندی تحلیل</strong>
-            <p>
-                کد از نظر ساختار و برخی الگوهای برنامه‌نویسی بررسی شد.
-                پیشنهادهای ارائه‌شده اولیه هستند و برای تأیید آن‌ها
-                باید کد آزمایش و عملکرد آن اندازه‌گیری شود.
-            </p>
-        </div>
+    addSection("۳. مشکلات احتمالی", problems);
+    addSection("۴. پیشنهادهای بهینه‌سازی", suggestions);
 
-        <div class="notice">
-            این تحلیل با قوانین و الگوهای متنی انجام شده است
-            و هنوز از مدل هوش مصنوعی واقعی استفاده نمی‌کند.
-        </div>
-    `;
+    const conclusion = document.createElement("p");
+    conclusion.className = "success";
+    conclusion.textContent =
+        "تحلیل اولیه به پایان رسید. پیشنهادها باید با اجرای برنامه و بررسی صحت خروجی ارزیابی شوند.";
 
-    result.style.display = "block";
-    result.scrollIntoView({ behavior: "smooth" });
+    const finalSection = document.createElement("div");
+    finalSection.className = "result-box";
+    finalSection.appendChild(conclusion);
+
+    resultContent.appendChild(finalSection);
+
+    result.hidden = false;
+    result.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 }
+
+function addSection(title, items) {
+    const box = document.createElement("div");
+    box.className = "result-box";
+
+    const heading = document.createElement("h3");
+    heading.textContent = title;
+
+    const list = document.createElement("ul");
+
+    items.forEach(function(item) {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+    });
+
+    box.appendChild(heading);
+    box.appendChild(list);
+
+    resultContent.appendChild(box);
+}
+
+function clearCode() {
+    codeInput.value = "";
+    resultContent.replaceChildren();
+    result.hidden = true;
+}
+</script>
+
+    </body>
