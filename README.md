@@ -1,36 +1,109 @@
-# 🐍 PyOptimize
+پروژه تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی
 
-PyOptimize is an educational project focused on Python code analysis, algorithm optimization, and performance evaluation.
+معرفی پروژه
 
-## 🌐 Live Website
+این پروژه با هدف بررسی، تحلیل و بهینه‌سازی کدهای برنامه‌نویسی با کمک هوش مصنوعی طراحی شده است. در این پروژه تلاش می‌شود مشکلات احتمالی کد شناسایی شوند و راهکارهایی برای افزایش خوانایی، بهبود عملکرد و کاهش مصرف منابع ارائه شود.
 
-https://sanadabirian60-ship-it.github.io/pyoptimize/
+هوش مصنوعی می‌تواند در بررسی ساختار کد، شناسایی الگوهای ناکارآمد، پیشنهاد روش‌های بهتر و تحلیل پیچیدگی زمانی و حافظه‌ای به برنامه‌نویس کمک کند.
 
-## 📚 Analysis Article
+اهداف پروژه
 
-https://sanadabirian60-ship-it.github.io/pyoptimize/analysis-intro.html
+- بررسی ساختار کدهای برنامه‌نویسی
+- شناسایی بخش‌های ناکارآمد و تکراری
+- پیشنهاد روش‌های بهینه‌سازی
+- بررسی پیچیدگی زمانی و حافظه‌ای
+- مقایسه کد اولیه با کد بهینه‌شده
+- تهیه گزارش از نتایج تحلیل
 
-## 🎯 Features
+بخش‌های اصلی پروژه
 
-- Python code analysis
-- Detection of potentially inefficient coding patterns
-- Algorithm optimization examples
-- Time and space complexity analysis
-- Correctness testing
-- Performance benchmarking with `timeit`
-- Educational explanations of optimization techniques
+پروژه از شش بخش اصلی تشکیل شده است:
 
-## 🔍 Example: Finding Common Elements
+۱. تحلیل کد با هوش مصنوعی
 
-### Original Code
+بررسی ساختار کد و شناسایی مشکلات احتمالی آن.
 
-```python
-def find_common_elements(list_a, list_b):
-    result = []
+۲. تشخیص الگوها
 
-    for item in list_a:
-        if item in list_b:
-            if item not in result:
-                result.append(item)
+شناسایی الگوهای برنامه‌نویسی ناکارآمد و بخش‌هایی که امکان بهبود دارند.
 
-    return result
+۳. بهینه‌سازی کد
+
+ارائه پیشنهادهایی برای بهبود عملکرد، خوانایی و ساختار کد.
+
+۴. تحلیل پیچیدگی
+
+بررسی پیچیدگی زمانی و میزان مصرف حافظه در الگوریتم‌ها.
+
+۵. مقایسه کد
+
+مقایسه نسخه اولیه و نسخه بهینه‌شده از نظر ساختار و عملکرد.
+
+۶. گزارش تحلیل
+
+ارائه خلاصه‌ای از مشکلات شناسایی‌شده، تغییرات انجام‌شده و نتایج بررسی.
+
+فناوری‌های مورد استفاده
+
+- HTML: ساختار صفحات وب
+- CSS: طراحی و زیباسازی صفحات
+- JavaScript: ایجاد تعامل در صفحات
+- Python: تحلیل ساختاری کدها
+- GitHub Pages: انتشار و میزبانی نسخه وب پروژه
+
+ساختار پروژه
+
+pyoptimize/
+│
+├── index.html
+├── analysis.html
+├── patterns.html
+├── optimization.html
+├── complexity.html
+├── comparison.html
+├── report.html
+├── analysis-intro.html
+├── analyzer.py
+│
+├── css/
+│   └── style.css
+│
+├── js/
+│
+├── backend/
+│   └── app.py
+│
+└── README.md
+
+نحوه مشاهده پروژه
+
+برای مشاهده نسخه آنلاین پروژه، از لینک زیر استفاده کنید:
+
+"مشاهده پروژه در GitHub Pages" (https://sanadabirian60-ship-it.github.io/pyoptimize/)
+
+نحوه اجرای پروژه
+
+برای مشاهده صفحات وب:
+
+۱. مخزن پروژه را از GitHub دریافت کنید.
+
+۲. فایل "index.html" را در مرورگر باز کنید.
+
+۳. از طریق صفحه اصلی وارد بخش‌های مختلف پروژه شوید.
+
+برای اجرای بخش‌های پایتون، باید Python روی سیستم نصب باشد و فایل‌های مربوط به تحلیل را جداگانه اجرا کنید.
+
+نکته درباره اتصال هوش مصنوعی
+
+تحلیل ساختاری کد با Python می‌تواند بدون اتصال به مدل هوش مصنوعی انجام شود. برای استفاده از قابلیت‌های واقعی یک مدل AI، لازم است یک سرویس پشتیبان (Backend) به مدل موردنظر متصل شود.
+
+کلید API باید در سمت سرور نگهداری شود و نباید داخل کدهای قابل مشاهده مرورگر قرار بگیرد.
+
+نتیجه‌گیری
+
+این پروژه با هدف نشان دادن نقش هوش مصنوعی در تحلیل و بهینه‌سازی کد طراحی شده است. استفاده از روش‌های تحلیل ساختاری و پیشنهادهای هوشمند می‌تواند به برنامه‌نویسان کمک کند تا کدهایی خواناتر، قابل نگهداری‌تر و کارآمدتر تولید کنند.
+
+---
+
+نام پروژه: تحلیل و بهینه‌سازی کد در AI
+مخزن GitHub: "pyoptimize"
