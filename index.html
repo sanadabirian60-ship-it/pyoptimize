@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="PyOptimize؛ پروژه‌ای آموزشی برای تحلیل و بهینه‌سازی کد پایتون با کمک هوش مصنوعی">
-
-    <title>PyOptimize | صفحه اصلی</title>
+    <title>PyOptimize | تحلیل و بهینه‌سازی کد با هوش مصنوعی</title>
 
     <style>
         * {
@@ -16,154 +14,120 @@
 
         body {
             margin: 0;
-            font-family: Tahoma, Arial, sans-serif;
-            background: #f1f5f9;
-            color: #1e293b;
+            font-family: Tahoma, sans-serif;
+            background: #f4f6fa;
+            color: #263238;
             line-height: 1.9;
         }
 
         header {
-            background: #102a43;
+            background: #182b49;
             color: white;
-            padding: 30px 20px;
             text-align: center;
+            padding: 65px 20px;
         }
 
         header h1 {
-            margin: 0;
-            font-size: 32px;
+            font-size: 38px;
+            margin-bottom: 10px;
         }
 
         header p {
-            color: #dbeafe;
-            margin-bottom: 0;
+            font-size: 18px;
+        }
+
+        .hero-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #70e1c1;
+            color: #182b49;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
         }
 
         nav {
-            background: #173f5f;
+            background: #243b60;
             padding: 12px;
             text-align: center;
         }
 
         nav a {
-            display: inline-block;
             color: white;
             text-decoration: none;
-            padding: 6px 10px;
-            font-size: 14px;
+            margin: 8px;
+            display: inline-block;
         }
 
         nav a:hover {
-            color: #93c5fd;
+            color: #70e1c1;
         }
 
         main {
-            width: 92%;
             max-width: 1100px;
             margin: 35px auto;
+            padding: 20px;
         }
 
-        .hero {
-            background: linear-gradient(135deg, #123b5d, #1479b8);
-            color: white;
-            text-align: center;
-            padding: 45px 25px;
-            border-radius: 15px;
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
         }
 
-        .hero h2 {
-            font-size: 27px;
-            margin-top: 0;
+        h2 {
+            color: #176b87;
         }
 
-        .hero p {
-            max-width: 750px;
-            margin: auto;
-            color: #e2e8f0;
-        }
-
-        .section-title {
-            color: #123b5d;
-            margin: 35px 0 20px;
-        }
-
-        .cards {
+        .features {
             display: grid;
-            grid-template-columns: repeat(
-                auto-fit,
-                minmax(250px, 1fr)
-            );
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 20px;
         }
 
-        .card {
-            background: white;
-            border: 1px solid #dbe4ee;
-            border-radius: 12px;
-            padding: 22px;
-            transition: 0.2s;
+        .feature {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e1e8ef;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: #1479b8;
-        }
-
-        .card h3 {
-            color: #1479b8;
-            margin-top: 0;
-        }
-
-        .card p {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .card a {
-            display: inline-block;
-            background: #1479b8;
-            color: white;
+        .feature a {
+            color: #087f8c;
             text-decoration: none;
-            padding: 8px 17px;
-            border-radius: 7px;
-            margin-top: 10px;
+            font-weight: bold;
         }
 
-        .card a:hover {
-            background: #0d5f93;
+        .feature a:hover {
+            text-decoration: underline;
         }
 
-        .about {
-            background: white;
-            border: 1px solid #dbe4ee;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 30px;
-        }
-
-        .about h2 {
-            color: #1479b8;
+        .steps li {
+            margin-bottom: 10px;
         }
 
         footer {
-            background: #102a43;
+            background: #182b49;
             color: white;
             text-align: center;
-            padding: 20px;
-            margin-top: 45px;
+            padding: 22px;
+            margin-top: 40px;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
             header h1 {
-                font-size: 26px;
+                font-size: 28px;
             }
 
-            .hero {
-                padding: 30px 18px;
+            .features {
+                grid-template-columns: 1fr;
             }
 
-            .hero h2 {
-                font-size: 22px;
+            main {
+                padding: 12px;
             }
         }
     </style>
@@ -173,115 +137,135 @@
 
 <header>
     <h1>PyOptimize</h1>
-    <p>تحلیل و بهینه‌سازی کد پایتون با کمک هوش مصنوعی</p>
+
+    <p>
+        تحلیل و بهینه‌سازی کد پایتون با استفاده از هوش مصنوعی
+    </p>
+
+    <p>
+        کد خود را بررسی کنید، مشکلات آن را بشناسید
+        و راهکارهایی برای بهبود عملکرد آن پیدا کنید.
+    </p>
+
+    <a href="analysis.html" class="hero-button">
+        شروع تحلیل کد
+    </a>
 </header>
 
 <nav>
-    <a href="./index.html">صفحه اصلی</a>
-    <a href="./analysis.html">تحلیل کد</a>
-    <a href="./patterns.html">تشخیص الگوها</a>
-    <a href="./optimization.html">بهینه‌سازی</a>
-    <a href="./complexity.html">پیچیدگی</a>
-    <a href="./comparison.html">مقایسه کدها</a>
-    <a href="./report.html">گزارش نهایی</a>
+    <a href="index.html">صفحه اصلی</a>
+    <a href="analysis.html">تحلیل کد</a>
+    <a href="patterns.html">تشخیص الگوها</a>
+    <a href="optimization.html">بهینه‌سازی</a>
+    <a href="complexity.html">پیچیدگی الگوریتم</a>
+    <a href="comparison.html">مقایسه کدها</a>
+    <a href="report.html">گزارش نهایی</a>
 </nav>
 
 <main>
 
-    <section class="hero">
-        <h2>به دنیای بهینه‌سازی کد پایتون خوش آمدید!</h2>
+    <section class="section">
+        <h2>درباره PyOptimize</h2>
 
         <p>
-            با PyOptimize می‌توانید با روش‌های تحلیل کد،
-            شناسایی مشکلات احتمالی، بررسی پیچیدگی الگوریتم‌ها
-            و بهینه‌سازی برنامه‌های پایتون آشنا شوید.
-            هدف این پروژه بررسی نقش هوش مصنوعی در بهبود کیفیت
-            و عملکرد کدهای برنامه‌نویسی است.
+            PyOptimize یک پروژه آموزشی با هدف تحلیل و بهینه‌سازی
+            کدهای پایتون است. این سامانه تلاش می‌کند با کمک
+            روش‌های تحلیل کد و هوش مصنوعی، مشکلات احتمالی برنامه‌ها
+            را شناسایی کرده و پیشنهادهایی برای بهبود ساختار و عملکرد
+            آن‌ها ارائه دهد.
         </p>
     </section>
 
-    <h2 class="section-title">بخش‌های اصلی پروژه</h2>
+    <section class="section">
+        <h2>امکانات پروژه</h2>
 
-    <section class="cards">
+        <div class="features">
 
-        <article class="card">
-            <h3>۱. تحلیل کد با AI</h3>
-            <p>
-                بررسی ساختار کد پایتون و شناسایی مشکلات
-                احتمالی در برنامه.
-            </p>
-            <a href="./analysis.html">ورود به بخش</a>
-        </article>
+            <div class="feature">
+                <h3>تحلیل کد</h3>
+                <p>
+                    بررسی ساختار کد پایتون و توضیح عملکرد بخش‌های مختلف آن.
+                </p>
+                <a href="analysis.html">ورود به بخش تحلیل ←</a>
+            </div>
 
-        <article class="card">
-            <h3>۲. تشخیص الگوها با AI</h3>
-            <p>
-                شناسایی الگوهای تکراری و ساختارهای
-                قابل بهبود در کد.
-            </p>
-            <a href="./patterns.html">ورود به بخش</a>
-        </article>
+            <div class="feature">
+                <h3>تشخیص الگوهای قابل بهبود</h3>
+                <p>
+                    شناسایی حلقه‌های غیرضروری، تکرارهای اضافی
+                    و روش‌های ناکارآمد.
+                </p>
+                <a href="patterns.html">ورود به بخش تشخیص الگوها ←</a>
+            </div>
 
-        <article class="card">
-            <h3>۳. بهینه‌سازی کد با AI</h3>
-            <p>
-                بررسی روش‌های بهینه‌سازی و ارائه
-                پیشنهاد برای بهبود کد.
-            </p>
-            <a href="./optimization.html">ورود به بخش</a>
-        </article>
+            <div class="feature">
+                <h3>بهینه‌سازی کد</h3>
+                <p>
+                    ارائه پیشنهادهایی برای بهبود ساختار و عملکرد کد.
+                </p>
+                <a href="optimization.html">ورود به بخش بهینه‌سازی ←</a>
+            </div>
 
-        <article class="card">
-            <h3>۴. تحلیل پیچیدگی با AI</h3>
-            <p>
-                بررسی پیچیدگی زمانی و فضایی
-                الگوریتم‌های پایتون.
-            </p>
-            <a href="./complexity.html">ورود به بخش</a>
-        </article>
+            <div class="feature">
+                <h3>تحلیل پیچیدگی</h3>
+                <p>
+                    بررسی پیچیدگی زمانی و فضایی الگوریتم‌ها.
+                </p>
+                <a href="complexity.html">ورود به بخش پیچیدگی ←</a>
+            </div>
 
-        <article class="card">
-            <h3>۵. مقایسه کدها با AI</h3>
-            <p>
-                مقایسه نسخه اولیه و نسخه پیشنهادی
-                از نظر ساختار و ویژگی‌های کد.
-            </p>
-            <a href="./comparison.html">ورود به بخش</a>
-        </article>
+            <div class="feature">
+                <h3>مقایسه کدها</h3>
+                <p>
+                    مقایسه کد اولیه و نسخه بهینه‌شده از نظر ساختار
+                    و پیچیدگی.
+                </p>
+                <a href="comparison.html">ورود به بخش مقایسه ←</a>
+            </div>
 
-        <article class="card">
-            <h3>۶. گزارش تحلیل با AI</h3>
-            <p>
-                جمع‌آوری نتایج بخش‌های مختلف و تهیه
-                گزارش نهایی از تحلیل کد.
-            </p>
-            <a href="./report.html">ورود به بخش</a>
-        </article>
+            <div class="feature">
+                <h3>گزارش نهایی</h3>
+                <p>
+                    جمع‌آوری نتایج تحلیل و تهیه گزارش یکپارچه.
+                </p>
+                <a href="report.html">ورود به بخش گزارش ←</a>
+            </div>
 
+        </div>
     </section>
 
-    <section class="about">
-        <h2>درباره پروژه PyOptimize</h2>
+    <section class="section">
+        <h2>مراحل کار با سامانه</h2>
+
+        <ol class="steps">
+            <li>واردکردن کد پایتون در محیط تحلیل</li>
+            <li>بررسی ساختار و شناسایی مشکلات احتمالی</li>
+            <li>تشخیص الگوهای قابل بهبود</li>
+            <li>دریافت پیشنهادهای بهینه‌سازی</li>
+            <li>بررسی پیچیدگی زمانی و فضایی</li>
+            <li>مقایسه کد اولیه و نسخه بهینه‌شده</li>
+            <li>تهیه گزارش نهایی</li>
+        </ol>
+    </section>
+
+    <section class="section">
+        <h2>هدف پروژه</h2>
 
         <p>
-            این پروژه با هدف آموزش مفاهیم تحلیل و بهینه‌سازی
-            کد پایتون طراحی شده است. انتخاب ساختار داده مناسب،
-            کاهش عملیات غیرضروری، بررسی پیچیدگی الگوریتم‌ها
-            و مقایسه روش‌های مختلف برنامه‌نویسی از موضوعات
-            اصلی آن هستند.
-        </p>
-
-        <p>
-            صفحات وب‌سایت برای اتصال به یک بک‌اند پایتونی
-            و سرویس هوش مصنوعی طراحی شده‌اند. برای فعال‌شدن
-            تحلیل واقعی با AI، راه‌اندازی این بخش‌ها ضروری است.
+            هدف PyOptimize ایجاد بستری برای یادگیری بهتر مفاهیم
+            تحلیل الگوریتم و بهینه‌سازی کد پایتون است.
+            این پروژه می‌تواند به برنامه‌نویسان کمک کند تا
+            با شناخت مشکلات کد، برنامه‌هایی خواناتر و کارآمدتر
+            طراحی کنند.
         </p>
     </section>
 
 </main>
 
 <footer>
-    <p>PyOptimize | پروژه تحلیل و بهینه‌سازی کد پایتون</p>
+    <p>
+        PyOptimize | تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی
+    </p>
 </footer>
 
 </body>
