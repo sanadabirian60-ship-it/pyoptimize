@@ -1,516 +1,158 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PyOptimize؛ پروژه آموزشی تحلیل و بهینه‌سازی کد پایتون">
-  <title>PyOptimize | تحلیل و بهینه‌سازی کد پایتون</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #081426;
-      --panel: #10213a;
-      --panel-hover: #172d4b;
-      --text: #e8f0ff;
-      --muted: #9aacc5;
-      --blue: #4d9fff;
-      --border: #29415f;
-      --green: #42d69b;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Vazirmatn, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.9;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    header {
-      background: #0b1a2e;
-      border-bottom: 1px solid var(--border);
-      padding: 17px 7%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .logo {
-      color: var(--blue);
-      font-size: 23px;
-      font-weight: 800;
-    }
-
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-    }
-
-    nav a {
-      color: var(--muted);
-      font-size: 13px;
-      transition: color .2s;
-    }
-
-    nav a:hover {
-      color: var(--blue);
-    }
-
-    .hero {
-      width: min(1100px, 90%);
-      margin: 65px auto 45px;
-      text-align: center;
-      padding: 55px 25px;
-      background: linear-gradient(145deg, #102a49, #10213a);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 5px 15px;
-      border: 1px solid #315b83;
-      border-radius: 30px;
-      color: var(--green);
-      font-size: 13px;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-size: clamp(28px, 5vw, 43px);
-      line-height: 1.5;
-      margin-bottom: 15px;
-    }
-
-    .hero h1 span {
-      color: var(--blue);
-    }
-
-    .hero p {
-      color: var(--muted);
-      max-width: 700px;
-      margin: 0 auto 25px;
-      font-size: 15px;
-    }
-
-    .main-button {
-      display: inline-block;
-      background: var(--blue);
-      color: #061426;
-      padding: 11px 24px;
-      border-radius: 9px;
-      font-weight: 800;
-      transition: transform .2s, opacity .2s;
-    }
-
-    .main-button:hover {
-      transform: translateY(-3px);
-      opacity: .9;
-    }
-
-    main {
-      width: min(1100px, 90%);
-      margin: auto;
-    }
-
-    .section-title {
-      margin: 50px 0 20px;
-    }
-
-    .section-title h2 {
-      font-size: 25px;
-      margin-bottom: 5px;
-    }
-
-    .section-title p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 17px;
-    }
-
-    .feature {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 20px;
-    }
-
-    .feature .icon {
-      font-size: 25px;
-      margin-bottom: 8px;
-    }
-
-    .feature h3 {
-      font-size: 16px;
-      margin-bottom: 7px;
-    }
-
-    .feature p {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .pages {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .page-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 15px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 19px;
-      transition: background .2s, border-color .2s, transform .2s;
-    }
-
-    .page-card:hover {
-      background: var(--panel-hover);
-      border-color: var(--blue);
-      transform: translateY(-3px);
-    }
-
-    .page-number {
-      min-width: 39px;
-      height: 39px;
-      display: grid;
-      place-items: center;
-      background: #1b4169;
-      color: var(--blue);
-      border-radius: 10px;
-      font-weight: 800;
-    }
-
-    .page-card h3 {
-      font-size: 16px;
-      margin-bottom: 4px;
-    }
-
-    .page-card p {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .page-card .arrow {
-      margin-right: auto;
-      color: var(--blue);
-      font-size: 20px;
-    }
-
-    .workflow {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 24px;
-      text-align: center;
-    }
-
-    .workflow-step {
-      background: #142945;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 10px;
-      max-width: 420px;
-      margin: 0 auto;
-      font-size: 14px;
-    }
-
-    .workflow-arrow {
-      color: var(--blue);
-      font-size: 22px;
-      line-height: 1.8;
-    }
-
-    .about {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 24px;
-      margin: 20px 0 45px;
-    }
-
-    .about h2 {
-      margin-bottom: 10px;
-    }
-
-    .about p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .notice {
-      border-right: 4px solid var(--blue);
-      background: #172c49;
-      border-radius: 8px;
-      padding: 13px 16px;
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 17px;
-    }
-
-    footer {
-      background: #0b1a2e;
-      border-top: 1px solid var(--border);
-      text-align: center;
-      padding: 25px 15px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width: 750px) {
-      header {
-        flex-direction: column;
-      }
-
-      nav {
-        justify-content: center;
-      }
-
-      .features {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 520px) {
-      .features,
-      .pages {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        margin-top: 30px;
-        padding: 38px 18px;
-      }
-
-      .section-title h2 {
-        font-size: 21px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-<header>
-  <a class="logo" href="index.html">PyOptimize</a>
-
-  <nav>
-    <a href="#home">صفحه اصلی</a>
-    <a href="#features">قابلیت‌ها</a>
-    <a href="#pages">بخش‌های پروژه</a>
-    <a href="#about">درباره پروژه</a>
-  </nav>
-</header>
-
-<section class="hero" id="home">
-  <span class="badge">Python Code Analysis</span>
-
-  <h1>
-    تحلیل و بهینه‌سازی کد پایتون
-    <br>
-    با رویکرد <span>هوشمند</span>
-  </h1>
-
-  <p>
-    PyOptimize یک پروژه آموزشی برای بررسی ساختار کدهای پایتون،
-    شناسایی الگوهای قابل بهبود، آشنایی با پیچیدگی الگوریتم‌ها
-    و مقایسه نسخه‌های مختلف کد است.
-  </p>
-
-  <a href="analysis.html" class="main-button">
-    شروع تحلیل کد
-  </a>
-</section>
-
-<main>
-
-  <section id="features">
-    <div class="section-title">
-      <h2>قابلیت‌های پروژه</h2>
-      <p>بخش‌های اصلی برای بررسی و بهبود کد پایتون</p>
-    </div>
-
-    <div class="features">
-      <article class="feature">
-        <div class="icon">🔍</div>
-        <h3>تحلیل کد</h3>
-        <p>بررسی اولیه ساختار کد و شناسایی برخی الگوهای قابل توجه.</p>
-      </article>
-
-      <article class="feature">
-        <div class="icon">🧩</div>
-        <h3>تشخیص الگوها</h3>
-        <p>شناسایی حلقه‌ها، بررسی عضویت و برخی ساختارهای رایج.</p>
-      </article>
-
-      <article class="feature">
-        <div class="icon">⚡</div>
-        <h3>بهینه‌سازی</h3>
-        <p>آشنایی با روش‌های بهبود ساختار و کارایی الگوریتم‌ها.</p>
-      </article>
-
-      <article class="feature">
-        <div class="icon">📊</div>
-        <h3>تحلیل پیچیدگی</h3>
-        <p>آشنایی با مفاهیم پیچیدگی زمانی و فضایی الگوریتم‌ها.</p>
-      </article>
-
-      <article class="feature">
-        <div class="icon">⚖️</div>
-        <h3>مقایسه کدها</h3>
-        <p>مقایسه ویژگی‌های ساختاری نسخه اصلی و نسخه بهینه‌شده.</p>
-      </article>
-
-      <article class="feature">
-        <div class="icon">📄</div>
-        <h3>گزارش تحلیل</h3>
-        <p>تهیه گزارش نهایی از اطلاعات و نتایج واردشده.</p>
-      </article>
-    </div>
-  </section>
-
-  <section id="pages">
-    <div class="section-title">
-      <h2>بخش‌های پروژه</h2>
-      <p>برای ورود به هر بخش روی کارت مربوط به آن کلیک کنید.</p>
-    </div>
-
-    <div class="pages">
-
-      <a class="page-card" href="analysis.html">
-        <span class="page-number">۱</span>
-        <div>
-          <h3>تحلیل کد با AI</h3>
-          <p>ورود کد پایتون و بررسی اولیه آن.</p>
-        </div>
-        <span class="arrow">←</span>
-      </a>
-
-      <a class="page-card" href="patterns.html">
-        <span class="page-number">۲</span>
-        <div>
-          <h3>تشخیص الگوها</h3>
-          <p>بررسی ساختارها و الگوهای قابل شناسایی در کد.</p>
-        </div>
-        <span class="arrow">←</span>
-      </a>
-
-      <a class="page-card" href="optimization.html">
-        <span class="page-number">۳</span>
-        <div>
-          <h3>بهینه‌سازی کد با AI</h3>
-          <p>مشاهده نمونه‌هایی از روش‌های بهینه‌سازی.</p>
-        </div>
-        <span class="arrow">←</span>
-      </a>
-
-      <a class="page-card" href="complexity.html">
-        <span class="page-number">۴</span>
-        <div>
-          <h3>تحلیل پیچیدگی الگوریتم</h3>
-          <p>بررسی تقریبی ساختار حلقه‌ها و پیچیدگی زمانی.</p>
-        </div>
-        <span class="arrow">←</span>
-      </a>
-
-      <a class="page-card" href="comparison.html">
-        <span class="page-number">۵</span>
-        <div>
-          <h3>مقایسه کدها</h3>
-          <p>مقایسه ساختاری کد اصلی و کد بهینه‌شده.</p>
-        </div>
-        <span class="arrow">←</span>
-      </a>
-
-      <a class="page-card" href="report.html">
-        <span class="page-number">۶</span>
-        <div>
-          <h3>گزارش تحلیل</h3>
-          <p>ساخت گزارش نهایی از اطلاعات پروژه.</p>
-        </div>
-        <span class="arrow">←</span>
-      </a>
-
-    </div>
-  </section>
-
-  <section>
-    <div class="section-title">
-      <h2>مسیر انجام تحلیل</h2>
-      <p>مراحل پیشنهادی استفاده از بخش‌های مختلف پروژه</p>
-    </div>
-
-    <div class="workflow">
-      <div class="workflow-step">ورود کد پایتون</div>
-      <div class="workflow-arrow">↓</div>
-
-      <div class="workflow-step">۱. تحلیل کد</div>
-      <div class="workflow-arrow">↓</div>
-
-      <div class="workflow-step">۲. تشخیص الگوها</div>
-      <div class="workflow-arrow">↓</div>
-
-      <div class="workflow-step">۳. بهینه‌سازی کد</div>
-      <div class="workflow-arrow">↓</div>
-
-      <div class="workflow-step">۴. تحلیل پیچیدگی</div>
-      <div class="workflow-arrow">↓</div>
-
-      <div class="workflow-step">۵. مقایسه کدها</div>
-      <div class="workflow-arrow">↓</div>
-
-      <div class="workflow-step">۶. تهیه گزارش تحلیل</div>
-    </div>
-  </section>
-
-  <section class="about" id="about">
-    <h2>درباره PyOptimize</h2>
-
-    <p>
-      هدف این پروژه آشنایی با اصول تحلیل و بهینه‌سازی کد پایتون
-      و اهمیت انتخاب ساختار داده و الگوریتم مناسب است.
-      در این پروژه تلاش شده مفاهیم پیچیدگی زمانی، بررسی ساختار کد
-      و مقایسه روش‌های مختلف در قالب یک رابط کاربری ساده ارائه شوند.
-    </p>
-
-    <div class="notice">
-      نسخه فعلی یک نمونه آموزشی مبتنی بر HTML، CSS و JavaScript است.
-      بررسی‌های خودکار آن بر اساس قواعد ساده انجام می‌شوند و هنوز
-      به یک مدل هوش مصنوعی واقعی یا سرویس اجرای پایتون متصل نیست.
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  PyOptimize | پروژه آموزشی تحلیل و بهینه‌سازی کد پایتون
-</footer>
-
-</body>
-    </html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PyOptimize؛ بستری آموزشی برای تحلیل و بهینه‌سازی کد پایتون با کمک هوش مصنوعی">
+    <title>PyOptimize | تحلیل و بهینه‌سازی کد پایتون</title>
+
+    <style>
+        :root {
+            --primary: #123b5d;
+            --secondary: #1479b8;
+            --background: #f3f6fb;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #dbe4ee;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: #0f172a;
+                --surface: #1e293b;
+                --text: #e2e8f0;
+                --muted: #aab8ca;
+                --border: #334155;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.9;
+        }
+
+        header {
+            background: #102a43;
+            color: white;
+            padding: 22px 7%;
+        }
+
+        .brand {
+            font-size: 27px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        header p {
+            margin: 4px 0 0;
+            color: #cbd5e1;
+        }
+
+        nav {
+            background: #173f5f;
+            padding: 12px 7%;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #123b5d, #1479b8);
+            color: white;
+            padding: 45px 30px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 30px;
+            margin: 0 0 15px;
+        }
+
+        .hero p {
+            max-width: 750px;
+            margin: auto;
+            color: #e2e8f0;
+        }
+
+        .section-title {
+            margin: 38px 0 18px;
+            color: var(--primary);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .section-title {
+                color: #93c5fd;
+            }
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--secondary);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--secondary);
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .card a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .card a:hover {
+            background: #0d5f93;
+        }
+
+        .about {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border
