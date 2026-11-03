@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>تحلیل پیچیدگی الگوریتم | PyOptimize</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --background: #0b1120;
+            --surface: #111c32;
+            --border: #293b57;
+            --primary: #0ea5e9;
+            --text: #e5e7eb;
+            --muted: #9caec5;
+            --warning: #fbbf24;
+            --success: #34d399;
+        }
+
+        body {
+            font-family: "Vazirmatn", sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.9;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 7%;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        main {
+            width: 92%;
+            max-width: 1050px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 26px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: clamp(25px, 4vw, 34px);
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            color: #7dd3fc;
+            font-size: 21px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            color: #7dd3fc;
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            color: var(--muted);
+        }
+
+        .badge {
+            display: inline-block;
+            background: #12354b;
+            color: #7dd3fc;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .notice {
+            margin-top: 16px;
+            padding: 12px 15px;
+            background: #332b18;
+            color: var(--warning);
+            border-radius: 9px;
+            font-size: 13px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 250px;
+            resize: vertical;
+            background: #080e1b;
+            color: #dbeafe;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 18px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            direction: ltr;
+            text-align: left;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 11px 20px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 2px solid white;
+            outline-offset: 3px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 17px;
+        }
+
+        .primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .primary:hover {
+            background: #0284c7;
+        }
+
+        .secondary {
+            background: #263750;
+            color: white;
+        }
+
+        .secondary:hover {
+            background: #344966;
+        }
+
+        .message {
+            color: var(--warning);
+            font-size: 14px;
+            margin-top: 12px;
+        }
+
+        .result-box {
+            background: #080e1b;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .complexity-value {
+            display: inline-block;
+            direction: ltr;
+            background: #12354b;
+            color: #7dd3fc;
+            padding: 5px 13px;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+
+        .complexity-list {
+            list-style: none;
+        }
+
+        .complexity-list li {
+            padding: 13px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .complexity-list li:last-child {
+            border-bottom: none;
+        }
+
+        .complexity-list strong {
+            color: #7dd3fc;
+            direction: ltr;
+            display: inline-block;
+            min-width: 85px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .chart-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            min-width: 300px;
+            max-height: 340px;
+        }
+
+        .next-link {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 9px;
+            margin-top: 18px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            margin-top: 50px;
+        }
+
+        @media (max-width: 650px) {
+            nav {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 12px;
+                font-size: 13px;
+            }
+
+            .card {
+                padding: 19px;
+            }
+
+            .buttons button {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <a href="index.html" class="logo">PyOptimize</a>
+
+        <div class="nav-links">
+            <a href="index.html">صفحه اصلی</a>
+            <a href="analysis.html">تحلیل کد</a>
+            <a href="patterns.html">تشخیص الگوها</a>
+            <a href="optimization.html">بهینه‌سازی</a>
+            <a href="complexity.html">پیچیدگی</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+
+    <section class="card">
+        <span class="badge">مرحله چهارم پروژه</span>
+
+        <h1>تحلیل پیچیدگی الگوریتم</h1>
+
+        <p>
+            پیچیدگی الگوریتم نشان می‌دهد با افزایش اندازه ورودی،
+            میزان عملیات یا حافظه موردنیاز برنامه چگونه تغییر می‌کند.
+            در این بخش، کد پایتون بررسی می‌شود و یک تخمین اولیه
+            از ساختار حلقه‌ها ارائه خواهد شد.
+        </p>
+
+        <div class="notice">
+            تشخیص پیچیدگی دقیق به بررسی منطق الگوریتم نیاز دارد.
+            نتایج تحلیل خودکار این نسخه صرفاً تخمینی هستند.
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>کد مورد بررسی</h2>
+
+        <p style="margin-bottom: 15px;">
+            کد پایتون خود را وارد کنید یا نمونه آماده را بارگذاری کنید.
+        </p>
+
+        <textarea
+            id="codeInput"
+            spellcheck="false"
+            placeholder="کد پایتون خود را اینجا وارد کنید..."
+        ></textarea>
+
+        <div class="buttons">
+            <button class="secondary" id="sampleButton" type="button">
+                بارگذاری نمونه کد
+            </button>
+
+            <button class="primary" id="analyzeButton" type="button">
+                تحلیل پیچیدگی
+            </button>
+
+            <button class="secondary" id="clearButton" type="button">
+                پاک کردن
+            </button>
+        </div>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="card hidden" id="results">
+
+        <h2>نتایج تحلیل</h2>
+
+        <div class="result-box">
+            <h3>۱. اطلاعات ساختاری کد</h3>
+            <p id="structure"></p>
+        </div>
+
+        <div class="result-box">
+            <h3>۲. تخمین پیچیدگی زمانی</h3>
+            <div id="timeComplexity"></div>
+        </div>
+
+        <div class="result-box">
+            <h3>۳. بررسی حافظه</h3>
+            <p id="spaceComplexity"></p>
+        </div>
+
+        <div class="result-box">
+            <h3>۴. توضیح تحلیل</h3>
+            <p id="explanation"></p>
+        </div>
+
+        <a href="comparison.html" class="next-link">
+            رفتن به مقایسه کدها ←
+        </a>
+
+    </section>
+
+    <section class="card">
+        <h2>آشنایی با پیچیدگی‌های زمانی</h2>
+
+        <ul class="complexity-list">
+            <li>
+                <strong>O(1)</strong>
+                زمان ثابت؛ تعداد عملیات با اندازه ورودی رشد نمی‌کند.
+            </li>
+
+            <li>
+                <strong>O(log n)</strong>
+                زمان لگاریتمی؛ نمونه رایج آن جست‌وجوی دودویی است.
+            </li>
+
+            <li>
+                <strong>O(n)</strong>
+                زمان خطی؛ مانند پیمایش یک لیست.
+            </li>
+
+            <li>
+                <strong>O(n log n)</strong>
+                در بسیاری از الگوریتم‌های مرتب‌سازی کارآمد دیده می‌شود.
+            </li>
+
+            <li>
+                <strong>O(n²)</strong>
+                زمان درجه دوم؛ مانند مقایسه تمام جفت‌های عناصر.
+            </li>
+
+            <li>
+                <strong>O(2ⁿ)</strong>
+                زمان نمایی؛ در برخی الگوریتم‌های بازگشتی ساده دیده می‌شود.
+            </li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>مقایسه رشد پیچیدگی زمانی</h2>
+
+        <p style="margin-bottom: 15px;">
+            نمودار زیر رشد تقریبی چند تابع پیچیدگی را در اندازه‌های
+            مختلف ورودی نشان می‌دهد.
+        </p>
+
+        <div class="chart-wrapper">
+            <canvas id="complexityChart" width="800" height="340"
+                aria-label="نمودار مقایسه رشد پیچیدگی زمانی"
+                role="img"></canvas>
+        </div>
+
+        <p style="font-size: 12px; margin-top: 12px;">
+            این نمودار نمایشی است و مقدار واقعی زمان اجرای برنامه‌ها را نشان نمی‌دهد.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    PyOptimize | تحلیل و بهینه‌سازی کد پایتون
+</footer>
+
+<script>
+"use strict";
+
+const sampleCode = `def find_duplicates(numbers):
+    duplicates = []
+
+    for i in range(len(numbers)):
+        for j in range(i + 1, len(numbers)):
+            if numbers[i] == numbers[j]:
+                if numbers[i] not in duplicates:
+                    duplicates.append(numbers[i])
+
+    return duplicates
+
+values = [4, 2, 8, 2, 4, 9]
+print(find_duplicates(values))`;
+
+const input = document.getElementById("codeInput");
+const results = document.getElementById("results");
+const message = document.getElementById("message");
+
+document.getElementById("sampleButton").addEventListener("click", function () {
+    input.value = sampleCode;
+    results.classList.add("hidden");
+    message.textContent = "نمونه کد بارگذاری شد.";
+});
+
+document.getElementById("clearButton").addEventListener("click", function () {
+    input.value = "";
+    results.classList.add("hidden");
+    message.textContent = "ویرایشگر پاک شد.";
+});
+
+document.getElementById("analyzeButton").addEventListener("click", analyzeComplexity);
+
+
+function analyzeComplexity() {
+    const code = input.value;
+
+    if (!code.trim()) {
+        message.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
+        results.classList.add("hidden");
+        return;
+    }
+
+    const lines = code.split("\n");
+
+    const loopLines = [];
+
+    lines.forEach(function (line, index) {
+        if (/^\s*(for|while)\b/.test(line)) {
+            loopLines.push({
+                index: index,
+                indent: line.match(/^\s*/)[0].length
+            });
+        }
+    });
+
+    let maximumDepth = 0;
+
+    loopLines.forEach(function (outerLoop) {
+        let depth = 1;
+
+        loopLines.forEach(function (innerLoop) {
+            if (
+                innerLoop.index > outerLoop.index &&
+                innerLoop.indent > outerLoop.indent
+            ) {
+                depth = Math.max(depth, 2);
+            }
+        });
+
+        maximumDepth = Math.max(maximumDepth, depth);
+    });
+
+    const functionCount = (code.match(/^\s*def\s+/gm) || []).length;
+    const classCount = (code.match(/^\s*class\s+/gm) || []).length;
+
+    let timeResult = "";
+    let explanation = "";
+
+    if (maximumDepth >= 2) {
+        timeResult = "احتمال رشد درجه دوم یا بیشتر؛ مانند O(n²)";
+        explanation =
+            "دو سطح یا بیشتر از حلقه‌ها شناسایی شده‌اند. اگر هر حلقه متناسب با اندازه ورودی اجرا شود، ممکن است تعداد عملیات به‌صورت درجه دوم رشد کند. برای تعیین دقیق‌تر باید محدوده اجرای حلقه‌ها بررسی شود.";
+    } else if (loopLines.length > 0) {
+        timeResult = "احتمال رشد خطی؛ مانند O(n)";
+        explanation =
+            "حلقه شناسایی شده است. اگر تعداد تکرارهای آن متناسب با اندازه ورودی باشد و عملیات داخل آن زمان ثابت داشته باشند، پیچیدگی زمانی می‌تواند خطی باشد.";
+    } else {
+        timeResult = "از روی حلقه‌های ظاهری قابل تعیین نیست";
+        explanation =
+            "حلقه for یا while شناسایی نشد. با این حال، فراخوانی توابع، بازگشت، عملیات داخلی کتابخانه‌ها و الگوریتم‌های استفاده‌شده می‌توانند پیچیدگی زمانی داشته باشند.";
+    }
+
+    document.getElementById("structure").textContent =
+        "تعداد خطوط: " + lines.length +
+        " | تعداد حلقه‌ها: " + loopLines.length +
+        " | تعداد توابع: " + functionCount +
+        " | تعداد کلاس‌ها: " + classCount;
+
+    const timeContainer = document.getElementById("timeComplexity");
+    const value = document.createElement("span");
+    value.className = "complexity-value";
+    value.textContent = timeResult;
+    timeContainer.replaceChildren(value);
+
+    document.getElementById("spaceComplexity").textContent =
+        "مصرف حافظه از روی تعداد حلقه‌ها قابل تعیین نیست. برای تحلیل آن باید ساختارهای داده، متغیرهای ذخیره‌شده، اندازه ورودی و حافظه مورد استفاده توابع بررسی شوند.";
+
+    document.getElementById("explanation").textContent = explanation;
+
+    results.classList.remove("hidden");
+    message.textContent = "تحلیل اولیه انجام شد.";
+
+    results.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+
+/* رسم نمودار رشد توابع پیچیدگی */
+function drawChart() {
+    const canvas = document.getElementById("complexityChart");
+    const ctx = canvas.getContext("2d");
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    ctx.clearRect(0, 0, width, height);
+
+    const left = 65;
+    const right = width - 25;
+    const top = 25;
+    const bottom = height - 55;
+
+    const values = Array.from({ length: 20 }, (_, i) => i + 1);
+
+    const series = [
+        {
+            name: "O(1)",
+            color: "#34d399",
+            calculate: n => 1
+        },
+        {
+            name: "O(log n)",
+            color: "#fbbf24",
+            calculate: n => Math.log2(n)
+        },
+        {
+            name: "O(n)",
+            color: "#38bdf8",
+            calculate: n => n
+        },
+        {
+            name: "O(n²)",
+            color: "#f87171",
+            calculate: n => n * n
+        }
+    ];
+
+    const maxValue = 400;
+
+    ctx.strokeStyle = "#293b57";
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i <= 4; i++) {
+        const y = bottom - (i / 4) * (bottom - top);
+
+        ctx.beginPath();
+        ctx.moveTo(left, y);
+        ctx.lineTo(right, y);
+        ctx.stroke();
+    }
+
+    ctx.fillStyle = "#9caec5";
+    ctx.font = "12px sans-serif";
+    ctx.textAlign = "center";
+
+    ctx.fillText("اندازه ورودی (n)", (left + right) / 2, height - 12);
+
+    ctx.save();
+    ctx.translate(17, (top + bottom) / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText("میزان عملیات نسبی", 0, 0);
+    ctx.restore();
+
+    series.forEach(function (item, seriesIndex) {
+        ctx.strokeStyle = item.color;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+
+        values.forEach(function (n, index) {
+            const x = left + (index / (values.length - 1)) * (right - left);
+
+            const raw = item.calculate(n);
+            const y = bottom - (Math.min(raw, maxValue) / maxValue) * (bottom - top);
+
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+
+        ctx.stroke();
+    });
+
+    let legendX = left;
+
+    series.forEach(function (item) {
+        ctx.fillStyle = item.color;
+        ctx.fillRect(legendX, height - 38, 12, 12);
+
+        ctx.fillStyle = "#dbeafe";
+        ctx.textAlign = "left";
+        ctx.fillText(item.name, legendX + 17, height - 28);
+
+        legendX += 145;
+    });
+}
+
+drawChart();
+</script>
+
+</body>
+</html>
