@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>گزارش تحلیل | PyOptimize</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #081426;
+      --panel: #10213a;
+      --panel2: #142945;
+      --text: #e8f0ff;
+      --muted: #9aacc5;
+      --blue: #4d9fff;
+      --border: #29415f;
+      --green: #42d69b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Vazirmatn, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.9;
+    }
+
+    header {
+      padding: 22px 7%;
+      background: #0b1a2e;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    main {
+      width: min(1000px, 90%);
+      margin: 40px auto;
+    }
+
+    h1 {
+      font-size: 29px;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-top: 0;
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 22px;
+      margin: 22px 0;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin: 12px 0 7px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 12px;
+      background: #071323;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--blue);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+      direction: ltr;
+      text-align: left;
+      font-family: Consolas, monospace;
+      line-height: 1.7;
+    }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 18px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--blue);
+      color: #061426;
+    }
+
+    button.secondary {
+      background: #263d5b;
+      color: var(--text);
+    }
+
+    button:hover {
+      opacity: .88;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .notice {
+      background: #172c49;
+      border-right: 4px solid var(--blue);
+      border-radius: 8px;
+      padding: 13px 16px;
+      color: var(--muted);
+      margin-top: 18px;
+    }
+
+    #report {
+      display: none;
+    }
+
+    .report-header {
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+
+    .report-header h2 {
+      font-size: 25px;
+      color: var(--blue);
+    }
+
+    .report-section {
+      margin: 22px 0;
+      padding: 16px;
+      background: var(--panel2);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .report-section h3 {
+      margin-top: 0;
+      font-size: 17px;
+    }
+
+    .report-section p {
+      margin-bottom: 5px;
+      overflow-wrap: anywhere;
+    }
+
+    .code-output {
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #071323;
+      color: #e8f0ff;
+      padding: 14px;
+      border-radius: 9px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+    }
+
+    .next {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 18px;
+      background: #173b63;
+      color: var(--text);
+      border-radius: 9px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding: 22px;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 23px;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+
+      header,
+      footer,
+      .form-panel,
+      .report-actions,
+      .next {
+        display: none !important;
+      }
+
+      main {
+        width: 100%;
+        margin: 0;
+      }
+
+      #report {
+        display: block !important;
+        border: none;
+        background: white;
+        color: black;
+        padding: 0;
+      }
+
+      .report-section {
+        background: white;
+        color: black;
+        border: 1px solid #ccc;
+        break-inside: avoid;
+      }
+
+      .report-section p {
+        color: #333;
+      }
+
+      .code-output {
+        background: #f2f2f2;
+        color: black;
+        white-space: pre-wrap;
+      }
+
+      .report-header h2 {
+        color: #174b83;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html">PyOptimize</a>
+</header>
+
+<main>
+  <h1>۶. گزارش تحلیل</h1>
+
+  <p>
+    در این بخش می‌توان اطلاعات پروژه و کدهای بررسی‌شده را وارد کرد
+    و یک گزارش خلاصه از فرایند تحلیل و بهینه‌سازی ساخت.
+  </p>
+
+  <section class="panel form-panel">
+    <h2>اطلاعات گزارش</h2>
+
+    <label for="projectName">نام پروژه</label>
+    <input id="projectName" type="text" placeholder="مثلاً: بررسی الگوریتم یافتن عناصر تکراری">
+
+    <label for="studentName">نام تهیه‌کننده</label>
+    <input id="studentName" type="text" placeholder="نام خود را وارد کنید">
+
+    <label for="originalCode">کد اصلی</label>
+    <textarea id="originalCode" spellcheck="false"
+      placeholder="کد اولیه پایتون را وارد کنید..."></textarea>
+
+    <label for="optimizedCode">کد بهینه‌شده</label>
+    <textarea id="optimizedCode" spellcheck="false"
+      placeholder="نسخه بهینه‌شده را وارد کنید..."></textarea>
+
+    <label for="analysisNotes">توضیحات و نتایج تحلیل</label>
+    <textarea id="analysisNotes"
+      style="direction:rtl;text-align:right;font-family:Vazirmatn"
+      placeholder="مشکلات شناسایی‌شده، پیشنهادها و نتیجه مقایسه را بنویسید..."></textarea>
+
+    <div class="buttons">
+      <button type="button" id="generateButton">ساخت گزارش</button>
+      <button type="button" class="secondary" id="sampleButton">بارگذاری نمونه</button>
+      <button type="button" class="secondary" id="clearButton">پاک کردن</button>
+    </div>
+
+    <div class="notice">
+      اطلاعات این صفحه به‌صورت دستی وارد می‌شوند.
+      در نسخه فعلی، داده‌های صفحات قبلی به‌طور خودکار به این صفحه منتقل نمی‌شوند.
+    </div>
+  </section>
+
+  <section class="panel" id="report" aria-live="polite">
+    <div class="report-header">
+      <h2>گزارش تحلیل و بهینه‌سازی کد</h2>
+      <p>PyOptimize</p>
+      <p id="reportDate"></p>
+    </div>
+
+    <div class="report-section">
+      <h3>۱. اطلاعات پروژه</h3>
+      <p id="outputProject"></p>
+      <p id="outputStudent"></p>
+    </div>
+
+    <div class="report-section">
+      <h3>۲. کد اصلی</h3>
+      <pre class="code-output" id="outputOriginal"></pre>
+    </div>
+
+    <div class="report-section">
+      <h3>۳. کد بهینه‌شده</h3>
+      <pre class="code-output" id="outputOptimized"></pre>
+    </div>
+
+    <div class="report-section">
+      <h3>۴. توضیحات تحلیل</h3>
+      <p id="outputNotes"></p>
+    </div>
+
+    <div class="report-section">
+      <h3>۵. جمع‌بندی</h3>
+      <p>
+        در این پروژه، کد اصلی و نسخه بهینه‌شده از نظر ساختار
+        و ویژگی‌های قابل مشاهده بررسی شده‌اند.
+        انتخاب روش بهینه‌سازی باید با توجه به نیاز مسئله،
+        پیچیدگی الگوریتم، مصرف حافظه و نتایج اندازه‌گیری واقعی انجام شود.
+      </p>
+    </div>
+
+    <div class="report-actions buttons">
+      <button type="button" id="printButton">چاپ یا ذخیره PDF</button>
+    </div>
+  </section>
+
+  <a class="next" href="index.html">بازگشت به صفحه اصلی ←</a>
+</main>
+
+<footer>
+  پروژه PyOptimize | تحلیل و بهینه‌سازی کد پایتون
+</footer>
+
+<script>
+  const projectName = document.getElementById("projectName");
+  const studentName = document.getElementById("studentName");
+  const originalCode = document.getElementById("originalCode");
+  const optimizedCode = document.getElementById("optimizedCode");
+  const analysisNotes = document.getElementById("analysisNotes");
+  const report = document.getElementById("report");
+
+  const sampleOriginal = `def find_duplicates(numbers):
+    duplicates = []
+
+    for i in range(len(numbers)):
+        for j in range(i + 1, len(numbers)):
+            if numbers[i] == numbers[j] and numbers[i] not in duplicates:
+                duplicates.append(numbers[i])
+
+    return duplicates`;
+
+  const sampleOptimized = `def find_duplicates(numbers):
+    seen = set()
+    reported = set()
+    duplicates = []
+
+    for number in numbers:
+        if number in seen and number not in reported:
+            duplicates.append(number)
+            reported.add(number)
+        else:
+            seen.add(number)
+
+    return duplicates`;
+
+  document.getElementById("sampleButton").addEventListener("click", () => {
+    projectName.value = "بررسی الگوریتم یافتن عناصر تکراری";
+    studentName.value = "";
+    originalCode.value = sampleOriginal;
+    optimizedCode.value = sampleOptimized;
+    analysisNotes.value =
+      "در نسخه اولیه از دو حلقه تو در تو برای مقایسه عناصر استفاده شده است. " +
+      "در نسخه دوم از مجموعه‌ها برای بررسی عضویت استفاده شده است. " +
+      "پیچیدگی زمانی مورد انتظار نسخه اولیه O(n²) و نسخه دوم O(n) است. " +
+      "نسخه دوم برای داده‌های قابل هش‌کردن مناسب است و از حافظه اضافی استفاده می‌کند.";
+    report.style.display = "none";
+  });
+
+  document.getElementById("clearButton").addEventListener("click", () => {
+    projectName.value = "";
+    studentName.value = "";
+    originalCode.value = "";
+    optimizedCode.value = "";
+    analysisNotes.value = "";
+    report.style.display = "none";
+  });
+
+  document.getElementById("generateButton").addEventListener("click", () => {
+    if (
+      !projectName.value.trim() ||
+      !originalCode.value.trim() ||
+      !optimizedCode.value.trim()
+    ) {
+      alert("لطفاً نام پروژه و هر دو نسخه کد را وارد کنید.");
+      return;
+    }
+
+    document.getElementById("outputProject").textContent =
+      "نام پروژه: " + projectName.value.trim();
+
+    document.getElementById("outputStudent").textContent =
+      "تهیه‌کننده: " + (studentName.value.trim() || "ثبت نشده");
+
+    document.getElementById("outputOriginal").textContent =
+      originalCode.value;
+
+    document.getElementById("outputOptimized").textContent =
+      optimizedCode.value;
+
+    document.getElementById("outputNotes").textContent =
+      analysisNotes.value.trim() || "توضیحی وارد نشده است.";
+
+    document.getElementById("reportDate").textContent =
+      "تاریخ تهیه گزارش: " +
+      new Intl.DateTimeFormat("fa-IR", {
+        dateStyle: "long"
+      }).format(new Date());
+
+    report.style.display = "block";
+    report.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  document.getElementById("printButton").addEventListener("click", () => {
+    window.print();
+  });
+</script>
+
+</body>
+                                                     </html>
