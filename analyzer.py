@@ -1,182 +1,133 @@
 import ast
-import argparse
-from pathlib import Path
+from collections import Counter
 
 
-def analyze_code(source_code):
+def analyze_code(code):
     """
-    تحلیل ساختاری کد پایتون بدون اجرای آن.
+    بررسی ساختار کد پایتون و استخراج اطلاعات اولیه.
     """
 
     try:
-        tree = ast.parse(source_code)
+        tree = ast.parse(code)
     except SyntaxError as error:
         return {
-            "success": False,
-            "error": (
-                f"خطای نحوی در خط {error.lineno}: "
-                f"{error.msg}"
-            )
+            "valid": False,
+            "error": f"خطای نحوی در خط {error.lineno}: {error.msg}"
         }
 
     functions = []
-    classes = []
-    loops = []
-    conditions = []
+    loops = 0
+    conditions = 0
     imports = []
+    variables = []
 
     for node in ast.walk(tree):
 
+        # شناسایی توابع
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
             functions.append(node.name)
 
-        elif isinstance(node, ast.ClassDef):
-            classes.append(node.name)
+        # شناسایی حلقه‌ها
+        elif isinstance(node, (ast.For, ast.While)):
+            loops += 1
 
-        elif isinstance(node, (ast.For, ast.AsyncFor, ast.While)):
-            loops.append(node)
+        # شناسایی شرط‌ها
+        elif isinstance(node, ast.If):
+            conditions += 1
 
-        elif isinstance(node, (ast.If, ast.IfExp)):
-            conditions.append(node)
+        # شناسایی کتابخانه‌ها
+        elif isinstance(node, ast.Import):
+            for item in node.names:
+                imports.append(item.name)
 
-        elif isinstance(node, (ast.Import, ast.ImportFrom)):
-            imports.append(node)
+        elif isinstance(node, ast.ImportFrom):
+            imports.append(node.module or "")
 
-    # بررسی تقریبی وجود حلقه‌های تو در تو
-    nested_loops = 0
+        # شناسایی متغیرهای تعریف‌شده
+        elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
+            variables.append(node.id)
 
-    for loop in loops:
-        for child in ast.walk(loop):
-            if child is not loop and isinstance(
-                child, (ast.For, ast.AsyncFor, ast.While)
-            ):
-                nested_loops += 1
-                break
-
-    # بررسی استفاده از ساختارهای داده
-    uses_list = any(
-        isinstance(node, (ast.List, ast.ListComp))
-        for node in ast.walk(tree)
-    )
-
-    uses_set = any(
-        isinstance(node, (ast.Set, ast.SetComp))
-        for node in ast.walk(tree)
-    )
-
-    uses_dict = any(
-        isinstance(node, (ast.Dict, ast.DictComp))
-        for node in ast.walk(tree)
-    )
-
-    # بررسی عملیات بررسی عضویت
-    membership_checks = sum(
-        isinstance(node, ast.Compare)
-        and any(
-            isinstance(op, (ast.In, ast.NotIn))
-            for op in node.ops
-        )
-        for node in ast.walk(tree)
-    )
+    variable_counts = Counter(variables)
 
     return {
-        "success": True,
+        "valid": True,
         "functions": functions,
-        "classes": classes,
-        "loops": len(loops),
-        "nested_loops": nested_loops,
-        "conditions": len(conditions),
-        "imports": len(imports),
-        "membership_checks": membership_checks,
-        "uses_list": uses_list,
-        "uses_set": uses_set,
-        "uses_dict": uses_dict
+        "function_count": len(functions),
+        "loop_count": loops,
+        "condition_count": conditions,
+        "imports": imports,
+        "variables": list(variable_counts.keys()),
+        "repeated_assignments": {
+            name: count
+            for name, count in variable_counts.items()
+            if count > 1
+        }
     }
 
 
-def print_report(result):
-
-    if not result["success"]:
-        print("\nخطا در تحلیل کد:")
-        print(result["error"])
-        return
-
-    print("\n========== PyOptimize Report ==========\n")
-
-    print("تعداد تابع‌ها:", len(result["functions"]))
-    print("تعداد کلاس‌ها:", len(result["classes"]))
-    print("تعداد حلقه‌ها:", result["loops"])
-    print("تعداد شرط‌ها:", result["conditions"])
-    print("تعداد دستورهای import:", result["imports"])
-    print("بررسی‌های عضویت:", result["membership_checks"])
-
-    print("\nنام تابع‌ها:")
-    if result["functions"]:
-        for name in result["functions"]:
-            print("-", name)
-    else:
-        print("تابعی پیدا نشد.")
-
-    print("\nنام کلاس‌ها:")
-    if result["classes"]:
-        for name in result["classes"]:
-            print("-", name)
-    else:
-        print("کلاسی پیدا نشد.")
-
-    print("\nساختارهای داده:")
-    print("List:", "استفاده شده" if result["uses_list"] else "پیدا نشد")
-    print("Set:", "استفاده شده" if result["uses_set"] else "پیدا نشد")
-    print("Dictionary:", "استفاده شده" if result["uses_dict"] else "پیدا نشد")
-
-    print("\nبررسی حلقه‌ها:")
-    if result["nested_loops"]:
-        print("حلقه‌های تو در تو شناسایی شدند.")
-        print("پیچیدگی ممکن است در برخی مسیرها بیشتر باشد.")
-    else:
-        print("حلقه تو در تو شناسایی نشد.")
-
-    print("\nتوجه:")
-    print(
-        "این گزارش فقط ساختار کد را بررسی می‌کند. "
-        "پیچیدگی دقیق الگوریتم از این اطلاعات به‌تنهایی مشخص نمی‌شود."
-    )
-
-    print("\n=======================================\n")
-
-
-def main():
-
-    parser = argparse.ArgumentParser(
-        description="PyOptimize - Python Code Analyzer"
-    )
-
-    parser.add_argument(
-        "file",
-        help="مسیر فایل پایتون برای تحلیل"
-    )
-
-    args = parser.parse_args()
-
-    file_path = Path(args.file)
-
-    if not file_path.is_file():
-        print("فایل موردنظر پیدا نشد.")
-        return
-
-    if file_path.suffix != ".py":
-        print("لطفاً یک فایل با پسوند py انتخاب کنید.")
-        return
+def estimate_complexity(code):
+    """
+    تخمین اولیه پیچیدگی زمانی کد.
+    این تابع تحلیل دقیق ریاضی انجام نمی‌دهد.
+    """
 
     try:
-        source_code = file_path.read_text(encoding="utf-8")
-    except OSError as error:
-        print("خطا در خواندن فایل:", error)
-        return
+        tree = ast.parse(code)
+    except SyntaxError:
+        return {
+            "time_complexity": "نامشخص",
+            "space_complexity": "نامشخص"
+        }
 
-    result = analyze_code(source_code)
-    print_report(result)
+    loops = [
+        node for node in ast.walk(tree)
+        if isinstance(node, (ast.For, ast.While))
+    ]
+
+    nested_loops = False
+
+    for node in loops:
+        for child in ast.walk(node):
+            if child is not node and isinstance(
+                child, (ast.For, ast.While)
+            ):
+                nested_loops = True
+                break
+
+        if nested_loops:
+            break
+
+    if nested_loops:
+        time_complexity = "احتمالاً O(n²)"
+    elif loops:
+        time_complexity = "احتمالاً O(n)"
+    else:
+        time_complexity = "نیازمند بررسی بیشتر"
+
+    return {
+        "time_complexity": time_complexity,
+        "space_complexity": "نیازمند بررسی بیشتر"
+    }
 
 
-if __name__ == "__main__":
-    main()
+def generate_analysis(code):
+    """
+    ترکیب اطلاعات ساختاری و تخمین پیچیدگی.
+    """
+
+    structure = analyze_code(code)
+
+    if not structure["valid"]:
+        return structure
+
+    complexity = estimate_complexity(code)
+
+    return {
+        "valid": True,
+        "structure": structure,
+        "complexity": complexity,
+        "message": (
+            "تحلیل ساختاری کد با موفقیت انجام شد. "
+            "نتایج پیچیدگی تخمینی هستند و به بررسی دقیق‌تر نیاز دارند."
+        )
+    }
