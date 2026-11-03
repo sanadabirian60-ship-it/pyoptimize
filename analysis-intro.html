@@ -1,259 +1,286 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معرفی تحلیل کد | PyOptimize</title>
 
-    <title>تحلیل و بهینه‌سازی کد در هوش مصنوعی | PyOptimize</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #081426;
+      --panel: #10213a;
+      --panel2: #142945;
+      --text: #e8f0ff;
+      --muted: #9aacc5;
+      --blue: #4d9fff;
+      --border: #29415f;
+      --green: #42d69b;
+    }
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Vazirmatn', sans-serif;
-            background: #080d19;
-            color: #f1f5f9;
-            line-height: 2;
-        }
+    body {
+      margin: 0;
+      font-family: Vazirmatn, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.9;
+    }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+    header {
+      padding: 20px 7%;
+      background: #0b1a2e;
+      border-bottom: 1px solid var(--border);
+    }
 
-        header {
-            background: #101a2c;
-            border-bottom: 1px solid #26364e;
-            padding: 17px 7%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+    header a {
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+    }
 
-        .logo {
-            color: #38bdf8;
-            font-size: 24px;
-            font-weight: 800;
-        }
+    main {
+      width: min(1000px, 90%);
+      margin: 40px auto;
+    }
 
-        .logo span {
-            color: white;
-        }
+    .hero {
+      text-align: center;
+      padding: 40px 22px;
+      background: linear-gradient(145deg, #102a49, #10213a);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
 
-        nav {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+    .hero h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
 
-        nav a {
-            color: #cbd5e1;
-            font-size: 14px;
-        }
+    .hero h1 span {
+      color: var(--blue);
+    }
 
-        nav a:hover {
-            color: #38bdf8;
-        }
+    .hero p {
+      color: var(--muted);
+      max-width: 720px;
+      margin: auto;
+    }
 
-        .hero {
-            padding: 85px 8%;
-            text-align: center;
-            background: radial-gradient(circle at top, #12375b, #080d19 70%);
-        }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 23px;
+      margin-top: 22px;
+    }
 
-        .badge {
-            display: inline-block;
-            border: 1px solid #0ea5e9;
-            color: #38bdf8;
-            border-radius: 30px;
-            padding: 5px 18px;
-            margin-bottom: 20px;
-            font-size: 13px;
-        }
+    h2 {
+      font-size: 21px;
+      margin-top: 0;
+    }
 
-        .hero h1 {
-            font-size: clamp(27px, 5vw, 43px);
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
+    h3 {
+      font-size: 16px;
+      color: var(--blue);
+    }
 
-        .hero h1 span {
-            color: #38bdf8;
-        }
+    p, li {
+      color: var(--muted);
+    }
 
-        .hero p {
-            color: #aab8ca;
-            max-width: 800px;
-            margin: auto;
-        }
+    ul, ol {
+      padding-right: 22px;
+    }
 
-        .container {
-            width: 85%;
-            max-width: 1000px;
-            margin: auto;
-        }
+    li {
+      margin-bottom: 8px;
+    }
 
-        .content {
-            padding: 60px 0;
-        }
+    .code {
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #071323;
+      color: #e8f0ff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 17px;
+      font-family: Consolas, monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
 
-        .article-section {
-            background: #111c30;
-            border: 1px solid #26364e;
-            border-radius: 15px;
-            padding: 28px;
-            margin-bottom: 25px;
-        }
+    .notice {
+      background: #172c49;
+      border-right: 4px solid var(--blue);
+      padding: 14px 17px;
+      border-radius: 8px;
+      margin-top: 18px;
+      color: var(--muted);
+    }
 
-        .article-section h2 {
-            color: #38bdf8;
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
 
-        .article-section h3 {
-            color: #7dd3fc;
-            margin: 20px 0 10px;
-        }
+    .button {
+      display: inline-block;
+      padding: 10px 19px;
+      border-radius: 9px;
+      background: var(--blue);
+      color: #061426;
+      font-weight: 700;
+      text-decoration: none;
+    }
 
-        .article-section p {
-            color: #c0ccdc;
-            font-size: 15px;
-        }
+    .button.secondary {
+      background: #263d5b;
+      color: var(--text);
+    }
 
-        .article-section ul {
-            padding-right: 25px;
-            color: #c0ccdc;
-        }
+    footer {
+      margin-top: 50px;
+      padding: 22px;
+      text-align: center;
+      background: #0b1a2e;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
 
-        .article-section li {
-            margin-bottom: 8px;
-        }
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 24px;
+      }
 
-        pre {
-            direction: ltr;
-            text-align: left;
-            overflow-x: auto;
-            background: #050914;
-            border: 1px solid #26364e;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 18px 0;
-            color: #7dd3fc;
-            font-family: Consolas, monospace;
-            font-size: 13px;
-            line-height: 1.8;
-        }
-
-        .note {
-            background: #102a43;
-            border-right: 4px solid #0ea5e9;
-            padding: 17px;
-            border-radius: 8px;
-            color: #dbeafe;
-            margin-top: 18px;
-        }
-
-        .comparison {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-
-        .comparison th,
-        .comparison td {
-            border: 1px solid #334155;
-            padding: 12px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .comparison th {
-            background: #12375b;
-            color: #7dd3fc;
-        }
-
-        .comparison td {
-            color: #cbd5e1;
-        }
-
-        .back {
-            display: inline-block;
-            background: #0284c7;
-            padding: 10px 25px;
-            border-radius: 9px;
-            margin-top: 20px;
-        }
-
-        footer {
-            background: #050914;
-            border-top: 1px solid #26364e;
-            padding: 25px;
-            text-align: center;
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        @media(max-width: 650px) {
-            header {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .container {
-                width: 92%;
-            }
-
-            .article-section {
-                padding: 20px;
-            }
-
-            .comparison th,
-            .comparison td {
-                padding: 7px;
-                font-size: 12px;
-            }
-        }
-    </style>
+      .panel {
+        padding: 17px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-    <a href="index.html" class="logo">
-        Py<span>Optimize</span>
-    </a>
-
-    <nav>
-        <a href="index.html">صفحه اصلی</a>
-        <a href="analysis.html">تحلیل کد</a>
-        <a href="patterns.html">تشخیص الگوها</a>
-        <a href="optimization.html">بهینه‌سازی</a>
-    </nav>
+  <a href="index.html">PyOptimize</a>
 </header>
 
-<section class="hero">
+<main>
 
-    <div class="badge">
-        Artificial Intelligence & Code Optimization
-    </div>
+  <section class="hero">
+    <h1>معرفی <span>تحلیل کد پایتون</span></h1>
+    <p>
+      آشنایی با روش‌های بررسی ساختار کد، شناسایی مشکلات احتمالی
+      و شناخت راهکارهای بهبود عملکرد برنامه‌های پایتون.
+    </p>
+  </section>
 
-    <h1>
-        تحلیل و بهینه‌سازی کد<br>
-        با استفاده از <span>هوش مصنوعی</span>
-    </h1>
+  <section class="panel">
+    <h2>تحلیل کد چیست؟</h2>
 
     <p>
-        بررسی ساختار برنامه‌ها، شناسایی مشکلات،
-        تشخیص الگوهای ناکارآمد و ارائه پیشنهادهایی
-        برای بهبود کیفیت و عملکرد کدهای برنامه‌نویسی
+      تحلیل کد فرایندی است که در آن ساختار و ویژگی‌های یک برنامه
+      بررسی می‌شوند تا مشکلات احتمالی، الگوهای نامناسب و فرصت‌های
+      بهینه‌سازی شناسایی شوند.
+    </p>
+
+    <p>
+      در زبان پایتون می‌توان از ابزارهای مختلفی برای بررسی کد استفاده کرد.
+      یکی از این ابزارها کتابخانه استاندارد AST است که ساختار نحوی برنامه
+      را به شکل یک درخت قابل بررسی نمایش می‌دهد.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2>چرا تحلیل کد اهمیت دارد؟</h2>
+
+    <ul>
+      <li>شناسایی ساختارهای پیچیده و تکراری در برنامه</li>
+      <li>بررسی استفاده از حلقه‌ها و شرط‌ها</li>
+      <li>شناخت فرصت‌های احتمالی بهینه‌سازی</li>
+      <li>کمک به خوانایی و نگهداری بهتر کد</li>
+      <li>آشنایی با تأثیر انتخاب الگوریتم و ساختار داده بر عملکرد</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>نمونه‌ای از کد پایتون</h2>
+
+    <p>
+      در مثال زیر، یک تابع برای پیدا کردن اعداد زوج در یک لیست نوشته شده است:
+    </p>
+
+    <pre class="code">def find_even_numbers(numbers):
+    result = []
+
+    for number in numbers:
+        if number % 2 == 0:
+            result.append(number)
+
+    return result</pre>
+
+    <h3>موارد قابل بررسی در این کد</h3>
+
+    <ul>
+      <li>یک تابع با نام find_even_numbers تعریف شده است.</li>
+      <li>یک حلقه برای پیمایش عناصر لیست وجود دارد.</li>
+      <li>یک شرط برای تشخیص زوج بودن عدد استفاده شده است.</li>
+      <li>نتایج در یک لیست ذخیره می‌شوند.</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>مراحل تحلیل در PyOptimize</h2>
+
+    <ol>
+      <li>وارد کردن کد پایتون</li>
+      <li>بررسی ساختار و اجزای کد</li>
+      <li>شناسایی الگوهای قابل توجه</li>
+      <li>بررسی تقریبی پیچیدگی الگوریتم</li>
+      <li>ارائه پیشنهادهایی برای بهبود کد</li>
+      <li>مقایسه نسخه اولیه و نسخه بهینه‌شده</li>
+      <li>تهیه گزارش نهایی</li>
+    </ol>
+  </section>
+
+  <section class="panel">
+    <h2>نقش هوش مصنوعی در تحلیل کد</h2>
+
+    <p>
+      هوش مصنوعی می‌تواند در نسخه‌های پیشرفته‌تر پروژه برای بررسی
+      کد، توضیح مشکلات، پیشنهاد روش‌های جایگزین و کمک به بهینه‌سازی
+      الگوریتم‌ها استفاده شود.
+    </p>
+
+    <div class="notice">
+      در نسخه فعلی PyOptimize، بررسی‌های خودکار با قواعد ساده JavaScript
+      و تحلیل ساختاری Python انجام می‌شوند. اتصال به مدل هوش مصنوعی واقعی
+      هنوز پیاده‌سازی نشده است.
+    </div>
+  </section>
+
+  <div class="buttons">
+    <a class="button" href="analysis.html">شروع تحلیل کد</a>
+    <a class="button secondary" href="index.html">بازگشت به صفحه اصلی</a>
+  </div>
+
+</main>
+
+<footer>
+  PyOptimize | پروژه آموزشی تحلیل و بهینه‌سازی کد پایتون
+</footer>
+
+</body>
+</html>
