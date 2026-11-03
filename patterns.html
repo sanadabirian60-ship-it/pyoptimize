@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تشخیص الگوها با AI | PyOptimize</title>
+
+    <title>تشخیص الگوهای قابل بهبود | PyOptimize</title>
 
     <style>
         * {
@@ -13,70 +15,100 @@
         body {
             margin: 0;
             font-family: Tahoma, Arial, sans-serif;
-            background: #0b1120;
-            color: #e5e7eb;
-            line-height: 1.8;
+            background: #f4f6fb;
+            color: #20283a;
+            line-height: 1.9;
         }
 
         header {
-            background: #111c32;
+            background: #172554;
+            color: white;
             padding: 22px 8%;
-            border-bottom: 1px solid #263653;
         }
 
         header h1 {
-            color: #60a5fa;
             margin: 0;
+            font-size: 25px;
         }
 
         header p {
-            color: #a5b4fc;
-            margin-bottom: 0;
+            color: #cbd5e1;
+            margin: 5px 0;
+        }
+
+        nav {
+            margin-top: 12px;
+        }
+
+        nav a {
+            color: #dbeafe;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: white;
         }
 
         main {
-            width: min(1000px, 92%);
-            margin: 40px auto;
+            width: min(1050px, 92%);
+            margin: 35px auto;
         }
 
-        .back {
-            display: inline-block;
-            color: #93c5fd;
-            text-decoration: none;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background: #14213a;
-            border: 1px solid #263653;
-            border-radius: 14px;
+        .intro,
+        .panel {
+            background: white;
             padding: 25px;
+            border-radius: 14px;
             margin-bottom: 25px;
+            box-shadow: 0 4px 18px #1725540d;
         }
 
         h2 {
-            color: #60a5fa;
+            color: #1e3a8a;
             margin-top: 0;
+        }
+
+        h3 {
+            color: #334155;
+        }
+
+        .pattern {
+            background: #eff6ff;
+            border-right: 4px solid #2563eb;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .code-box {
+            direction: ltr;
+            text-align: left;
+            background: #111827;
+            color: #e5e7eb;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre;
         }
 
         textarea {
             width: 100%;
-            min-height: 280px;
-            resize: vertical;
-            background: #080e1b;
-            color: #d1fae5;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 16px;
-            font-family: Consolas, monospace;
-            font-size: 14px;
+            min-height: 230px;
             direction: ltr;
             text-align: left;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: #3b82f6;
+            background: #111827;
+            color: #f8fafc;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            padding: 18px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            resize: vertical;
         }
 
         button {
@@ -94,24 +126,19 @@
             background: #1d4ed8;
         }
 
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
         .result {
-            background: #080e1b;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 20px;
-            min-height: 100px;
+            background: #eff6ff;
+            border-right: 4px solid #2563eb;
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 20px;
             white-space: pre-wrap;
             overflow-wrap: anywhere;
         }
 
-        .status {
-            margin-top: 15px;
-            color: #fbbf24;
-        }
+        .note {
+            color: #64748b;
+            font-size: 13
+
 
        
