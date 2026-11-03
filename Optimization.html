@@ -1,132 +1,62 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>بهینه‌سازی کد با AI | PyOptimize</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --background: #0b1120;
-            --surface: #111c32;
-            --border: #293b57;
-            --primary: #0ea5e9;
-            --text: #e5e7eb;
-            --muted: #9caec5;
-            --success: #34d399;
-            --warning: #fbbf24;
         }
 
         body {
-            font-family: "Vazirmatn", sans-serif;
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.9;
-            min-height: 100vh;
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #0b1120;
+            color: #e5e7eb;
+            line-height: 1.8;
         }
 
         header {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 15px 7%;
+            background: #111c32;
+            padding: 22px 8%;
+            border-bottom: 1px solid #263653;
         }
 
-        nav {
-            max-width: 1200px;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
+        header h1 {
+            color: #60a5fa;
+            margin: 0;
         }
 
-        .logo {
-            font-size: 25px;
-            font-weight: 800;
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: var(--muted);
-            text-decoration: none;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
+        header p {
+            color: #a5b4fc;
+            margin-bottom: 0;
         }
 
         main {
-            width: 92%;
-            max-width: 1050px;
+            width: min(1000px, 92%);
             margin: 40px auto;
         }
 
+        .back {
+            display: inline-block;
+            color: #93c5fd;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
         .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 26px;
+            background: #14213a;
+            border: 1px solid #263653;
+            border-radius: 14px;
+            padding: 25px;
             margin-bottom: 25px;
         }
 
-        h1 {
-            color: var(--primary);
-            font-size: clamp(25px, 4vw, 34px);
-            margin-bottom: 12px;
-        }
-
         h2 {
-            color: #7dd3fc;
-            font-size: 21px;
-            margin-bottom: 15px;
-        }
-
-        h3 {
-            color: #7dd3fc;
-            font-size: 17px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            color: var(--muted);
-        }
-
-        .badge {
-            display: inline-block;
-            background: #12354b;
-            color: #7dd3fc;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-bottom: 12px;
-        }
-
-        .notice {
-            margin-top: 16px;
-            padding: 12px 15px;
-            background: #332b18;
-            color: var(--warning);
-            border-radius: 9px;
-            font-size: 13px;
+            color: #60a5fa;
+            margin-top: 0;
         }
 
         textarea {
@@ -134,431 +64,23 @@
             min-height: 260px;
             resize: vertical;
             background: #080e1b;
-            color: #dbeafe;
+            color: #d1fae5;
             border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 18px;
+            border-radius: 10px;
+            padding: 16px;
             font-family: Consolas, monospace;
             font-size: 14px;
-            line-height: 1.8;
             direction: ltr;
             text-align: left;
             outline: none;
         }
 
         textarea:focus {
-            border-color: var(--primary);
+            border-color: #3b82f6;
         }
 
         button {
             border: none;
             border-radius: 9px;
-            padding: 11px 20px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: .2s;
-        }
-
-        button:focus-visible {
-            outline: 2px solid white;
-            outline-offset: 3px;
-        }
-
-        .buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 17px;
-        }
-
-        .primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .primary:hover {
-            background: #0284c7;
-        }
-
-        .secondary {
-            background: #263750;
-            color: white;
-        }
-
-        .secondary:hover {
-            background: #344966;
-        }
-
-        .result-box {
-            background: #080e1b;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 16px;
-        }
-
-        .code-box {
-            direction: ltr;
-            text-align: left;
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-            background: #050a13;
-            border: 1px solid #263550;
-            border-radius: 9px;
-            padding: 16px;
-            margin-top: 12px;
-            color: #a7f3d0;
-            font-family: Consolas, monospace;
-            font-size: 13px;
-            overflow-x: auto;
-        }
-
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .comparison .result-box {
-            margin-top: 0;
-        }
-
-        .message {
-            color: var(--warning);
-            font-size: 14px;
-            margin-top: 12px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .recommendation {
-            border-right: 3px solid var(--primary);
-            padding: 12px;
-            background: #111c32;
-            border-radius: 8px;
-            margin-top: 12px;
-        }
-
-        .next-link {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 10px 18px;
-            border-radius: 9px;
-            margin-top: 18px;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        footer {
-            text-align: center;
-            padding: 25px;
-            color: var(--muted);
-            border-top: 1px solid var(--border);
-            margin-top: 50px;
-        }
-
-        @media (max-width: 700px) {
-            nav {
-                flex-direction: column;
-            }
-
-            .nav-links {
-                justify-content: center;
-                gap: 13px;
-                font-size: 13px;
-            }
-
-            .card {
-                padding: 19px;
-            }
-
-            .comparison {
-                grid-template-columns: 1fr;
-            }
-
-            .buttons button {
-                flex: 1 1 100%;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<header>
-    <nav>
-        <a href="index.html" class="logo">PyOptimize</a>
-
-        <div class="nav-links">
-            <a href="index.html">صفحه اصلی</a>
-            <a href="analysis.html">تحلیل کد</a>
-            <a href="patterns.html">تشخیص الگوها</a>
-            <a href="optimization.html">بهینه‌سازی</a>
-        </div>
-    </nav>
-</header>
-
-<main>
-
-    <section class="card">
-        <span class="badge">مرحله سوم پروژه</span>
-
-        <h1>بهینه‌سازی کد با هوش مصنوعی</h1>
-
-        <p>
-            در این بخش، هدف پیدا کردن روش‌هایی برای بهبود عملکرد
-            برنامه‌های پایتون است. کد اولیه بررسی می‌شود و برای
-            بهبود ساختار، کاهش عملیات اضافی و انتخاب الگوریتم مناسب،
-            پیشنهادهایی ارائه می‌شود.
-        </p>
-
-        <div class="notice">
-            این نسخه هنوز به مدل هوش مصنوعی واقعی متصل نیست.
-            بهینه‌سازی خودکار در حال حاضر فقط برای نمونه آماده فعال است.
-        </div>
-    </section>
-
-    <section class="card">
-        <h2>ورود کد برای بهینه‌سازی</h2>
-
-        <p style="margin-bottom: 15px;">
-            کد پایتون خود را وارد کنید یا نمونه آماده را بارگذاری کنید.
-        </p>
-
-        <textarea
-            id="codeInput"
-            spellcheck="false"
-            placeholder="کد پایتون خود را اینجا وارد کنید..."
-        ></textarea>
-
-        <div class="buttons">
-            <button class="secondary" id="sampleButton" type="button">
-                بارگذاری نمونه کد
-            </button>
-
-            <button class="primary" id="optimizeButton" type="button">
-                بررسی و بهینه‌سازی
-            </button>
-
-            <button class="secondary" id="clearButton" type="button">
-                پاک کردن
-            </button>
-        </div>
-
-        <div id="message" class="message" role="status" aria-live="polite"></div>
-    </section>
-
-    <section class="card hidden" id="results">
-
-        <h2>نتایج بهینه‌سازی</h2>
-
-        <div class="result-box">
-            <h3>۱. تحلیل کد اولیه</h3>
-            <p id="analysisResult"></p>
-        </div>
-
-        <div class="result-box">
-            <h3>۲. پیشنهادهای بهینه‌سازی</h3>
-            <div id="recommendations"></div>
-        </div>
-
-        <div class="comparison">
-
-            <div class="result-box">
-                <h3>کد اولیه</h3>
-                <pre class="code-box" id="originalCode"></pre>
-            </div>
-
-            <div class="result-box">
-                <h3>کد پیشنهادی</h3>
-                <pre class="code-box" id="optimizedCode"></pre>
-            </div>
-
-        </div>
-
-        <div class="result-box">
-            <h3>۳. مقایسه پیچیدگی</h3>
-            <p id="complexityResult"></p>
-        </div>
-
-        <a href="complexity.html" class="next-link">
-            رفتن به تحلیل پیچیدگی ←
-        </a>
-
-    </section>
-
-    <section class="card">
-        <h2>روش‌های رایج بهینه‌سازی</h2>
-
-        <div class="recommendation">
-            <h3>انتخاب ساختار داده مناسب</h3>
-            <p>
-                استفاده از set و dictionary در موقعیت‌های مناسب
-                می‌تواند عملیات جست‌وجو و دسترسی به داده‌ها را سریع‌تر کند.
-            </p>
-        </div>
-
-        <div class="recommendation">
-            <h3>کاهش محاسبات تکراری</h3>
-            <p>
-                محاسباتی که نتیجه آن‌ها تغییر نمی‌کند، می‌توانند
-                خارج از حلقه انجام شوند.
-            </p>
-        </div>
-
-        <div class="recommendation">
-            <h3>انتخاب الگوریتم مناسب</h3>
-            <p>
-                گاهی تغییر الگوریتم، تأثیر بیشتری از تغییرات جزئی
-                در دستورات برنامه دارد.
-            </p>
-        </div>
-
-        <div class="recommendation">
-            <h3>حفظ خوانایی کد</h3>
-            <p>
-                بهینه‌سازی نباید باعث پیچیده شدن غیرضروری برنامه
-                و دشوار شدن نگهداری آن شود.
-            </p>
-        </div>
-    </section>
-
-</main>
-
-<footer>
-    PyOptimize | تحلیل و بهینه‌سازی کد پایتون
-</footer>
-
-<script>
-"use strict";
-
-const sampleCode = `def find_duplicates(numbers):
-    duplicates = []
-
-    for i in range(len(numbers)):
-        for j in range(i + 1, len(numbers)):
-            if numbers[i] == numbers[j]:
-                if numbers[i] not in duplicates:
-                    duplicates.append(numbers[i])
-
-    return duplicates
-
-
-values = [4, 2, 8, 2, 4, 9]
-print(find_duplicates(values))`;
-
-const optimizedSample = `def find_duplicates(numbers):
-    seen = set()
-    reported = set()
-    duplicates = []
-
-    for number in numbers:
-        if number in seen and number not in reported:
-            duplicates.append(number)
-            reported.add(number)
-        else:
-            seen.add(number)
-
-    return duplicates
-
-
-values = [4, 2, 8, 2, 4, 9]
-print(find_duplicates(values))`;
-
-const input = document.getElementById("codeInput");
-const results = document.getElementById("results");
-const message = document.getElementById("message");
-
-document.getElementById("sampleButton").addEventListener("click", function () {
-    input.value = sampleCode;
-    results.classList.add("hidden");
-    message.textContent = "نمونه کد بارگذاری شد.";
-});
-
-document.getElementById("clearButton").addEventListener("click", function () {
-    input.value = "";
-    results.classList.add("hidden");
-    message.textContent = "ویرایشگر پاک شد.";
-});
-
-document.getElementById("optimizeButton").addEventListener("click", optimizeCode);
-
-function optimizeCode() {
-    const code = input.value.trim();
-
-    if (!code) {
-        message.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
-        results.classList.add("hidden");
-        return;
-    }
-
-    document.getElementById("originalCode").textContent = code;
-
-    if (code === sampleCode.trim()) {
-        document.getElementById("analysisResult").textContent =
-            "در نسخه اولیه، حلقه‌های تودرتو برای مقایسه عناصر استفاده شده‌اند. " +
-            "همچنین بررسی عضویت در لیست duplicates می‌تواند عملیات اضافی ایجاد کند.";
-
-        document.getElementById("optimizedCode").textContent = optimizedSample;
-
-        document.getElementById("complexityResult").textContent =
-            "روش اولیه در حالت کلی می‌تواند O(n²) باشد. " +
-            "روش پیشنهادی با استفاده از set در حالت میانگین O(n) زمان اجرا دارد. " +
-            "این تحلیل با فرض قابل هش‌بودن عناصر ورودی و عملیات میانگین ثابت set است.";
-
-        renderRecommendations([
-            "استفاده از set برای بررسی عضویت به جای جست‌وجوی مکرر در لیست.",
-            "حذف حلقه‌های تودرتو و پیمایش یک‌باره داده‌ها.",
-            "حفظ ترتیب اولین مشاهده تکرار هر مقدار در خروجی."
-        ]);
-
-        message.textContent = "نسخه پیشنهادی نمونه آماده نمایش داده شد.";
-    } else {
-        document.getElementById("analysisResult").textContent =
-            "کد واردشده دریافت شد، اما این نسخه امکان تحلیل معنایی و تولید خودکار نسخه بهینه‌شده برای کد دلخواه را ندارد.";
-
-        document.getElementById("optimizedCode").textContent =
-            "برای تولید نسخه بهینه‌شده کد دلخواه، اتصال به بک‌اند پایتون و مدل هوش مصنوعی لازم است.";
-
-        document.getElementById("complexityResult").textContent =
-            "پیچیدگی زمانی و حافظه این کد بدون تحلیل ساختار و منطق الگوریتم قابل تعیین دقیق نیست.";
-
-        renderRecommendations([
-            "الگوریتم و ساختار داده‌های مورد استفاده را بررسی کنید.",
-            "عملیات تکراری و حلقه‌های غیرضروری را شناسایی کنید.",
-            "پیش از اعمال تغییرات، درستی خروجی برنامه را با ورودی‌های مختلف بررسی کنید."
-        ]);
-
-        message.textContent = "بررسی اولیه انجام شد؛ بهینه‌سازی خودکار این کد هنوز فعال نیست.";
-    }
-
-    results.classList.remove("hidden");
-
-    results.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-}
-
-function renderRecommendations(items) {
-    const container = document.getElementById("recommendations");
-    const fragment = document.createDocumentFragment();
-
-    items.forEach(function (item) {
-        const box = document.createElement("div");
-        box.className = "recommendation";
-        box.textContent = item;
-        fragment.appendChild(box);
-    });
-
-    container.replaceChildren(fragment);
-}
-</script>
-
-</body>
-          </html>
+            padding: 12px 22px;
+            margin-top
