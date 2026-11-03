@@ -1,463 +1,310 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>گزارش تحلیل | PyOptimize</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ساخت گزارش تحلیل و بهینه‌سازی کد پایتون با هوش مصنوعی">
+    <title>گزارش تحلیل با AI | PyOptimize</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-  <style>
-    :root {
-      --bg: #081426;
-      --panel: #10213a;
-      --panel2: #142945;
-      --text: #e8f0ff;
-      --muted: #9aacc5;
-      --blue: #4d9fff;
-      --border: #29415f;
-      --green: #42d69b;
-    }
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f3f6fb;
+            color: #1e293b;
+            line-height: 1.9;
+        }
 
-    * {
-      box-sizing: border-box;
-    }
+        header {
+            background: #102a43;
+            color: white;
+            padding: 22px 7%;
+        }
 
-    body {
-      margin: 0;
-      font-family: Vazirmatn, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.9;
-    }
+        header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
 
-    header {
-      padding: 22px 7%;
-      background: #0b1a2e;
-      border-bottom: 1px solid var(--border);
-    }
+        header p {
+            margin: 5px 0 0;
+            color: #cbd5e1;
+        }
 
-    header a {
-      color: var(--blue);
-      text-decoration: none;
-      font-weight: 800;
-    }
+        nav {
+            background: #173f5f;
+            padding: 12px 7%;
+        }
 
-    main {
-      width: min(1000px, 90%);
-      margin: 40px auto;
-    }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 14px;
+        }
 
-    h1 {
-      font-size: 29px;
-      margin-bottom: 8px;
-    }
+        main {
+            width: 90%;
+            max-width: 1000px;
+            margin: 35px auto;
+        }
 
-    h2 {
-      font-size: 20px;
-      margin-top: 0;
-    }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
 
-    p {
-      color: var(--muted);
-    }
+        h2 {
+            color: #123b5d;
+            margin-top: 0;
+        }
 
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 22px;
-      margin: 22px 0;
-    }
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 18px 0 7px;
+        }
 
-    label {
-      display: block;
-      font-weight: 700;
-      margin: 12px 0 7px;
-    }
+        textarea {
+            width: 100%;
+            min-height: 130px;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            direction: ltr;
+            text-align: left;
+            resize: vertical;
+        }
 
-    input,
-    textarea {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 12px;
-      background: #071323;
-      color: var(--text);
-      font-family: inherit;
-      font-size: 14px;
-      outline: none;
-    }
+        textarea.text-input {
+            direction: rtl;
+            text-align: right;
+            font-family: Tahoma, Arial, sans-serif;
+        }
 
-    input:focus,
-    textarea:focus {
-      border-color: var(--blue);
-    }
+        button {
+            background: #1479b8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 20px;
+        }
 
-    textarea {
-      min-height: 150px;
-      resize: vertical;
-      direction: ltr;
-      text-align: left;
-      font-family: Consolas, monospace;
-      line-height: 1.7;
-    }
+        button:hover {
+            background: #0d5f93;
+        }
 
-    button {
-      border: 0;
-      border-radius: 9px;
-      padding: 11px 18px;
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      background: var(--blue);
-      color: #061426;
-    }
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
 
-    button.secondary {
-      background: #263d5b;
-      color: var(--text);
-    }
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+        }
 
-    button:hover {
-      opacity: .88;
-    }
+        #reportResult {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            background: #f8fafc;
+            border: 1px solid #dbe4ee;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 100px;
+        }
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
+        .hint {
+            color: #64748b;
+            font-size: 13px;
+        }
 
-    .notice {
-      background: #172c49;
-      border-right: 4px solid var(--blue);
-      border-radius: 8px;
-      padding: 13px 16px;
-      color: var(--muted);
-      margin-top: 18px;
-    }
+        footer {
+            text-align: center;
+            padding: 22px;
+            background: #102a43;
+            color: #cbd5e1;
+            margin-top: 40px;
+        }
 
-    #report {
-      display: none;
-    }
+        @media (max-width: 600px) {
+            header, nav {
+                padding-right: 5%;
+                padding-left: 5%;
+            }
 
-    .report-header {
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 20px;
-      margin-bottom: 20px;
-    }
+            nav a {
+                display: inline-block;
+                margin: 4px 0 4px 12px;
+            }
 
-    .report-header h2 {
-      font-size: 25px;
-      color: var(--blue);
-    }
-
-    .report-section {
-      margin: 22px 0;
-      padding: 16px;
-      background: var(--panel2);
-      border-radius: 10px;
-      border: 1px solid var(--border);
-    }
-
-    .report-section h3 {
-      margin-top: 0;
-      font-size: 17px;
-    }
-
-    .report-section p {
-      margin-bottom: 5px;
-      overflow-wrap: anywhere;
-    }
-
-    .code-output {
-      direction: ltr;
-      text-align: left;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-      background: #071323;
-      color: #e8f0ff;
-      padding: 14px;
-      border-radius: 9px;
-      font-family: Consolas, monospace;
-      font-size: 13px;
-    }
-
-    .next {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 18px;
-      background: #173b63;
-      color: var(--text);
-      border-radius: 9px;
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      padding: 22px;
-      margin-top: 50px;
-    }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 23px;
-      }
-
-      .panel {
-        padding: 16px;
-      }
-    }
-
-    @media print {
-      body {
-        background: white;
-        color: black;
-      }
-
-      header,
-      footer,
-      .form-panel,
-      .report-actions,
-      .next {
-        display: none !important;
-      }
-
-      main {
-        width: 100%;
-        margin: 0;
-      }
-
-      #report {
-        display: block !important;
-        border: none;
-        background: white;
-        color: black;
-        padding: 0;
-      }
-
-      .report-section {
-        background: white;
-        color: black;
-        border: 1px solid #ccc;
-        break-inside: avoid;
-      }
-
-      .report-section p {
-        color: #333;
-      }
-
-      .code-output {
-        background: #f2f2f2;
-        color: black;
-        white-space: pre-wrap;
-      }
-
-      .report-header h2 {
-        color: #174b83;
-      }
-    }
-  </style>
+            .card {
+                padding: 18px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-  <a href="index.html">PyOptimize</a>
+    <h1>PyOptimize</h1>
+    <p>گزارش تحلیل و بهینه‌سازی کد با هوش مصنوعی</p>
 </header>
 
+<nav>
+    <a href="index.html">صفحه اصلی</a>
+    <a href="analysis.html">تحلیل کد</a>
+    <a href="patterns.html">تشخیص الگوها</a>
+    <a href="optimization.html">بهینه‌سازی</a>
+    <a href="complexity.html">پیچیدگی</a>
+    <a href="comparison.html">مقایسه کدها</a>
+</nav>
+
 <main>
-  <h1>۶. گزارش تحلیل</h1>
 
-  <p>
-    در این بخش می‌توان اطلاعات پروژه و کدهای بررسی‌شده را وارد کرد
-    و یک گزارش خلاصه از فرایند تحلیل و بهینه‌سازی ساخت.
-  </p>
+    <section class="card">
+        <h2>۶. گزارش تحلیل با هوش مصنوعی</h2>
 
-  <section class="panel form-panel">
-    <h2>اطلاعات گزارش</h2>
+        <p>
+            در این بخش می‌توانید کد پایتون و نتایج مراحل قبلی
+            را وارد کنید تا یک گزارش یکپارچه از وضعیت کد،
+            مشکلات احتمالی و پیشنهادهای بهینه‌سازی دریافت کنید.
+        </p>
 
-    <label for="projectName">نام پروژه</label>
-    <input id="projectName" type="text" placeholder="مثلاً: بررسی الگوریتم یافتن عناصر تکراری">
+        <label for="code">کد اصلی پایتون:</label>
+        <textarea id="code" placeholder="کد پایتون خود را اینجا وارد کنید..."></textarea>
 
-    <label for="studentName">نام تهیه‌کننده</label>
-    <input id="studentName" type="text" placeholder="نام خود را وارد کنید">
+        <label for="analysis">نتیجه تحلیل کد:</label>
+        <textarea id="analysis" class="text-input"
+            placeholder="نتیجه صفحه تحلیل کد را اینجا وارد کنید..."></textarea>
 
-    <label for="originalCode">کد اصلی</label>
-    <textarea id="originalCode" spellcheck="false"
-      placeholder="کد اولیه پایتون را وارد کنید..."></textarea>
+        <label for="patterns">نتیجه تشخیص الگوها:</label>
+        <textarea id="patterns" class="text-input"
+            placeholder="نتیجه صفحه تشخیص الگوها را اینجا وارد کنید..."></textarea>
 
-    <label for="optimizedCode">کد بهینه‌شده</label>
-    <textarea id="optimizedCode" spellcheck="false"
-      placeholder="نسخه بهینه‌شده را وارد کنید..."></textarea>
+        <label for="optimization">کد بهینه‌شده یا پیشنهادهای بهینه‌سازی:</label>
+        <textarea id="optimization"
+            placeholder="کد یا پیشنهادهای بهینه‌سازی را اینجا وارد کنید..."></textarea>
 
-    <label for="analysisNotes">توضیحات و نتایج تحلیل</label>
-    <textarea id="analysisNotes"
-      style="direction:rtl;text-align:right;font-family:Vazirmatn"
-      placeholder="مشکلات شناسایی‌شده، پیشنهادها و نتیجه مقایسه را بنویسید..."></textarea>
+        <label for="complexity">نتیجه تحلیل پیچیدگی:</label>
+        <textarea id="complexity" class="text-input"
+            placeholder="نتیجه تحلیل پیچیدگی زمانی و فضایی را اینجا وارد کنید..."></textarea>
 
-    <div class="buttons">
-      <button type="button" id="generateButton">ساخت گزارش</button>
-      <button type="button" class="secondary" id="sampleButton">بارگذاری نمونه</button>
-      <button type="button" class="secondary" id="clearButton">پاک کردن</button>
-    </div>
+        <label for="comparison">نتیجه مقایسه کدها:</label>
+        <textarea id="comparison" class="text-input"
+            placeholder="نتیجه مقایسه نسخه اولیه و بهینه‌شده را اینجا وارد کنید..."></textarea>
 
-    <div class="notice">
-      اطلاعات این صفحه به‌صورت دستی وارد می‌شوند.
-      در نسخه فعلی، داده‌های صفحات قبلی به‌طور خودکار به این صفحه منتقل نمی‌شوند.
-    </div>
-  </section>
+        <p class="hint">
+            واردکردن نتایج صفحات قبلی اختیاری است؛ برای گزارش کامل‌تر،
+            بهتر است آن‌ها را نیز وارد کنید.
+        </p>
 
-  <section class="panel" id="report" aria-live="polite">
-    <div class="report-header">
-      <h2>گزارش تحلیل و بهینه‌سازی کد</h2>
-      <p>PyOptimize</p>
-      <p id="reportDate"></p>
-    </div>
+        <button id="generateButton" type="button">
+            تولید گزارش با هوش مصنوعی
+        </button>
 
-    <div class="report-section">
-      <h3>۱. اطلاعات پروژه</h3>
-      <p id="outputProject"></p>
-      <p id="outputStudent"></p>
-    </div>
+        <p id="status" role="status" aria-live="polite"></p>
+    </section>
 
-    <div class="report-section">
-      <h3>۲. کد اصلی</h3>
-      <pre class="code-output" id="outputOriginal"></pre>
-    </div>
+    <section class="card">
+        <h2>گزارش نهایی</h2>
 
-    <div class="report-section">
-      <h3>۳. کد بهینه‌شده</h3>
-      <pre class="code-output" id="outputOptimized"></pre>
-    </div>
+        <div id="reportResult">
+            گزارش تولیدشده پس از تحلیل در این قسمت نمایش داده می‌شود.
+        </div>
 
-    <div class="report-section">
-      <h3>۴. توضیحات تحلیل</h3>
-      <p id="outputNotes"></p>
-    </div>
+        <button id="printButton" type="button" disabled>
+            چاپ یا ذخیره گزارش به صورت PDF
+        </button>
+    </section>
 
-    <div class="report-section">
-      <h3>۵. جمع‌بندی</h3>
-      <p>
-        در این پروژه، کد اصلی و نسخه بهینه‌شده از نظر ساختار
-        و ویژگی‌های قابل مشاهده بررسی شده‌اند.
-        انتخاب روش بهینه‌سازی باید با توجه به نیاز مسئله،
-        پیچیدگی الگوریتم، مصرف حافظه و نتایج اندازه‌گیری واقعی انجام شود.
-      </p>
-    </div>
-
-    <div class="report-actions buttons">
-      <button type="button" id="printButton">چاپ یا ذخیره PDF</button>
-    </div>
-  </section>
-
-  <a class="next" href="index.html">بازگشت به صفحه اصلی ←</a>
 </main>
 
 <footer>
-  پروژه PyOptimize | تحلیل و بهینه‌سازی کد پایتون
+    <p>PyOptimize | پروژه تحلیل و بهینه‌سازی کد پایتون با AI</p>
 </footer>
 
 <script>
-  const projectName = document.getElementById("projectName");
-  const studentName = document.getElementById("studentName");
-  const originalCode = document.getElementById("originalCode");
-  const optimizedCode = document.getElementById("optimizedCode");
-  const analysisNotes = document.getElementById("analysisNotes");
-  const report = document.getElementById("report");
+    const generateButton = document.getElementById("generateButton");
+    const printButton = document.getElementById("printButton");
+    const statusBox = document.getElementById("status");
+    const reportResult = document.getElementById("reportResult");
 
-  const sampleOriginal = `def find_duplicates(numbers):
-    duplicates = []
+    generateButton.addEventListener("click", async function () {
+        const code = document.getElementById("code").value.trim();
 
-    for i in range(len(numbers)):
-        for j in range(i + 1, len(numbers)):
-            if numbers[i] == numbers[j] and numbers[i] not in duplicates:
-                duplicates.append(numbers[i])
+        if (!code) {
+            statusBox.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
+            return;
+        }
 
-    return duplicates`;
+        const payload = {
+            code: code,
+            analysis: document.getElementById("analysis").value.trim(),
+            patterns: document.getElementById("patterns").value.trim(),
+            optimization: document.getElementById("optimization").value.trim(),
+            complexity: document.getElementById("complexity").value.trim(),
+            comparison: document.getElementById("comparison").value.trim()
+        };
 
-  const sampleOptimized = `def find_duplicates(numbers):
-    seen = set()
-    reported = set()
-    duplicates = []
+        generateButton.disabled = true;
+        printButton.disabled = true;
+        statusBox.textContent = "در حال ارسال اطلاعات و تولید گزارش...";
+        reportResult.textContent = "لطفاً منتظر بمانید.";
 
-    for number in numbers:
-        if number in seen and number not in reported:
-            duplicates.append(number)
-            reported.add(number)
-        else:
-            seen.add(number)
+        try {
+            const response = await fetch("http://localhost:8000/report", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
 
-    return duplicates`;
+            const data = await response.json();
 
-  document.getElementById("sampleButton").addEventListener("click", () => {
-    projectName.value = "بررسی الگوریتم یافتن عناصر تکراری";
-    studentName.value = "";
-    originalCode.value = sampleOriginal;
-    optimizedCode.value = sampleOptimized;
-    analysisNotes.value =
-      "در نسخه اولیه از دو حلقه تو در تو برای مقایسه عناصر استفاده شده است. " +
-      "در نسخه دوم از مجموعه‌ها برای بررسی عضویت استفاده شده است. " +
-      "پیچیدگی زمانی مورد انتظار نسخه اولیه O(n²) و نسخه دوم O(n) است. " +
-      "نسخه دوم برای داده‌های قابل هش‌کردن مناسب است و از حافظه اضافی استفاده می‌کند.";
-    report.style.display = "none";
-  });
+            if (!response.ok) {
+                throw new Error(data.detail || "خطا در دریافت گزارش");
+            }
 
-  document.getElementById("clearButton").addEventListener("click", () => {
-    projectName.value = "";
-    studentName.value = "";
-    originalCode.value = "";
-    optimizedCode.value = "";
-    analysisNotes.value = "";
-    report.style.display = "none";
-  });
+            if (!data.report || typeof data.report !== "string") {
+                throw new Error("ساختار پاسخ سرور معتبر نیست.");
+            }
 
-  document.getElementById("generateButton").addEventListener("click", () => {
-    if (
-      !projectName.value.trim() ||
-      !originalCode.value.trim() ||
-      !optimizedCode.value.trim()
-    ) {
-      alert("لطفاً نام پروژه و هر دو نسخه کد را وارد کنید.");
-      return;
-    }
+            reportResult.textContent = data.report;
+            statusBox.textContent = "گزارش با موفقیت تولید شد.";
+            printButton.disabled = false;
 
-    document.getElementById("outputProject").textContent =
-      "نام پروژه: " + projectName.value.trim();
+        } catch (error) {
+            reportResult.textContent =
+                "گزارشی دریافت نشد. لطفاً اتصال سرور را بررسی کنید.";
 
-    document.getElementById("outputStudent").textContent =
-      "تهیه‌کننده: " + (studentName.value.trim() || "ثبت نشده");
+            statusBox.textContent =
+                "خطا: " + error.message;
 
-    document.getElementById("outputOriginal").textContent =
-      originalCode.value;
+        } finally {
+            generateButton.disabled = false;
+        }
+    });
 
-    document.getElementById("outputOptimized").textContent =
-      optimizedCode.value;
-
-    document.getElementById("outputNotes").textContent =
-      analysisNotes.value.trim() || "توضیحی وارد نشده است.";
-
-    document.getElementById("reportDate").textContent =
-      "تاریخ تهیه گزارش: " +
-      new Intl.DateTimeFormat("fa-IR", {
-        dateStyle: "long"
-      }).format(new Date());
-
-    report.style.display = "block";
-    report.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
-
-  document.getElementById("printButton").addEventListener("click", () => {
-    window.print();
-  });
+    printButton.addEventListener("click", function () {
+        window.print();
+    });
 </script>
 
 </body>
+  </html>
                                                      </html>
