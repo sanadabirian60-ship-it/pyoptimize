@@ -3,295 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>تحلیل کد با هوش مصنوعی | PyOptimize</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --background: #0b1120;
-            --surface: #111c32;
-            --surface-light: #17243c;
-            --border: #293b57;
-            --primary: #0ea5e9;
-            --primary-hover: #0284c7;
-            --text: #e5e7eb;
-            --muted: #9caec5;
-            --success: #34d399;
-            --warning: #fbbf24;
         }
 
         body {
-            font-family: "Vazirmatn", sans-serif;
-            background: var(--background);
-            color: var(--text);
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f4f6fb;
+            color: #20283a;
             line-height: 1.9;
-            min-height: 100vh;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
         }
 
         header {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 15px 7%;
+            background: #172554;
+            color: white;
+            padding: 22px 8%;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            color: #cbd5e1;
         }
 
         nav {
-            max-width: 1200px;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
+            margin-top: 12px;
         }
 
-        .logo {
-            font-size: 25px;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 22px;
-        }
-
-        .nav-links a {
-            color: var(--muted);
-            transition: color .2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
+        nav a {
+            color: #dbeafe;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 14px;
         }
 
         main {
-            width: 92%;
-            max-width: 1050px;
-            margin: 40px auto;
+            width: min(1050px, 92%);
+            margin: 35px auto;
         }
 
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 26px;
+        .intro, .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
             margin-bottom: 25px;
-        }
-
-        h1 {
-            font-size: clamp(25px, 4vw, 35px);
-            color: var(--primary);
-            margin-bottom: 12px;
+            box-shadow: 0 4px 18px #1725540d;
         }
 
         h2 {
-            font-size: 21px;
-            color: #7dd3fc;
-            margin-bottom: 14px;
+            color: #1e3a8a;
+            margin-top: 0;
         }
 
         h3 {
-            color: #7dd3fc;
-            font-size: 17px;
-            margin-bottom: 10px;
+            color: #334155;
         }
 
-        p {
-            color: var(--muted);
-        }
-
-        .intro {
-            margin-top: 10px;
-        }
-
-        .notice {
-            margin-top: 16px;
-            padding: 12px 15px;
-            background: #332b18;
-            color: var(--warning);
-            border-radius: 9px;
-            font-size: 13px;
-        }
-
-        .editor-label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
+        .code-box {
+            direction: ltr;
+            text-align: left;
+            background: #111827;
+            color: #e5e7eb;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre;
         }
 
         textarea {
             width: 100%;
-            min-height: 300px;
-            resize: vertical;
-            background: #080e1b;
-            color: #dbeafe;
-            border: 1px solid #334155;
-            border-radius: 12px;
+            min-height: 230px;
+            direction: ltr;
+            text-align: left;
+            background: #111827;
+            color: #f8fafc;
+            border: 2px solid #334155;
+            border-radius: 10px;
             padding: 18px;
             font-family: Consolas, monospace;
             font-size: 14px;
-            line-height: 1.8;
-            direction: ltr;
-            text-align: left;
-            outline: none;
-            tab-size: 4;
-        }
-
-        textarea:focus {
-            border-color: var(--primary);
-        }
-
-        .buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 18px;
+            resize: vertical;
         }
 
         button {
             border: none;
             border-radius: 9px;
-            padding: 11px 20px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 700;
+            padding: 12px 22px;
+            margin-top: 15px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
             cursor: pointer;
-            transition: .2s;
         }
 
-        button:focus-visible {
-            outline: 2px solid white;
-            outline-offset: 3px;
+        button:hover {
+            background: #1d4ed8;
         }
 
-        .primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .primary:hover {
-            background: var(--primary-hover);
-        }
-
-        .secondary {
-            background: #263750;
-            color: white;
-        }
-
-        .secondary:hover {
-            background: #344966;
-        }
-
-        .success {
-            background: #065f46;
-            color: white;
-        }
-
-        .success:hover {
-            background: #047857;
-        }
-
-        .result-section {
-            margin-top: 18px;
-            padding: 20px;
-            background: #080e1b;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-        }
-
-        .result-section ul {
-            padding-right: 22px;
-        }
-
-        .result-section li {
-            margin-bottom: 8px;
-            color: var(--muted);
-        }
-
-        .result-section p {
-            color: var(--muted);
-        }
-
-        .result-code {
-            direction: ltr;
-            text-align: left;
+        .result {
+            background: #eff6ff;
+            border-right: 4px solid #2563eb;
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 20px;
             white-space: pre-wrap;
-            overflow-wrap: anywhere;
-            background: #050a13;
-            border: 1px solid #263550;
-            border-radius: 9px;
-            padding: 15px;
-            margin-top: 12px;
-            color: #a7f3d0;
-            font-family: Consolas, monospace;
+        }
+
+        .note {
+            color: #64748b;
             font-size: 13px;
-            overflow-x: auto;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .badge {
-            display: inline-block;
-            background: #12354b;
-            color: #7dd3fc;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-bottom: 12px;
-        }
-
-        .message {
-            margin-top: 12px;
-            color: var(--warning);
-            font-size: 14px;
         }
 
         footer {
             text-align: center;
-            padding: 25px;
-            color: var(--muted);
-            border-top: 1px solid var(--border);
-            margin-top: 50px;
+            padding: 22px;
+            color: #64748b;
         }
 
-        @media (max-width: 650px) {
+        @media (max-width: 600px) {
             header {
-                padding: 15px 5%;
+                padding: 20px 5%;
             }
 
-            nav {
-                flex-direction: column;
+            nav a {
+                display: inline-block;
+                margin: 5px 8px;
             }
 
-            .nav-links {
-                justify-content: center;
-                gap: 14px;
-                font-size: 13px;
-            }
-
-            .card {
-                padding: 19px;
-            }
-
-            .buttons button {
-                flex: 1 1 100%;
+            .intro, .panel {
+                padding: 18px;
             }
         }
     </style>
@@ -300,317 +150,146 @@
 <body>
 
 <header>
-    <nav>
-        <a href="index.html" class="logo">PyOptimize</a>
+    <h1>PyOptimize</h1>
+    <p>تحلیل و بهینه‌سازی کد پایتون با کمک هوش مصنوعی</p>
 
-        <div class="nav-links">
-            <a href="index.html">صفحه اصلی</a>
-            <a href="analysis.html">تحلیل کد</a>
-            <a href="patterns.html">تشخیص الگوها</a>
-            <a href="optimization.html">بهینه‌سازی</a>
-        </div>
+    <nav>
+        <a href="index.html">صفحه اصلی</a>
+        <a href="analysis.html">تحلیل کد</a>
+        <a href="patterns.html">تشخیص الگوها</a>
+        <a href="optimization.html">بهینه‌سازی</a>
     </nav>
 </header>
 
 <main>
 
-    <!-- معرفی صفحه -->
-    <section class="card">
-        <span class="badge">مرحله اول پروژه</span>
-
-        <h1>تحلیل کد با هوش مصنوعی</h1>
-
-        <p class="intro">
-            در این بخش می‌توانید کد پایتون خود را وارد کنید تا ساختار
-            آن بررسی شود، الگوهای احتمالی ناکارآمد شناسایی شوند و
-            پیشنهادهایی برای بهبود عملکرد برنامه دریافت کنید.
-        </p>
-
-        <div class="notice">
-            توجه: این نسخه یک تحلیل‌گر اولیه مبتنی بر قواعد ساده است.
-            هنوز به مدل هوش مصنوعی واقعی متصل نشده است.
-        </div>
-    </section>
-
-    <!-- ویرایشگر کد -->
-    <section class="card">
-        <h2>ورود کد پایتون</h2>
-
-        <p style="margin-bottom: 18px;">
-            کد خودتان را وارد کنید یا نمونه آماده را بارگذاری کنید.
-        </p>
-
-        <label class="editor-label" for="codeInput">
-            ویرایشگر کد:
-        </label>
-
-        <textarea
-            id="codeInput"
-            spellcheck="false"
-            placeholder="کد پایتون خود را اینجا وارد کنید..."
-        ></textarea>
-
-        <div class="buttons">
-            <button class="secondary" id="sampleButton" type="button">
-                بارگذاری نمونه کد
-            </button>
-
-            <button class="primary" id="analyzeButton" type="button">
-                تحلیل کد
-            </button>
-
-            <button class="secondary" id="clearButton" type="button">
-                پاک کردن
-            </button>
-        </div>
-
-        <div id="message" class="message" role="status" aria-live="polite"></div>
-    </section>
-
-    <!-- نتایج تحلیل -->
-    <section class="card hidden" id="results">
-
-        <h2>نتایج تحلیل</h2>
-
-        <div class="result-section">
-            <h3>۱. بررسی ساختار برنامه</h3>
-            <p id="structure"></p>
-        </div>
-
-        <div class="result-section">
-            <h3>۲. مشکلات احتمالی</h3>
-            <div id="problems"></div>
-        </div>
-
-        <div class="result-section">
-            <h3>۳. پیشنهادهای بهینه‌سازی</h3>
-            <div id="suggestions"></div>
-        </div>
-
-        <div class="result-section">
-            <h3>۴. تحلیل اولیه پیچیدگی</h3>
-            <p id="complexity"></p>
-        </div>
-
-        <div class="result-section">
-            <h3>۵. نمونه کد بهینه‌شده</h3>
-            <p id="optimizationNote"></p>
-            <pre class="result-code" id="optimizedCode"></pre>
-        </div>
-
-    </section>
-
-    <!-- ادامه مسیر -->
-    <section class="card">
-        <h2>مراحل بعدی پروژه</h2>
+    <section class="intro">
+        <h2>تحلیل کد با هوش مصنوعی</h2>
 
         <p>
-            پس از تحلیل اولیه، می‌توانید به بخش‌های دیگر پروژه بروید:
+            در این بخش می‌توانید یک کد نمونه را بررسی کنید یا کد پایتون
+            خودتان را وارد کنید. هدف، شناخت عملکرد کد، شناسایی مشکلات
+            احتمالی و پیدا کردن راه‌های بهبود آن است.
+        </p>
+    </section>
+
+    <section class="panel">
+        <h2>۱. تحلیل کد نمونه</h2>
+
+        <p>
+            کد زیر یک لیست از اعداد را پیمایش می‌کند و بررسی می‌کند
+            که عدد موردنظر در آن وجود دارد یا خیر.
         </p>
 
-        <div class="buttons">
-            <a href="patterns.html">
-                <button class="secondary" type="button">تشخیص الگوها</button>
-            </a>
+        <div class="code-box"><code>numbers = [4, 8, 12, 16, 20]
+target = 16
 
-            <a href="optimization.html">
-                <button class="secondary" type="button">بهینه‌سازی کد</button>
-            </a>
+found = False
 
-            <a href="complexity.html">
-                <button class="secondary" type="button">تحلیل پیچیدگی</button>
-            </a>
+for number in numbers:
+    if number == target:
+        found = True
+        break
+
+print(found)</code></div>
+
+        <h3>توضیح خط‌به‌خط</h3>
+
+        <ul>
+            <li><code>numbers</code>: یک لیست از اعداد ایجاد می‌کند.</li>
+            <li><code>target</code>: عددی را مشخص می‌کند که باید پیدا شود.</li>
+            <li><code>found = False</code>: فرض اولیه این است که عدد پیدا نشده است.</li>
+            <li><code>for</code>: عناصر لیست را یکی‌یکی بررسی می‌کند.</li>
+            <li><code>if</code>: هر عنصر را با عدد موردنظر مقایسه می‌کند.</li>
+            <li><code>break</code>: در صورت پیدا شدن عدد، حلقه را متوقف می‌کند.</li>
+            <li><code>print</code>: نتیجه جست‌وجو را نمایش می‌دهد.</li>
+        </ul>
+
+        <h3>بررسی عملکرد الگوریتم</h3>
+
+        <p>
+            این برنامه از روش جست‌وجوی خطی استفاده می‌کند.
+            در بدترین حالت ممکن است تمام عناصر لیست بررسی شوند؛
+            بنابراین پیچیدگی زمانی آن O(n) است.
+        </p>
+
+        <h3>مشکلات و پیشنهادهای بهبود</h3>
+
+        <p>
+            برای یک جست‌وجوی ساده، کد خوانا و قابل فهم است.
+            اگر تعداد جست‌وجوها زیاد باشد، می‌توان در شرایط مناسب
+            از ساختار داده set استفاده کرد تا بررسی عضویت در حالت
+            میانگین سریع‌تر انجام شود. البته ساخت مجموعه نیز هزینه دارد.
+        </p>
+    </section>
+
+    <section class="panel">
+        <h2>۲. محیط هوشمند کاربران</h2>
+
+        <p>
+            کد پایتون خود را در کادر زیر وارد کنید تا برای تحلیل
+            به سامانه ارسال شود.
+        </p>
+
+        <textarea id="userCode" spellcheck="false"
+            placeholder="کد پایتون خود را اینجا وارد کنید..."></textarea>
+
+        <br>
+
+        <button type="button" onclick="analyzeCode()">
+            تحلیل کد
+        </button>
+
+        <div id="result" class="result" aria-live="polite">
+            نتیجه تحلیل در این قسمت نمایش داده می‌شود.
         </div>
+
+        <p class="note">
+            توجه: برای فعال شدن تحلیل واقعی با هوش مصنوعی،
+            باید بک‌اند پایتونی و سرویس هوش مصنوعی به این صفحه متصل شوند.
+        </p>
     </section>
 
 </main>
 
 <footer>
-    PyOptimize | پروژه تحلیل و بهینه‌سازی کد پایتون
+    پروژه PyOptimize | تحلیل و بهینه‌سازی کد با هوش مصنوعی
 </footer>
 
 <script>
-"use strict";
+    async function analyzeCode() {
+        const code = document.getElementById("userCode").value.trim();
+        const result = document.getElementById("result");
 
-/* نمونه کد اولیه با الگوریتم جست‌وجوی تکراری */
-const sampleCode = `def find_duplicates(numbers):
-    duplicates = []
+        if (!code) {
+            result.textContent = "لطفاً ابتدا کد پایتون خود را وارد کنید.";
+            return;
+        }
 
-    for i in range(len(numbers)):
-        for j in range(i + 1, len(numbers)):
-            if numbers[i] == numbers[j]:
-                if numbers[i] not in duplicates:
-                    duplicates.append(numbers[i])
+        result.textContent = "در حال ارسال کد برای تحلیل...";
 
-    return duplicates
+        try {
+            const response = await fetch("http://localhost:8000/analyze", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ code: code })
+            });
 
+            if (!response.ok) {
+                throw new Error("خطا در دریافت پاسخ از سرور");
+            }
 
-values = [4, 2, 8, 2, 4, 9]
-print(find_duplicates(values))`;
+            const data = await response.json();
+            result.textContent = data.analysis || "پاسخی برای نمایش دریافت نشد.";
 
-
-/* نسخه بهینه‌شده نمونه */
-const optimizedSample = `def find_duplicates(numbers):
-    seen = set()
-    reported = set()
-    duplicates = []
-
-    for number in numbers:
-        if number in seen and number not in reported:
-            duplicates.append(number)
-            reported.add(number)
-        else:
-            seen.add(number)
-
-    return duplicates
-
-
-values = [4, 2, 8, 2, 4, 9]
-print(find_duplicates(values))`;
-
-
-const input = document.getElementById("codeInput");
-const results = document.getElementById("results");
-const message = document.getElementById("message");
-
-
-/* بارگذاری نمونه کد */
-document.getElementById("sampleButton").addEventListener("click", function () {
-    input.value = sampleCode;
-    message.textContent = "نمونه کد با موفقیت بارگذاری شد.";
-    results.classList.add("hidden");
-});
-
-
-/* پاک کردن ویرایشگر */
-document.getElementById("clearButton").addEventListener("click", function () {
-    input.value = "";
-    results.classList.add("hidden");
-    message.textContent = "ویرایشگر پاک شد.";
-});
-
-
-/* شروع تحلیل */
-document.getElementById("analyzeButton").addEventListener("click", analyzeCode);
-
-
-function analyzeCode() {
-    const code = input.value;
-
-    if (!code.trim()) {
-        message.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
-        results.classList.add("hidden");
-        return;
+        } catch (error) {
+            result.textContent =
+                "اتصال به سامانه تحلیل برقرار نشد.\n" +
+                "برای فعال شدن این قابلیت، ابتدا باید بک‌اند پایتونی پروژه راه‌اندازی شود.";
+        }
     }
-
-    message.textContent = "تحلیل اولیه انجام شد.";
-
-    const lines = code.split("\n");
-
-    const functionCount = (code.match(/^\s*def\s+/gm) || []).length;
-    const classCount = (code.match(/^\s*class\s+/gm) || []).length;
-    const forCount = (code.match(/^\s*for\b/gm) || []).length;
-    const whileCount = (code.match(/^\s*while\b/gm) || []).length;
-    const importCount = (code.match(/^\s*(import|from)\s+/gm) || []).length;
-
-    const loopCount = forCount + whileCount;
-
-    const problems = [];
-    const suggestions = [];
-
-    /* بررسی حلقه‌های تو در تو */
-    if (/^\s*for\b[^\n]*:\s*\n(?:[ \t]*\n)*[ \t]+for\b/m.test(code)) {
-        problems.push("احتمال وجود حلقه‌های تو در تو شناسایی شد.");
-        suggestions.push("بررسی کنید آیا می‌توان از مجموعه‌ها یا دیکشنری برای کاهش جست‌وجوهای تکراری استفاده کرد.");
-    }
-
-    /* بررسی eval */
-    if (/\beval\s*\(/.test(code)) {
-        problems.push("تابع eval در کد دیده شد.");
-        suggestions.push("در صورت امکان از روش‌های امن‌تر برای پردازش ورودی استفاده کنید.");
-    }
-
-    /* بررسی print */
-    const printCount = (code.match(/\bprint\s*\(/g) || []).length;
-
-    if (printCount > 5) {
-        suggestions.push("تعداد زیادی دستور print وجود دارد؛ برای خروجی‌های متعدد، استفاده از logging را بررسی کنید.");
-    }
-
-    /* بررسی حلقه‌ها */
-    if (loopCount > 0) {
-        suggestions.push("تعداد تکرار حلقه‌ها و وابستگی آن‌ها به اندازه ورودی را بررسی کنید.");
-    }
-
-    if (problems.length === 0) {
-        problems.push("با قواعد ساده این نسخه، مشکل مشخصی شناسایی نشد. این نتیجه به معنی بدون‌خطا بودن برنامه نیست.");
-    }
-
-    if (suggestions.length === 0) {
-        suggestions.push("در بررسی اولیه پیشنهاد مشخصی پیدا نشد. برای تحلیل دقیق‌تر، منطق برنامه باید بررسی شود.");
-    }
-
-    /* نمایش ساختار */
-    document.getElementById("structure").textContent =
-        "تعداد خطوط: " + lines.length +
-        " | تعداد توابع: " + functionCount +
-        " | تعداد کلاس‌ها: " + classCount +
-        " | تعداد حلقه‌ها: " + loopCount +
-        " | تعداد دستورات import: " + importCount;
-
-    showList("problems", problems);
-    showList("suggestions", suggestions);
-
-    /* تحلیل مقدماتی پیچیدگی */
-    let complexity = "پیچیدگی دقیق الگوریتم از روی تعداد خطوط کد قابل تعیین نیست. ";
-
-    if (loopCount === 0) {
-        complexity += "حلقه‌ای شناسایی نشد؛ با این حال ممکن است فراخوانی توابع یا عملیات داخلی زمان‌بر باشند.";
-    } else if (loopCount === 1) {
-        complexity += "یک حلقه شناسایی شد. اگر تعداد تکرارهای آن متناسب با اندازه ورودی باشد، ممکن است پیچیدگی زمانی O(n) باشد.";
-    } else {
-        complexity += "چند حلقه شناسایی شدند. باید مشخص شود حلقه‌ها تو در تو هستند یا جداگانه اجرا می‌شوند.";
-    }
-
-    document.getElementById("complexity").textContent = complexity;
-
-    /* نمایش نمونه بهینه‌شده فقط برای نمونه آماده */
-    const isSample = code.trim() === sampleCode.trim();
-
-    if (isSample) {
-        document.getElementById("optimizationNote").textContent =
-            "این نسخه برای نمونه آماده نوشته شده است. با استفاده از set، جست‌وجوی تکراری کاهش می‌یابد. زمان مورد انتظار از O(n²) به O(n) در حالت میانگین می‌رسد.";
-
-        document.getElementById("optimizedCode").textContent = optimizedSample;
-    } else {
-        document.getElementById("optimizationNote").textContent =
-            "برای کد دلخواه، این نسخه هنوز قادر به تولید کد بهینه‌شده نیست. در مرحله اتصال بک‌اند هوش مصنوعی، این قابلیت اضافه خواهد شد.";
-
-        document.getElementById("optimizedCode").textContent =
-            "نسخه بهینه‌شده هنوز تولید نشده است.";
-    }
-
-    results.classList.remove("hidden");
-    results.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-}
-
-
-/* ساخت فهرست امن نتایج */
-function showList(elementId, items) {
-    const container = document.getElementById(elementId);
-    const list = document.createElement("ul");
-
-    items.forEach(function (item) {
-        const li = document.createElement("li");
-        li.textContent = item;
-        list.appendChild(li);
-    });
-
-    container.replaceChildren(list);
-}
 </script>
 
 </body>
