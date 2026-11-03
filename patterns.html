@@ -1,132 +1,62 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>تشخیص الگوهای کد | PyOptimize</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>تشخیص الگوها با AI | PyOptimize</title>
 
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --background: #0b1120;
-            --surface: #111c32;
-            --border: #293b57;
-            --primary: #0ea5e9;
-            --text: #e5e7eb;
-            --muted: #9caec5;
-            --warning: #fbbf24;
-            --success: #34d399;
         }
 
         body {
-            font-family: "Vazirmatn", sans-serif;
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.9;
-            min-height: 100vh;
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #0b1120;
+            color: #e5e7eb;
+            line-height: 1.8;
         }
 
         header {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 15px 7%;
+            background: #111c32;
+            padding: 22px 8%;
+            border-bottom: 1px solid #263653;
         }
 
-        nav {
-            max-width: 1200px;
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
+        header h1 {
+            color: #60a5fa;
+            margin: 0;
         }
 
-        .logo {
-            font-size: 25px;
-            font-weight: 800;
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: var(--muted);
-            text-decoration: none;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
+        header p {
+            color: #a5b4fc;
+            margin-bottom: 0;
         }
 
         main {
-            width: 92%;
-            max-width: 1050px;
+            width: min(1000px, 92%);
             margin: 40px auto;
         }
 
+        .back {
+            display: inline-block;
+            color: #93c5fd;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
         .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 26px;
+            background: #14213a;
+            border: 1px solid #263653;
+            border-radius: 14px;
+            padding: 25px;
             margin-bottom: 25px;
         }
 
-        h1 {
-            color: var(--primary);
-            font-size: clamp(25px, 4vw, 34px);
-            margin-bottom: 12px;
-        }
-
         h2 {
-            color: #7dd3fc;
-            font-size: 21px;
-            margin-bottom: 15px;
-        }
-
-        h3 {
-            color: #7dd3fc;
-            font-size: 17px;
-            margin-bottom: 8px;
-        }
-
-        p {
-            color: var(--muted);
-        }
-
-        .badge {
-            display: inline-block;
-            background: #12354b;
-            color: #7dd3fc;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-bottom: 12px;
-        }
-
-        .notice {
-            margin-top: 16px;
-            padding: 12px 15px;
-            background: #332b18;
-            color: var(--warning);
-            border-radius: 9px;
-            font-size: 13px;
+            color: #60a5fa;
+            margin-top: 0;
         }
 
         textarea {
@@ -134,516 +64,54 @@
             min-height: 280px;
             resize: vertical;
             background: #080e1b;
-            color: #dbeafe;
+            color: #d1fae5;
             border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 18px;
+            border-radius: 10px;
+            padding: 16px;
             font-family: Consolas, monospace;
             font-size: 14px;
-            line-height: 1.8;
             direction: ltr;
             text-align: left;
             outline: none;
         }
 
         textarea:focus {
-            border-color: var(--primary);
-        }
-
-        .buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 17px;
+            border-color: #3b82f6;
         }
 
         button {
             border: none;
             border-radius: 9px;
-            padding: 11px 20px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: .2s;
-        }
-
-        button:focus-visible {
-            outline: 2px solid white;
-            outline-offset: 3px;
-        }
-
-        .primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .primary:hover {
-            background: #0284c7;
-        }
-
-        .secondary {
-            background: #263750;
-            color: white;
-        }
-
-        .secondary:hover {
-            background: #344966;
-        }
-
-        .result-box {
-            background: #080e1b;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 16px;
-        }
-
-        .pattern-item {
-            border-right: 3px solid var(--primary);
-            background: #111c32;
-            padding: 14px;
-            border-radius: 8px;
-            margin-top: 12px;
-        }
-
-        .pattern-item p {
-            font-size: 14px;
-        }
-
-        .pattern-type {
-            display: inline-block;
-            font-size: 12px;
-            padding: 2px 9px;
-            border-radius: 20px;
-            margin-bottom: 7px;
-            background: #12354b;
-            color: #7dd3fc;
-        }
-
-        .warning-type {
-            background: #3b2d13;
-            color: var(--warning);
-        }
-
-        .success-type {
-            background: #10372c;
-            color: var(--success);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .message {
-            color: var(--warning);
-            margin-top: 12px;
-            font-size: 14px;
-        }
-
-        .next-step {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 10px 18px;
-            border-radius: 9px;
+            padding: 12px 22px;
             margin-top: 15px;
-            text-decoration: none;
-            font-weight: 700;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
         }
 
-        footer {
-            text-align: center;
-            padding: 25px;
-            color: var(--muted);
-            border-top: 1px solid var(--border);
-            margin-top: 50px;
+        button:hover {
+            background: #1d4ed8;
         }
 
-        @media (max-width: 650px) {
-            nav {
-                flex-direction: column;
-            }
-
-            .nav-links {
-                justify-content: center;
-                gap: 13px;
-                font-size: 13px;
-            }
-
-            .card {
-                padding: 19px;
-            }
-
-            .buttons button {
-                flex: 1 1 100%;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<header>
-    <nav>
-        <a href="index.html" class="logo">PyOptimize</a>
-
-        <div class="nav-links">
-            <a href="index.html">صفحه اصلی</a>
-            <a href="analysis.html">تحلیل کد</a>
-            <a href="patterns.html">تشخیص الگوها</a>
-            <a href="optimization.html">بهینه‌سازی</a>
-        </div>
-    </nav>
-</header>
-
-<main>
-
-    <!-- معرفی -->
-    <section class="card">
-        <span class="badge">مرحله دوم پروژه</span>
-
-        <h1>تشخیص الگوهای کد</h1>
-
-        <p>
-            در این بخش، ساختار کد پایتون بررسی می‌شود تا الگوهای
-            تکراری، حلقه‌های تو در تو، جست‌وجوهای مکرر و برخی
-            روش‌های احتمالی ناکارآمد شناسایی شوند.
-        </p>
-
-        <div class="notice">
-            این نسخه از قواعد ساده برای شناسایی الگوها استفاده می‌کند
-            و هنوز به مدل هوش مصنوعی متصل نیست.
-        </div>
-    </section>
-
-    <!-- ورودی کد -->
-    <section class="card">
-        <h2>کد مورد بررسی</h2>
-
-        <p style="margin-bottom: 15px;">
-            کد پایتون خود را وارد کنید یا نمونه آماده را بارگذاری کنید.
-        </p>
-
-        <textarea
-            id="codeInput"
-            spellcheck="false"
-            placeholder="کد پایتون خود را اینجا وارد کنید..."
-        ></textarea>
-
-        <div class="buttons">
-            <button class="secondary" id="sampleButton" type="button">
-                بارگذاری نمونه کد
-            </button>
-
-            <button class="primary" id="detectButton" type="button">
-                تشخیص الگوها
-            </button>
-
-            <button class="secondary" id="clearButton" type="button">
-                پاک کردن
-            </button>
-        </div>
-
-        <div class="message" id="message" role="status" aria-live="polite"></div>
-    </section>
-
-    <!-- نتایج -->
-    <section class="card hidden" id="results">
-
-        <h2>نتایج تشخیص الگوها</h2>
-
-        <div class="result-box">
-            <h3>خلاصه بررسی</h3>
-            <p id="summary"></p>
-        </div>
-
-        <div class="result-box">
-            <h3>الگوهای شناسایی‌شده</h3>
-            <div id="patternsList"></div>
-        </div>
-
-        <div class="result-box">
-            <h3>پیشنهادهای بهبود</h3>
-            <div id="recommendations"></div>
-        </div>
-
-        <div class="result-box">
-            <h3>توضیح نتیجه</h3>
-            <p id="explanation"></p>
-        </div>
-
-        <a href="optimization.html" class="next-step">
-            رفتن به مرحله بهینه‌سازی ←
-        </a>
-
-    </section>
-
-    <!-- توضیحات آموزشی -->
-    <section class="card">
-        <h2>چه الگوهایی بررسی می‌شوند؟</h2>
-
-        <div class="pattern-item">
-            <h3>حلقه‌های تودرتو</h3>
-            <p>
-                قرار گرفتن یک حلقه درون حلقه دیگر که ممکن است
-                تعداد عملیات برنامه را افزایش دهد.
-            </p>
-        </div>
-
-        <div class="pattern-item">
-            <h3>جست‌وجوی تکراری</h3>
-            <p>
-                انجام چندباره عملیات جست‌وجو در یک مجموعه از داده‌ها.
-            </p>
-        </div>
-
-        <div class="pattern-item">
-            <h3>محاسبات تکراری</h3>
-            <p>
-                تکرار یک عبارت محاسباتی که شاید بتوان نتیجه آن را
-                یک بار محاسبه و دوباره استفاده کرد.
-            </p>
-        </div>
-
-        <div class="pattern-item">
-            <h3>استفاده از ساختار داده</h3>
-            <p>
-                بررسی مواردی که استفاده از set یا dictionary
-                می‌تواند جست‌وجو یا دسترسی به داده‌ها را ساده‌تر کند.
-            </p>
-        </div>
-    </section>
-
-</main>
-
-<footer>
-    PyOptimize | تحلیل و بهینه‌سازی کد پایتون
-</footer>
-
-<script>
-"use strict";
-
-const sampleCode = `def find_duplicates(numbers):
-    duplicates = []
-
-    for i in range(len(numbers)):
-        for j in range(i + 1, len(numbers)):
-            if numbers[i] == numbers[j]:
-                if numbers[i] not in duplicates:
-                    duplicates.append(numbers[i])
-
-    return duplicates
-
-values = [4, 2, 8, 2, 4, 9]
-print(find_duplicates(values))`;
-
-const input = document.getElementById("codeInput");
-const results = document.getElementById("results");
-const message = document.getElementById("message");
-
-document.getElementById("sampleButton").addEventListener("click", function () {
-    input.value = sampleCode;
-    results.classList.add("hidden");
-    message.textContent = "نمونه کد بارگذاری شد.";
-});
-
-document.getElementById("clearButton").addEventListener("click", function () {
-    input.value = "";
-    results.classList.add("hidden");
-    message.textContent = "ویرایشگر پاک شد.";
-});
-
-document.getElementById("detectButton").addEventListener("click", detectPatterns);
-
-function detectPatterns() {
-    const code = input.value;
-
-    if (!code.trim()) {
-        message.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
-        results.classList.add("hidden");
-        return;
-    }
-
-    const patterns = [];
-    const recommendations = [];
-
-    const nestedLoops =
-        /^\s*(for|while)\b[^\n]*:\s*\n(?:[ \t]*\n)*[ \t]+(for|while)\b/m.test(code);
-
-    const membershipChecks =
-        /\b\w+\s+not?\s+in\s+\w+/.test(code);
-
-    const listAppend =
-        /\.append\s*\(/.test(code);
-
-    const repeatedExpression =
-        /for\s+\w+\s+in\s+range\s*\([^)]*\)[\s\S]*?\b\w+\s*\*\s*\w+/m.test(code);
-
-    const usesSet = /\bset\s*\(|\bset\s*\(/.test(code) || /\{\s*\}/.test(code);
-    const usesDictionary = /\bdict\s*\(|\{\s*[^}]*:\s*[^}]*\}/.test(code);
-
-    let nestedLoopCount = 0;
-    const lines = code.split("\n");
-
-    for (let i = 0; i < lines.length; i++) {
-        const currentIndent = lines[i].match(/^\s*/)[0].length;
-        const isLoop = /^\s*(for|while)\b/.test(lines[i]);
-
-        if (!isLoop) continue;
-
-        for (let j = i + 1; j < lines.length; j++) {
-            if (!lines[j].trim()) continue;
-
-            const nextIndent = lines[j].match(/^\s*/)[0].length;
-
-            if (nextIndent <= currentIndent) break;
-
-            if (/^\s*(for|while)\b/.test(lines[j])) {
-                nestedLoopCount++;
-            }
-        }
-    }
-
-    if (nestedLoops) {
-        patterns.push({
-            title: "حلقه‌های تودرتو",
-            type: "warning",
-            description: "احتمال قرار گرفتن یک حلقه درون حلقه دیگر شناسایی شد.",
-            recommendation: "بررسی کنید آیا می‌توان با استفاده از set یا dictionary تعداد جست‌وجوهای تکراری را کاهش داد."
-        });
-
-        recommendations.push("ساختار حلقه‌های تودرتو و تعداد دفعات اجرای آن‌ها را بررسی کنید.");
-    }
-
-    if (membershipChecks) {
-        patterns.push({
-            title: "عملیات بررسی عضویت",
-            type: "info",
-            description: "عملیاتی مانند in یا not in در کد مشاهده شد.",
-            recommendation: "اگر بررسی عضویت روی یک لیست بزرگ و به دفعات انجام می‌شود، استفاده از set را بررسی کنید."
-        });
-    }
-
-    if (listAppend) {
-        patterns.push({
-            title: "افزودن عناصر به لیست",
-            type: "info",
-            description: "از متد append برای افزودن داده به لیست استفاده شده است.",
-            recommendation: "در صورت نیاز می‌توانید استفاده از list comprehension را نیز بررسی کنید؛ البته خوانایی کد را در اولویت قرار دهید."
-        });
-    }
-
-    if (repeatedExpression) {
-        patterns.push({
-            title: "احتمال محاسبات تکراری",
-            type: "warning",
-            description: "یک الگوی محاسباتی در محدوده یک حلقه مشاهده شد.",
-            recommendation: "بررسی کنید آیا بخشی از محاسبات به داده‌های متغیر حلقه وابسته نیست و می‌توان آن را پیش از حلقه انجام داد."
-        });
-    }
-
-    if (usesSet) {
-        patterns.push({
-            title: "استفاده از مجموعه",
-            type: "success",
-            description: "نشانه‌ای از استفاده از ساختار داده set در کد دیده شد.",
-            recommendation: "استفاده از set برای بررسی عضویت و حذف مقادیر تکراری در شرایط مناسب می‌تواند مفید باشد."
-        });
-    }
-
-    if (usesDictionary) {
-        patterns.push({
-            title: "استفاده از دیکشنری",
-            type: "success",
-            description: "نشانه‌ای از استفاده از ساختار داده dictionary شناسایی شد.",
-            recommendation: "برای دسترسی مکرر به داده‌ها بر اساس کلید، دیکشنری می‌تواند انتخاب مناسبی باشد."
-        });
-    }
-
-    if (patterns.length === 0) {
-        patterns.push({
-            title: "الگوی مشخصی شناسایی نشد",
-            type: "success",
-            description: "قواعد اولیه این صفحه الگوی مشخصی در کد پیدا نکردند.",
-            recommendation: "برای بررسی دقیق‌تر باید منطق برنامه و رفتار آن با ورودی‌های مختلف تحلیل شود."
-        });
-    }
-
-    if (recommendations.length === 0) {
-        recommendations.push("در بررسی اولیه پیشنهاد ویژه‌ای شناسایی نشد. انتخاب ساختار داده مناسب و خوانایی کد را بررسی کنید.");
-    }
-
-    document.getElementById("summary").textContent =
-        "تعداد خطوط کد: " + lines.length +
-        " | تعداد الگوهای شناسایی‌شده: " + patterns.length +
-        " | تعداد حلقه‌های تودرتوی احتمالی: " + nestedLoopCount;
-
-    renderPatterns(patterns);
-    renderRecommendations(recommendations);
-
-    document.getElementById("explanation").textContent =
-        "این نتایج بر اساس بررسی ظاهری کد و قواعد ساده متنی تولید شده‌اند. " +
-        "شناسایی یک الگو لزوماً به معنی وجود مشکل عملکردی نیست. " +
-        "برای نتیجه‌گیری دقیق باید ساختار برنامه، اندازه ورودی و رفتار واقعی الگوریتم بررسی شود.";
-
-    results.classList.remove("hidden");
-    message.textContent = "بررسی الگوها انجام شد.";
-
-    results.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-}
-
-function renderPatterns(items) {
-    const container = document.getElementById("patternsList");
-    container.replaceChildren();
-
-    items.forEach(function (item) {
-        const box = document.createElement("div");
-        box.className = "pattern-item";
-
-        const badge = document.createElement("span");
-        badge.className = "pattern-type";
-
-        if (item.type === "warning") {
-            badge.classList.add("warning-type");
-            badge.textContent = "نیازمند بررسی";
-        } else if (item.type === "success") {
-            badge.classList.add("success-type");
-            badge.textContent = "الگوی شناسایی‌شده";
-        } else {
-            badge.textContent = "اطلاعات";
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
-        const title = document.createElement("h3");
-        title.textContent = item.title;
+        .result {
+            background: #080e1b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
 
-        const description = document.createElement("p");
-        description.textContent = item.description;
+        .status {
+            margin-top: 15px;
+            color: #fbbf24;
+        }
 
-        const recommendation = document.createElement("p");
-        recommendation.textContent = "پیشنهاد: " + item.recommendation;
-
-        box.append(badge, title, description, recommendation);
-        container.appendChild(box);
-    });
-}
-
-function renderRecommendations(items) {
-    const container = document.getElementById("recommendations");
-    const list = document.createElement("ul");
-
-    items.forEach(function (item) {
-        const li = document.createElement("li");
-        li.textContent = item;
-        list.appendChild(li);
-    });
-
-    container.replaceChildren(list);
-}
-</script>
-
-</body>
-</html>
+       
