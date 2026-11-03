@@ -3,30 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PyOptimize؛ بستری آموزشی برای تحلیل و بهینه‌سازی کد پایتون با کمک هوش مصنوعی">
-    <title>PyOptimize | تحلیل و بهینه‌سازی کد پایتون</title>
+
+    <meta name="description"
+          content="PyOptimize؛ پروژه‌ای آموزشی برای تحلیل و بهینه‌سازی کد پایتون با کمک هوش مصنوعی">
+
+    <title>PyOptimize | صفحه اصلی</title>
 
     <style>
-        :root {
-            --primary: #123b5d;
-            --secondary: #1479b8;
-            --background: #f3f6fb;
-            --surface: #ffffff;
-            --text: #1e293b;
-            --muted: #64748b;
-            --border: #dbe4ee;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --background: #0f172a;
-                --surface: #1e293b;
-                --text: #e2e8f0;
-                --muted: #aab8ca;
-                --border: #334155;
-            }
-        }
-
         * {
             box-sizing: border-box;
         }
@@ -34,46 +17,48 @@
         body {
             margin: 0;
             font-family: Tahoma, Arial, sans-serif;
-            background: var(--background);
-            color: var(--text);
+            background: #f1f5f9;
+            color: #1e293b;
             line-height: 1.9;
         }
 
         header {
             background: #102a43;
             color: white;
-            padding: 22px 7%;
+            padding: 30px 20px;
+            text-align: center;
         }
 
-        .brand {
-            font-size: 27px;
-            font-weight: bold;
+        header h1 {
             margin: 0;
+            font-size: 32px;
         }
 
         header p {
-            margin: 4px 0 0;
-            color: #cbd5e1;
+            color: #dbeafe;
+            margin-bottom: 0;
         }
 
         nav {
             background: #173f5f;
-            padding: 12px 7%;
+            padding: 12px;
+            text-align: center;
         }
 
         nav a {
+            display: inline-block;
             color: white;
             text-decoration: none;
-            margin-left: 18px;
+            padding: 6px 10px;
             font-size: 14px;
         }
 
         nav a:hover {
-            text-decoration: underline;
+            color: #93c5fd;
         }
 
         main {
-            width: 90%;
+            width: 92%;
             max-width: 1100px;
             margin: 35px auto;
         }
@@ -81,14 +66,14 @@
         .hero {
             background: linear-gradient(135deg, #123b5d, #1479b8);
             color: white;
-            padding: 45px 30px;
-            border-radius: 16px;
             text-align: center;
+            padding: 45px 25px;
+            border-radius: 15px;
         }
 
-        .hero h1 {
-            font-size: 30px;
-            margin: 0 0 15px;
+        .hero h2 {
+            font-size: 27px;
+            margin-top: 0;
         }
 
         .hero p {
@@ -98,54 +83,50 @@
         }
 
         .section-title {
-            margin: 38px 0 18px;
-            color: var(--primary);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .section-title {
-                color: #93c5fd;
-            }
+            color: #123b5d;
+            margin: 35px 0 20px;
         }
 
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(250px, 1fr)
+            );
+            gap: 20px;
         }
 
         .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
+            background: white;
+            border: 1px solid #dbe4ee;
             border-radius: 12px;
             padding: 22px;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: 0.2s;
         }
 
         .card:hover {
             transform: translateY(-4px);
-            border-color: var(--secondary);
+            border-color: #1479b8;
         }
 
         .card h3 {
+            color: #1479b8;
             margin-top: 0;
-            color: var(--secondary);
         }
 
         .card p {
-            color: var(--muted);
+            color: #64748b;
             font-size: 14px;
         }
 
         .card a {
             display: inline-block;
-            margin-top: 10px;
-            padding: 8px 16px;
-            background: var(--secondary);
+            background: #1479b8;
             color: white;
-            border-radius: 7px;
             text-decoration: none;
-            font-size: 14px;
+            padding: 8px 17px;
+            border-radius: 7px;
+            margin-top: 10px;
         }
 
         .card a:hover {
@@ -153,43 +134,36 @@
         }
 
         .about {
-            background: var(--surface);
-            border: 1px solid var(--border);
+            background: white;
+            border: 1px solid #dbe4ee;
             border-radius: 12px;
             padding: 25px;
             margin-top: 30px;
         }
 
         .about h2 {
-            color: var(--secondary);
-            margin-top: 0;
+            color: #1479b8;
         }
 
         footer {
-            margin-top: 45px;
             background: #102a43;
-            color: #cbd5e1;
+            color: white;
             text-align: center;
-            padding: 22px;
+            padding: 20px;
+            margin-top: 45px;
         }
 
         @media (max-width: 600px) {
-            header, nav {
-                padding-right: 5%;
-                padding-left: 5%;
-            }
-
-            nav a {
-                display: inline-block;
-                margin: 4px 0 4px 12px;
+            header h1 {
+                font-size: 26px;
             }
 
             .hero {
                 padding: 30px 18px;
             }
 
-            .hero h1 {
-                font-size: 23px;
+            .hero h2 {
+                font-size: 22px;
             }
         }
     </style>
@@ -198,29 +172,31 @@
 <body>
 
 <header>
-    <h1 class="brand">PyOptimize</h1>
+    <h1>PyOptimize</h1>
     <p>تحلیل و بهینه‌سازی کد پایتون با کمک هوش مصنوعی</p>
 </header>
 
 <nav>
-    <a href="index.html">صفحه اصلی</a>
-    <a href="analysis.html">تحلیل کد</a>
-    <a href="patterns.html">تشخیص الگوها</a>
-    <a href="optimization.html">بهینه‌سازی</a>
-    <a href="complexity.html">پیچیدگی</a>
-    <a href="comparison.html">مقایسه کدها</a>
-    <a href="report.html">گزارش نهایی</a>
+    <a href="./index.html">صفحه اصلی</a>
+    <a href="./analysis.html">تحلیل کد</a>
+    <a href="./patterns.html">تشخیص الگوها</a>
+    <a href="./optimization.html">بهینه‌سازی</a>
+    <a href="./complexity.html">پیچیدگی</a>
+    <a href="./comparison.html">مقایسه کدها</a>
+    <a href="./report.html">گزارش نهایی</a>
 </nav>
 
 <main>
 
     <section class="hero">
-        <h1>به کد پایتون خود هوشمندانه‌تر نگاه کنید!</h1>
+        <h2>به دنیای بهینه‌سازی کد پایتون خوش آمدید!</h2>
 
         <p>
-            PyOptimize بستری آموزشی برای بررسی ساختار کد پایتون،
-            شناسایی مشکلات احتمالی، تحلیل پیچیدگی الگوریتم‌ها
-            و آشنایی با روش‌های بهینه‌سازی با کمک هوش مصنوعی است.
+            با PyOptimize می‌توانید با روش‌های تحلیل کد،
+            شناسایی مشکلات احتمالی، بررسی پیچیدگی الگوریتم‌ها
+            و بهینه‌سازی برنامه‌های پایتون آشنا شوید.
+            هدف این پروژه بررسی نقش هوش مصنوعی در بهبود کیفیت
+            و عملکرد کدهای برنامه‌نویسی است.
         </p>
     </section>
 
@@ -231,75 +207,74 @@
         <article class="card">
             <h3>۱. تحلیل کد با AI</h3>
             <p>
-                بررسی کد پایتون و شناسایی مشکلات احتمالی
-                در ساختار و عملکرد آن.
+                بررسی ساختار کد پایتون و شناسایی مشکلات
+                احتمالی در برنامه.
             </p>
-            <a href="analysis.html">ورود به بخش</a>
+            <a href="./analysis.html">ورود به بخش</a>
         </article>
 
         <article class="card">
             <h3>۲. تشخیص الگوها با AI</h3>
             <p>
-                شناسایی الگوهای تکراری و ساختارهایی
-                که امکان بهبود دارند.
+                شناسایی الگوهای تکراری و ساختارهای
+                قابل بهبود در کد.
             </p>
-            <a href="patterns.html">ورود به بخش</a>
+            <a href="./patterns.html">ورود به بخش</a>
         </article>
 
         <article class="card">
             <h3>۳. بهینه‌سازی کد با AI</h3>
             <p>
-                بررسی پیشنهادهای بهینه‌سازی و ارائه
-                نسخه پیشنهادی کد.
+                بررسی روش‌های بهینه‌سازی و ارائه
+                پیشنهاد برای بهبود کد.
             </p>
-            <a href="optimization.html">ورود به بخش</a>
+            <a href="./optimization.html">ورود به بخش</a>
         </article>
 
         <article class="card">
             <h3>۴. تحلیل پیچیدگی با AI</h3>
             <p>
-                بررسی پیچیدگی زمانی و فضایی الگوریتم‌ها
-                و توضیح رفتار آن‌ها.
+                بررسی پیچیدگی زمانی و فضایی
+                الگوریتم‌های پایتون.
             </p>
-            <a href="complexity.html">ورود به بخش</a>
+            <a href="./complexity.html">ورود به بخش</a>
         </article>
 
         <article class="card">
             <h3>۵. مقایسه کدها با AI</h3>
             <p>
-                مقایسه نسخه اولیه و نسخه بهینه‌شده
-                از نظر ساختار و ویژگی‌های آن‌ها.
+                مقایسه نسخه اولیه و نسخه پیشنهادی
+                از نظر ساختار و ویژگی‌های کد.
             </p>
-            <a href="comparison.html">ورود به بخش</a>
+            <a href="./comparison.html">ورود به بخش</a>
         </article>
 
         <article class="card">
             <h3>۶. گزارش تحلیل با AI</h3>
             <p>
                 جمع‌آوری نتایج بخش‌های مختلف و تهیه
-                گزارش نهایی از وضعیت کد.
+                گزارش نهایی از تحلیل کد.
             </p>
-            <a href="report.html">ورود به بخش</a>
+            <a href="./report.html">ورود به بخش</a>
         </article>
 
     </section>
 
     <section class="about">
-        <h2>درباره PyOptimize</h2>
+        <h2>درباره پروژه PyOptimize</h2>
 
         <p>
-            هدف این پروژه آشنایی با روش‌های تحلیل و بهینه‌سازی
-            برنامه‌های پایتون و بررسی نقش هوش مصنوعی در این فرایند است.
-            انتخاب ساختار داده مناسب، کاهش عملیات غیرضروری،
-            بررسی پیچیدگی الگوریتم و مقایسه روش‌های مختلف
-            از موضوعات مهم این پروژه هستند.
+            این پروژه با هدف آموزش مفاهیم تحلیل و بهینه‌سازی
+            کد پایتون طراحی شده است. انتخاب ساختار داده مناسب،
+            کاهش عملیات غیرضروری، بررسی پیچیدگی الگوریتم‌ها
+            و مقایسه روش‌های مختلف برنامه‌نویسی از موضوعات
+            اصلی آن هستند.
         </p>
 
         <p>
-            این وب‌سایت در حال توسعه است و بخش‌های آن برای اتصال
-            به یک سرویس پشتیبان پایتونی و هوش مصنوعی طراحی شده‌اند.
-            تا پیش از راه‌اندازی بک‌اند، قابلیت تحلیل واقعی با AI
-            در نسخه منتشرشده فعال نیست.
+            صفحات وب‌سایت برای اتصال به یک بک‌اند پایتونی
+            و سرویس هوش مصنوعی طراحی شده‌اند. برای فعال‌شدن
+            تحلیل واقعی با AI، راه‌اندازی این بخش‌ها ضروری است.
         </p>
     </section>
 
