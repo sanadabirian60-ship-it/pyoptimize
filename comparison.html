@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مقایسه کدها با AI | PyOptimize</title>
+    <title>مقایسه کدها | PyOptimize</title>
 
     <style>
         * {
@@ -12,140 +12,125 @@
 
         body {
             margin: 0;
-            font-family: Tahoma, Arial, sans-serif;
-            background: #0b1120;
-            color: #e5e7eb;
-            line-height: 1.8;
+            font-family: Tahoma, sans-serif;
+            background: #f4f6fa;
+            color: #263238;
+            line-height: 1.9;
         }
 
         header {
-            background: #111c32;
-            padding: 22px 8%;
-            border-bottom: 1px solid #263653;
+            background: #182b49;
+            color: white;
+            padding: 25px 15px;
+            text-align: center;
         }
 
-        header h1 {
-            color: #60a5fa;
-            margin: 0;
+        nav {
+            background: #243b60;
+            padding: 12px;
+            text-align: center;
         }
 
-        header p {
-            color: #a5b4fc;
-            margin-bottom: 0;
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 8px;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            color: #70e1c1;
         }
 
         main {
-            width: min(1100px, 92%);
-            margin: 40px auto;
-        }
-
-        .back {
-            display: inline-block;
-            color: #93c5fd;
-            text-decoration: none;
-            margin-bottom: 20px;
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 20px;
         }
 
         .card {
-            background: #14213a;
-            border: 1px solid #263653;
-            border-radius: 14px;
+            background: white;
             padding: 25px;
             margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
         }
 
-        h2 {
-            color: #60a5fa;
-            margin-top: 0;
+        h2, h3 {
+            color: #176b87;
         }
 
-        .code-grid {
+        .code-container {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .code-box h3 {
-            color: #93c5fd;
+            gap: 20px;
         }
 
         textarea {
             width: 100%;
-            min-height: 260px;
-            resize: vertical;
-            background: #080e1b;
-            color: #d1fae5;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 16px;
-            font-family: Consolas, monospace;
-            font-size: 14px;
+            min-height: 230px;
+            padding: 15px;
             direction: ltr;
             text-align: left;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: #3b82f6;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            border: 1px solid #ccd5df;
+            border-radius: 8px;
+            resize: vertical;
         }
 
         button {
-            border: none;
-            border-radius: 9px;
-            padding: 12px 22px;
-            margin-top: 15px;
-            background: #2563eb;
+            background: #087f8c;
             color: white;
-            font-size: 15px;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 15px;
+            margin-top: 15px;
         }
 
         button:hover {
-            background: #1d4ed8;
+            background: #075e68;
         }
 
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        pre {
+            background: #172438;
+            color: #e8f0fa;
+            padding: 18px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            direction: rtl;
         }
 
         .result {
-            background: #080e1b;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 20px;
-            min-height: 100px;
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
+            display: none;
+            margin-top: 20px;
         }
 
-        .status {
-            margin-top: 15px;
-            color: #fbbf24;
+        .note {
+            background: #e8f5f5;
+            padding: 15px;
+            border-right: 4px solid #087f8c;
+            border-radius: 6px;
         }
 
         footer {
             text-align: center;
-            padding: 25px;
-            color: #94a3b8;
-            border-top: 1px solid #263653;
+            background: #182b49;
+            color: white;
+            padding: 18px;
+            margin-top: 40px;
         }
 
         @media (max-width: 700px) {
-            header {
-                padding: 18px 5%;
-            }
-
-            .card {
-                padding: 17px;
-            }
-
-            .code-grid {
+            .code-container {
                 grid-template-columns: 1fr;
             }
 
-            textarea {
-                min-height: 220px;
+            main {
+                padding: 12px;
             }
         }
     </style>
@@ -155,112 +140,133 @@
 
 <header>
     <h1>PyOptimize</h1>
-    <p>تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی (AI)</p>
+    <p>مقایسه کد اولیه و کد بهینه‌شده</p>
 </header>
+
+<nav>
+    <a href="index.html">صفحه اصلی</a>
+    <a href="analysis.html">تحلیل کد</a>
+    <a href="patterns.html">تشخیص الگوها</a>
+    <a href="optimization.html">بهینه‌سازی</a>
+    <a href="complexity.html">پیچیدگی الگوریتم</a>
+    <a href="comparison.html">مقایسه کدها</a>
+    <a href="report.html">گزارش نهایی</a>
+</nav>
 
 <main>
 
-    <a class="back" href="index.html">← بازگشت به صفحه اصلی</a>
-
     <section class="card">
-        <h2>۵. مقایسه کدها با هوش مصنوعی</h2>
+        <h2>مقایسه کد اولیه و بهینه‌شده</h2>
 
         <p>
-            نسخه اولیه و نسخه بهینه‌شده کد پایتون خود را وارد کنید.
-            هوش مصنوعی تفاوت‌ها، مزایا، محدودیت‌ها و تغییرات عملکردی
-            احتمالی را بررسی می‌کند.
+            در این بخش می‌توانید دو نسخه از یک کد پایتون را وارد کنید
+            تا تفاوت‌های آن‌ها از نظر ساختار، عملکرد و پیچیدگی بررسی شود.
         </p>
 
-        <div class="code-grid">
+        <div class="note">
+            برای شروع، یک نمونه از کد اولیه و نسخه بهینه‌شده آن
+            در کادرهای زیر قرار داده شده است.
+        </div>
+    </section>
 
-            <div class="code-box">
+    <section class="card">
+
+        <div class="code-container">
+
+            <div>
                 <h3>کد اولیه</h3>
 
-                <textarea
-                    id="originalCode"
-                    placeholder="نسخه اولیه کد را وارد کنید..."
-                    spellcheck="false"
-                ></textarea>
+                <textarea id="originalCode" spellcheck="false">values = [3, 6, 9, 12, 15]
+target = 12
+
+found = False
+
+for value in values:
+    if value == target:
+        found = True
+        break
+
+print(found)</textarea>
             </div>
 
-            <div class="code-box">
+            <div>
                 <h3>کد بهینه‌شده</h3>
 
-                <textarea
-                    id="optimizedCode"
-                    placeholder="نسخه بهینه‌شده کد را وارد کنید..."
-                    spellcheck="false"
-                ></textarea>
+                <textarea id="optimizedCode" spellcheck="false">values = [3, 6, 9, 12, 15]
+target = 12
+
+values_set = set(values)
+
+found = target in values_set
+
+print(found)</textarea>
             </div>
 
         </div>
 
-        <button id="compareButton" type="button">
-            مقایسه کدها با AI
+        <button type="button" id="compareButton">
+            مقایسه کدها
         </button>
 
-        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <div id="status" role="status"></div>
+
+        <div class="result" id="result">
+            <h3>نتیجه مقایسه</h3>
+            <pre id="comparisonResult"></pre>
+
+            <h3>خلاصه مقایسه</h3>
+            <pre id="summaryResult"></pre>
+        </div>
+
     </section>
 
     <section class="card">
-        <h2>نتیجه مقایسه هوشمند</h2>
+        <h2>نکته مهم درباره مقایسه عملکرد</h2>
 
-        <div id="result" class="result" aria-live="polite">
-            نتیجه مقایسه پس از ارسال دو نسخه کد نمایش داده می‌شود.
-        </div>
-    </section>
+        <p>
+            در این مثال، جست‌وجو در لیست در بدترین حالت به بررسی
+            عناصر مختلف نیاز دارد. در مقابل، مجموعه در حالت میانگین
+            امکان بررسی عضویت با پیچیدگی زمانی O(1) را فراهم می‌کند.
+        </p>
 
-    <section class="card">
-        <h2>جمع‌بندی مقایسه</h2>
-
-        <div id="summary" class="result">
-            جمع‌بندی پس از دریافت پاسخ هوش مصنوعی نمایش داده می‌شود.
-        </div>
+        <p>
+            البته ساخت مجموعه نیز هزینه زمانی و حافظه دارد.
+            بنابراین استفاده از آن به تعداد جست‌وجوها و شرایط برنامه
+            بستگی دارد و همیشه به معنای سریع‌تر بودن کل برنامه نیست.
+        </p>
     </section>
 
 </main>
 
 <footer>
-    PyOptimize | تحلیل و بهینه‌سازی کد با هوش مصنوعی
+    <p>PyOptimize | تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی</p>
 </footer>
 
 <script>
-    // آدرس بک‌اند پس از راه‌اندازی سرور تنظیم شود.
-    const API_URL = "http://localhost:8000/compare";
-
-    const originalInput = document.getElementById("originalCode");
-    const optimizedInput = document.getElementById("optimizedCode");
-
     const compareButton = document.getElementById("compareButton");
-    const resultBox = document.getElementById("result");
-    const summaryBox = document.getElementById("summary");
-    const statusBox = document.getElementById("status");
 
-    compareButton.addEventListener("click", compareCodes);
+    compareButton.addEventListener("click", async function () {
 
-    async function compareCodes() {
-        const originalCode = originalInput.value.trim();
-        const optimizedCode = optimizedInput.value.trim();
+        const originalCode =
+            document.getElementById("originalCode").value.trim();
+
+        const optimizedCode =
+            document.getElementById("optimizedCode").value.trim();
+
+        const status = document.getElementById("status");
+        const result = document.getElementById("result");
 
         if (!originalCode || !optimizedCode) {
-            statusBox.textContent =
-                "لطفاً هر دو نسخه کد را وارد کنید.";
+            status.textContent = "لطفاً هر دو کادر کد را پر کنید.";
             return;
         }
 
         compareButton.disabled = true;
-
-        statusBox.textContent =
-            "در حال مقایسه دو نسخه کد با AI...";
-
-        resultBox.textContent =
-            "لطفاً منتظر بمانید...";
-
-        summaryBox.textContent =
-            "در حال آماده‌سازی جمع‌بندی...";
+        status.textContent = "در حال مقایسه کدها...";
+        result.style.display = "none";
 
         try {
-            const response = await fetch(API_URL, {
+            const response = await fetch("http://localhost:8000/compare", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -271,41 +277,29 @@
                 })
             });
 
+            if (!response.ok) {
+                throw new Error("خطا در دریافت پاسخ سرور");
+            }
+
             const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(
-                    data.detail || "خطایی در مقایسه کدها رخ داده است."
-                );
-            }
+            document.getElementById("comparisonResult").textContent =
+                data.comparison || "نتیجه مقایسه دریافت نشد.";
 
-            if (
-                typeof data.comparison !== "string" ||
-                typeof data.summary !== "string"
-            ) {
-                throw new Error("ساختار پاسخ سرور معتبر نیست.");
-            }
+            document.getElementById("summaryResult").textContent =
+                data.summary || "خلاصه‌ای دریافت نشد.";
 
-            resultBox.textContent = data.comparison;
-            summaryBox.textContent = data.summary;
-
-            statusBox.textContent =
-                "مقایسه کدها با موفقیت انجام شد.";
+            result.style.display = "block";
+            status.textContent = "مقایسه با موفقیت انجام شد.";
 
         } catch (error) {
-            resultBox.textContent =
-                "امکان دریافت نتیجه مقایسه وجود ندارد.";
-
-            summaryBox.textContent =
-                "اتصال بک‌اند و تنظیمات API را بررسی کنید.";
-
-            statusBox.textContent =
-                "خطا: " + error.message;
-
+            status.textContent =
+                "ارتباط با سرور برقرار نشد. ابتدا باید بک‌اند پروژه اجرا شود.";
         } finally {
             compareButton.disabled = false;
         }
-    }
+
+    });
 </script>
 
 </body>
