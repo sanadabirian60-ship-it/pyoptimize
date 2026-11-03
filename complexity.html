@@ -1,295 +1,167 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>تحلیل پیچیدگی الگوریتم | PyOptimize</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>تحلیل پیچیدگی الگوریتم با AI | PyOptimize</title>
 
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --background: #0b1120;
-            --surface: #111c32;
-            --border: #293b57;
-            --primary: #0ea5e9;
-            --text: #e5e7eb;
-            --muted: #9caec5;
-            --warning: #fbbf24;
-            --success: #34d399;
         }
 
         body {
-            font-family: "Vazirmatn", sans-serif;
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.9;
-            min-height: 100vh;
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #0b1120;
+            color: #e5e7eb;
+            line-height: 1.8;
         }
 
         header {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 15px 7%;
+            background: #111c32;
+            padding: 22px 8%;
+            border-bottom: 1px solid #263653;
         }
 
-        nav {
-            max-width: 1200px;
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
+        header h1 {
+            color: #60a5fa;
+            margin: 0;
         }
 
-        .logo {
-            font-size: 25px;
-            font-weight: 800;
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 18px;
-        }
-
-        .nav-links a {
-            color: var(--muted);
-            text-decoration: none;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
+        header p {
+            color: #a5b4fc;
+            margin-bottom: 0;
         }
 
         main {
-            width: 92%;
-            max-width: 1050px;
+            width: min(1000px, 92%);
             margin: 40px auto;
         }
 
+        .back {
+            display: inline-block;
+            color: #93c5fd;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
         .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 26px;
+            background: #14213a;
+            border: 1px solid #263653;
+            border-radius: 14px;
+            padding: 25px;
             margin-bottom: 25px;
         }
 
-        h1 {
-            color: var(--primary);
-            font-size: clamp(25px, 4vw, 34px);
-            margin-bottom: 12px;
-        }
-
         h2 {
-            color: #7dd3fc;
-            font-size: 21px;
-            margin-bottom: 15px;
-        }
-
-        h3 {
-            color: #7dd3fc;
-            font-size: 17px;
-            margin-bottom: 8px;
-        }
-
-        p {
-            color: var(--muted);
-        }
-
-        .badge {
-            display: inline-block;
-            background: #12354b;
-            color: #7dd3fc;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-bottom: 12px;
-        }
-
-        .notice {
-            margin-top: 16px;
-            padding: 12px 15px;
-            background: #332b18;
-            color: var(--warning);
-            border-radius: 9px;
-            font-size: 13px;
+            color: #60a5fa;
+            margin-top: 0;
         }
 
         textarea {
             width: 100%;
-            min-height: 250px;
+            min-height: 280px;
             resize: vertical;
             background: #080e1b;
-            color: #dbeafe;
+            color: #d1fae5;
             border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 18px;
+            border-radius: 10px;
+            padding: 16px;
             font-family: Consolas, monospace;
             font-size: 14px;
-            line-height: 1.8;
             direction: ltr;
             text-align: left;
             outline: none;
         }
 
         textarea:focus {
-            border-color: var(--primary);
+            border-color: #3b82f6;
         }
 
         button {
             border: none;
             border-radius: 9px;
-            padding: 11px 20px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 700;
+            padding: 12px 22px;
+            margin-top: 15px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
             cursor: pointer;
-            transition: .2s;
         }
 
-        button:focus-visible,
-        a:focus-visible {
-            outline: 2px solid white;
-            outline-offset: 3px;
+        button:hover {
+            background: #1d4ed8;
         }
 
-        .buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 17px;
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
-        .primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .primary:hover {
-            background: #0284c7;
-        }
-
-        .secondary {
-            background: #263750;
-            color: white;
-        }
-
-        .secondary:hover {
-            background: #344966;
-        }
-
-        .message {
-            color: var(--warning);
-            font-size: 14px;
-            margin-top: 12px;
-        }
-
-        .result-box {
+        .result {
             background: #080e1b;
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            border: 1px solid #334155;
+            border-radius: 10px;
             padding: 20px;
-            margin-top: 16px;
+            min-height: 80px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            margin-top: 15px;
+            color: #fbbf24;
+        }
+
+        .complexity-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .complexity-box {
+            background: #0d1930;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .complexity-box h3 {
+            color: #93c5fd;
+            margin-top: 0;
         }
 
         .complexity-value {
-            display: inline-block;
+            color: #34d399;
+            font-size: 24px;
+            font-weight: bold;
             direction: ltr;
-            background: #12354b;
-            color: #7dd3fc;
-            padding: 5px 13px;
-            border-radius: 8px;
-            font-family: Consolas, monospace;
-            font-weight: 700;
-            margin: 8px 0;
-        }
-
-        .complexity-list {
-            list-style: none;
-        }
-
-        .complexity-list li {
-            padding: 13px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .complexity-list li:last-child {
-            border-bottom: none;
-        }
-
-        .complexity-list strong {
-            color: #7dd3fc;
-            direction: ltr;
-            display: inline-block;
-            min-width: 85px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .chart-wrapper {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        canvas {
-            display: block;
-            width: 100%;
-            min-width: 300px;
-            max-height: 340px;
-        }
-
-        .next-link {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 10px 18px;
-            border-radius: 9px;
-            margin-top: 18px;
-            font-weight: 700;
-            text-decoration: none;
+            text-align: right;
         }
 
         footer {
             text-align: center;
             padding: 25px;
-            color: var(--muted);
-            border-top: 1px solid var(--border);
-            margin-top: 50px;
+            color: #94a3b8;
+            border-top: 1px solid #263653;
         }
 
-        @media (max-width: 650px) {
-            nav {
-                flex-direction: column;
-            }
-
-            .nav-links {
-                justify-content: center;
-                gap: 12px;
-                font-size: 13px;
+        @media (max-width: 600px) {
+            header {
+                padding: 18px 5%;
             }
 
             .card {
-                padding: 19px;
+                padding: 17px;
             }
 
-            .buttons button {
-                flex: 1 1 100%;
+            .complexity-grid {
+                grid-template-columns: 1fr;
+            }
+
+            textarea {
+                min-height: 220px;
             }
         }
     </style>
@@ -298,385 +170,155 @@
 <body>
 
 <header>
-    <nav>
-        <a href="index.html" class="logo">PyOptimize</a>
-
-        <div class="nav-links">
-            <a href="index.html">صفحه اصلی</a>
-            <a href="analysis.html">تحلیل کد</a>
-            <a href="patterns.html">تشخیص الگوها</a>
-            <a href="optimization.html">بهینه‌سازی</a>
-            <a href="complexity.html">پیچیدگی</a>
-        </div>
-    </nav>
+    <h1>PyOptimize</h1>
+    <p>تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی (AI)</p>
 </header>
 
 <main>
 
-    <section class="card">
-        <span class="badge">مرحله چهارم پروژه</span>
+    <a class="back" href="index.html">← بازگشت به صفحه اصلی</a>
 
-        <h1>تحلیل پیچیدگی الگوریتم</h1>
+    <section class="card">
+        <h2>۴. تحلیل پیچیدگی الگوریتم با هوش مصنوعی</h2>
 
         <p>
-            پیچیدگی الگوریتم نشان می‌دهد با افزایش اندازه ورودی،
-            میزان عملیات یا حافظه موردنیاز برنامه چگونه تغییر می‌کند.
-            در این بخش، کد پایتون بررسی می‌شود و یک تخمین اولیه
-            از ساختار حلقه‌ها ارائه خواهد شد.
-        </p>
-
-        <div class="notice">
-            تشخیص پیچیدگی دقیق به بررسی منطق الگوریتم نیاز دارد.
-            نتایج تحلیل خودکار این نسخه صرفاً تخمینی هستند.
-        </div>
-    </section>
-
-    <section class="card">
-        <h2>کد مورد بررسی</h2>
-
-        <p style="margin-bottom: 15px;">
-            کد پایتون خود را وارد کنید یا نمونه آماده را بارگذاری کنید.
+            کد پایتون خود را وارد کنید تا هوش مصنوعی
+            پیچیدگی زمانی و فضایی الگوریتم را بررسی کند
+            و درباره نحوه رشد مصرف زمان و حافظه توضیح دهد.
         </p>
 
         <textarea
-            id="codeInput"
-            spellcheck="false"
+            id="pythonCode"
             placeholder="کد پایتون خود را اینجا وارد کنید..."
+            spellcheck="false"
         ></textarea>
 
-        <div class="buttons">
-            <button class="secondary" id="sampleButton" type="button">
-                بارگذاری نمونه کد
-            </button>
+        <button id="analyzeButton" type="button">
+            تحلیل پیچیدگی با AI
+        </button>
 
-            <button class="primary" id="analyzeButton" type="button">
-                تحلیل پیچیدگی
-            </button>
-
-            <button class="secondary" id="clearButton" type="button">
-                پاک کردن
-            </button>
-        </div>
-
-        <div id="message" class="message" role="status" aria-live="polite"></div>
-    </section>
-
-    <section class="card hidden" id="results">
-
-        <h2>نتایج تحلیل</h2>
-
-        <div class="result-box">
-            <h3>۱. اطلاعات ساختاری کد</h3>
-            <p id="structure"></p>
-        </div>
-
-        <div class="result-box">
-            <h3>۲. تخمین پیچیدگی زمانی</h3>
-            <div id="timeComplexity"></div>
-        </div>
-
-        <div class="result-box">
-            <h3>۳. بررسی حافظه</h3>
-            <p id="spaceComplexity"></p>
-        </div>
-
-        <div class="result-box">
-            <h3>۴. توضیح تحلیل</h3>
-            <p id="explanation"></p>
-        </div>
-
-        <a href="comparison.html" class="next-link">
-            رفتن به مقایسه کدها ←
-        </a>
-
+        <p id="status" class="status" role="status" aria-live="polite"></p>
     </section>
 
     <section class="card">
-        <h2>آشنایی با پیچیدگی‌های زمانی</h2>
+        <h2>نتایج تحلیل پیچیدگی</h2>
 
-        <ul class="complexity-list">
-            <li>
-                <strong>O(1)</strong>
-                زمان ثابت؛ تعداد عملیات با اندازه ورودی رشد نمی‌کند.
-            </li>
+        <div class="complexity-grid">
 
-            <li>
-                <strong>O(log n)</strong>
-                زمان لگاریتمی؛ نمونه رایج آن جست‌وجوی دودویی است.
-            </li>
+            <div class="complexity-box">
+                <h3>پیچیدگی زمانی</h3>
+                <div id="timeComplexity" class="complexity-value">
+                    —
+                </div>
+                <p>نحوه رشد زمان اجرای الگوریتم نسبت به اندازه ورودی</p>
+            </div>
 
-            <li>
-                <strong>O(n)</strong>
-                زمان خطی؛ مانند پیمایش یک لیست.
-            </li>
+            <div class="complexity-box">
+                <h3>پیچیدگی فضایی</h3>
+                <div id="spaceComplexity" class="complexity-value">
+                    —
+                </div>
+                <p>نحوه رشد حافظه موردنیاز الگوریتم نسبت به اندازه ورودی</p>
+            </div>
 
-            <li>
-                <strong>O(n log n)</strong>
-                در بسیاری از الگوریتم‌های مرتب‌سازی کارآمد دیده می‌شود.
-            </li>
-
-            <li>
-                <strong>O(n²)</strong>
-                زمان درجه دوم؛ مانند مقایسه تمام جفت‌های عناصر.
-            </li>
-
-            <li>
-                <strong>O(2ⁿ)</strong>
-                زمان نمایی؛ در برخی الگوریتم‌های بازگشتی ساده دیده می‌شود.
-            </li>
-        </ul>
+        </div>
     </section>
 
     <section class="card">
-        <h2>مقایسه رشد پیچیدگی زمانی</h2>
+        <h2>توضیحات تحلیل هوشمند</h2>
 
-        <p style="margin-bottom: 15px;">
-            نمودار زیر رشد تقریبی چند تابع پیچیدگی را در اندازه‌های
-            مختلف ورودی نشان می‌دهد.
-        </p>
-
-        <div class="chart-wrapper">
-            <canvas id="complexityChart" width="800" height="340"
-                aria-label="نمودار مقایسه رشد پیچیدگی زمانی"
-                role="img"></canvas>
+        <div id="explanation" class="result" aria-live="polite">
+            توضیحات تحلیل پس از ارسال کد نمایش داده می‌شود.
         </div>
-
-        <p style="font-size: 12px; margin-top: 12px;">
-            این نمودار نمایشی است و مقدار واقعی زمان اجرای برنامه‌ها را نشان نمی‌دهد.
-        </p>
     </section>
 
 </main>
 
 <footer>
-    PyOptimize | تحلیل و بهینه‌سازی کد پایتون
+    PyOptimize | تحلیل و بهینه‌سازی کد با هوش مصنوعی
 </footer>
 
 <script>
-"use strict";
+    // آدرس بک‌اند پس از راه‌اندازی سرور تنظیم شود.
+    const API_URL = "http://localhost:8000/complexity";
 
-const sampleCode = `def find_duplicates(numbers):
-    duplicates = []
+    const codeInput = document.getElementById("pythonCode");
+    const analyzeButton = document.getElementById("analyzeButton");
 
-    for i in range(len(numbers)):
-        for j in range(i + 1, len(numbers)):
-            if numbers[i] == numbers[j]:
-                if numbers[i] not in duplicates:
-                    duplicates.append(numbers[i])
+    const timeBox = document.getElementById("timeComplexity");
+    const spaceBox = document.getElementById("spaceComplexity");
+    const explanationBox = document.getElementById("explanation");
+    const statusBox = document.getElementById("status");
 
-    return duplicates
+    analyzeButton.addEventListener("click", analyzeComplexity);
 
-values = [4, 2, 8, 2, 4, 9]
-print(find_duplicates(values))`;
+    async function analyzeComplexity() {
+        const code = codeInput.value.trim();
 
-const input = document.getElementById("codeInput");
-const results = document.getElementById("results");
-const message = document.getElementById("message");
+        if (!code) {
+            statusBox.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
+            return;
+        }
 
-document.getElementById("sampleButton").addEventListener("click", function () {
-    input.value = sampleCode;
-    results.classList.add("hidden");
-    message.textContent = "نمونه کد بارگذاری شد.";
-});
+        analyzeButton.disabled = true;
 
-document.getElementById("clearButton").addEventListener("click", function () {
-    input.value = "";
-    results.classList.add("hidden");
-    message.textContent = "ویرایشگر پاک شد.";
-});
+        statusBox.textContent =
+            "در حال بررسی پیچیدگی الگوریتم با AI...";
 
-document.getElementById("analyzeButton").addEventListener("click", analyzeComplexity);
+        timeBox.textContent = "در حال تحلیل...";
+        spaceBox.textContent = "در حال تحلیل...";
 
+        explanationBox.textContent =
+            "لطفاً منتظر دریافت نتیجه باشید...";
 
-function analyzeComplexity() {
-    const code = input.value;
-
-    if (!code.trim()) {
-        message.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
-        results.classList.add("hidden");
-        return;
-    }
-
-    const lines = code.split("\n");
-
-    const loopLines = [];
-
-    lines.forEach(function (line, index) {
-        if (/^\s*(for|while)\b/.test(line)) {
-            loopLines.push({
-                index: index,
-                indent: line.match(/^\s*/)[0].length
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    code: code
+                })
             });
-        }
-    });
 
-    let maximumDepth = 0;
+            const data = await response.json();
 
-    loopLines.forEach(function (outerLoop) {
-        let depth = 1;
+            if (!response.ok) {
+                throw new Error(
+                    data.detail || "خطایی در تحلیل پیچیدگی رخ داده است."
+                );
+            }
 
-        loopLines.forEach(function (innerLoop) {
             if (
-                innerLoop.index > outerLoop.index &&
-                innerLoop.indent > outerLoop.indent
+                typeof data.time_complexity !== "string" ||
+                typeof data.space_complexity !== "string" ||
+                typeof data.explanation !== "string"
             ) {
-                depth = Math.max(depth, 2);
+                throw new Error("ساختار پاسخ سرور معتبر نیست.");
             }
-        });
 
-        maximumDepth = Math.max(maximumDepth, depth);
-    });
+            timeBox.textContent = data.time_complexity;
+            spaceBox.textContent = data.space_complexity;
+            explanationBox.textContent = data.explanation;
 
-    const functionCount = (code.match(/^\s*def\s+/gm) || []).length;
-    const classCount = (code.match(/^\s*class\s+/gm) || []).length;
+            statusBox.textContent =
+                "تحلیل پیچیدگی با موفقیت دریافت شد.";
 
-    let timeResult = "";
-    let explanation = "";
+        } catch (error) {
+            timeBox.textContent = "نامشخص";
+            spaceBox.textContent = "نامشخص";
 
-    if (maximumDepth >= 2) {
-        timeResult = "احتمال رشد درجه دوم یا بیشتر؛ مانند O(n²)";
-        explanation =
-            "دو سطح یا بیشتر از حلقه‌ها شناسایی شده‌اند. اگر هر حلقه متناسب با اندازه ورودی اجرا شود، ممکن است تعداد عملیات به‌صورت درجه دوم رشد کند. برای تعیین دقیق‌تر باید محدوده اجرای حلقه‌ها بررسی شود.";
-    } else if (loopLines.length > 0) {
-        timeResult = "احتمال رشد خطی؛ مانند O(n)";
-        explanation =
-            "حلقه شناسایی شده است. اگر تعداد تکرارهای آن متناسب با اندازه ورودی باشد و عملیات داخل آن زمان ثابت داشته باشند، پیچیدگی زمانی می‌تواند خطی باشد.";
-    } else {
-        timeResult = "از روی حلقه‌های ظاهری قابل تعیین نیست";
-        explanation =
-            "حلقه for یا while شناسایی نشد. با این حال، فراخوانی توابع، بازگشت، عملیات داخلی کتابخانه‌ها و الگوریتم‌های استفاده‌شده می‌توانند پیچیدگی زمانی داشته باشند.";
-    }
+            explanationBox.textContent =
+                "امکان دریافت تحلیل وجود ندارد. اتصال بک‌اند را بررسی کنید.";
 
-    document.getElementById("structure").textContent =
-        "تعداد خطوط: " + lines.length +
-        " | تعداد حلقه‌ها: " + loopLines.length +
-        " | تعداد توابع: " + functionCount +
-        " | تعداد کلاس‌ها: " + classCount;
+            statusBox.textContent = "خطا: " + error.message;
 
-    const timeContainer = document.getElementById("timeComplexity");
-    const value = document.createElement("span");
-    value.className = "complexity-value";
-    value.textContent = timeResult;
-    timeContainer.replaceChildren(value);
-
-    document.getElementById("spaceComplexity").textContent =
-        "مصرف حافظه از روی تعداد حلقه‌ها قابل تعیین نیست. برای تحلیل آن باید ساختارهای داده، متغیرهای ذخیره‌شده، اندازه ورودی و حافظه مورد استفاده توابع بررسی شوند.";
-
-    document.getElementById("explanation").textContent = explanation;
-
-    results.classList.remove("hidden");
-    message.textContent = "تحلیل اولیه انجام شد.";
-
-    results.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-}
-
-
-/* رسم نمودار رشد توابع پیچیدگی */
-function drawChart() {
-    const canvas = document.getElementById("complexityChart");
-    const ctx = canvas.getContext("2d");
-
-    const width = canvas.width;
-    const height = canvas.height;
-
-    ctx.clearRect(0, 0, width, height);
-
-    const left = 65;
-    const right = width - 25;
-    const top = 25;
-    const bottom = height - 55;
-
-    const values = Array.from({ length: 20 }, (_, i) => i + 1);
-
-    const series = [
-        {
-            name: "O(1)",
-            color: "#34d399",
-            calculate: n => 1
-        },
-        {
-            name: "O(log n)",
-            color: "#fbbf24",
-            calculate: n => Math.log2(n)
-        },
-        {
-            name: "O(n)",
-            color: "#38bdf8",
-            calculate: n => n
-        },
-        {
-            name: "O(n²)",
-            color: "#f87171",
-            calculate: n => n * n
+        } finally {
+            analyzeButton.disabled = false;
         }
-    ];
-
-    const maxValue = 400;
-
-    ctx.strokeStyle = "#293b57";
-    ctx.lineWidth = 1;
-
-    for (let i = 0; i <= 4; i++) {
-        const y = bottom - (i / 4) * (bottom - top);
-
-        ctx.beginPath();
-        ctx.moveTo(left, y);
-        ctx.lineTo(right, y);
-        ctx.stroke();
     }
-
-    ctx.fillStyle = "#9caec5";
-    ctx.font = "12px sans-serif";
-    ctx.textAlign = "center";
-
-    ctx.fillText("اندازه ورودی (n)", (left + right) / 2, height - 12);
-
-    ctx.save();
-    ctx.translate(17, (top + bottom) / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillText("میزان عملیات نسبی", 0, 0);
-    ctx.restore();
-
-    series.forEach(function (item, seriesIndex) {
-        ctx.strokeStyle = item.color;
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-
-        values.forEach(function (n, index) {
-            const x = left + (index / (values.length - 1)) * (right - left);
-
-            const raw = item.calculate(n);
-            const y = bottom - (Math.min(raw, maxValue) / maxValue) * (bottom - top);
-
-            if (index === 0) {
-                ctx.moveTo(x, y);
-            } else {
-                ctx.lineTo(x, y);
-            }
-        });
-
-        ctx.stroke();
-    });
-
-    let legendX = left;
-
-    series.forEach(function (item) {
-        ctx.fillStyle = item.color;
-        ctx.fillRect(legendX, height - 38, 12, 12);
-
-        ctx.fillStyle = "#dbeafe";
-        ctx.textAlign = "left";
-        ctx.fillText(item.name, legendX + 17, height - 28);
-
-        legendX += 145;
-    });
-}
-
-drawChart();
 </script>
 
 </body>
-</html>
+    </html>
