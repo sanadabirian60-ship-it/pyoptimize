@@ -1,443 +1,312 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مقایسه کدها | PyOptimize</title>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقایسه کدها با AI | PyOptimize</title>
 
-  <style>
-    :root {
-      --bg: #081426;
-      --panel: #10213a;
-      --panel2: #142945;
-      --text: #e8f0ff;
-      --muted: #9aacc5;
-      --blue: #4d9fff;
-      --border: #29415f;
-      --green: #42d69b;
-      --red: #ff7777;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #0b1120;
+            color: #e5e7eb;
+            line-height: 1.8;
+        }
 
-    body {
-      margin: 0;
-      font-family: Vazirmatn, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.9;
-    }
+        header {
+            background: #111c32;
+            padding: 22px 8%;
+            border-bottom: 1px solid #263653;
+        }
 
-    header {
-      padding: 24px 7%;
-      border-bottom: 1px solid var(--border);
-      background: #0b1a2e;
-    }
+        header h1 {
+            color: #60a5fa;
+            margin: 0;
+        }
 
-    header a {
-      color: var(--blue);
-      text-decoration: none;
-      font-weight: 700;
-    }
+        header p {
+            color: #a5b4fc;
+            margin-bottom: 0;
+        }
 
-    main {
-      width: min(1100px, 90%);
-      margin: 40px auto;
-    }
+        main {
+            width: min(1100px, 92%);
+            margin: 40px auto;
+        }
 
-    h1 { font-size: 30px; margin-bottom: 8px; }
-    h2 { font-size: 21px; margin-top: 30px; }
-    p { color: var(--muted); }
+        .back {
+            display: inline-block;
+            color: #93c5fd;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
 
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 22px;
-      margin: 22px 0;
-    }
+        .card {
+            background: #14213a;
+            border: 1px solid #263653;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
 
-    .editors {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
+        h2 {
+            color: #60a5fa;
+            margin-top: 0;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 9px;
-      font-weight: 700;
-    }
+        .code-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
 
-    textarea {
-      width: 100%;
-      min-height: 280px;
-      resize: vertical;
-      direction: ltr;
-      text-align: left;
-      font-family: Consolas, monospace;
-      font-size: 14px;
-      line-height: 1.7;
-      color: #e8f0ff;
-      background: #071323;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      outline: none;
-    }
+        .code-box h3 {
+            color: #93c5fd;
+        }
 
-    textarea:focus {
-      border-color: var(--blue);
-    }
+        textarea {
+            width: 100%;
+            min-height: 260px;
+            resize: vertical;
+            background: #080e1b;
+            color: #d1fae5;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 16px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            direction: ltr;
+            text-align: left;
+            outline: none;
+        }
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
+        textarea:focus {
+            border-color: #3b82f6;
+        }
 
-    button {
-      border: 0;
-      border-radius: 9px;
-      padding: 11px 19px;
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      background: var(--blue);
-      color: #061426;
-    }
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 12px 22px;
+            margin-top: 15px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
 
-    button.secondary {
-      background: #263d5b;
-      color: var(--text);
-    }
+        button:hover {
+            background: #1d4ed8;
+        }
 
-    button:hover { opacity: .88; }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
-    .notice {
-      background: #172c49;
-      border-right: 4px solid var(--blue);
-      padding: 13px 16px;
-      border-radius: 8px;
-      color: var(--muted);
-      margin-top: 18px;
-    }
+        .result {
+            background: #080e1b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 18px;
-    }
+        .status {
+            margin-top: 15px;
+            color: #fbbf24;
+        }
 
-    .stat {
-      background: var(--panel2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 17px;
-      text-align: center;
-    }
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            border-top: 1px solid #263653;
+        }
 
-    .stat strong {
-      display: block;
-      font-size: 25px;
-      color: var(--blue);
-    }
+        @media (max-width: 700px) {
+            header {
+                padding: 18px 5%;
+            }
 
-    .stat span {
-      color: var(--muted);
-      font-size: 13px;
-    }
+            .card {
+                padding: 17px;
+            }
 
-    .comparison-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 15px;
-    }
+            .code-grid {
+                grid-template-columns: 1fr;
+            }
 
-    .result-box {
-      background: var(--panel2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .result-box h3 {
-      margin-top: 0;
-      font-size: 16px;
-    }
-
-    .result-box p {
-      margin-bottom: 5px;
-      overflow-wrap: anywhere;
-    }
-
-    .good { color: var(--green); }
-    .bad { color: var(--red); }
-
-    #result {
-      display: none;
-    }
-
-    .next {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 18px;
-      background: #173b63;
-      color: var(--text);
-      border-radius: 9px;
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      padding: 22px;
-      margin-top: 50px;
-    }
-
-    @media (max-width: 700px) {
-      .editors, .comparison-row {
-        grid-template-columns: 1fr;
-      }
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      h1 { font-size: 24px; }
-    }
-  </style>
+            textarea {
+                min-height: 220px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-  <a href="index.html">PyOptimize</a>
+    <h1>PyOptimize</h1>
+    <p>تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی (AI)</p>
 </header>
 
 <main>
-  <h1>۵. مقایسه کدها</h1>
-  <p>
-    در این بخش می‌توان کد اصلی را با نسخه بهینه‌شده مقایسه کرد
-    و تفاوت‌های ساختاری آن‌ها را مشاهده کرد.
-  </p>
 
-  <section class="panel">
-    <h2>کدها را وارد کنید</h2>
+    <a class="back" href="index.html">← بازگشت به صفحه اصلی</a>
 
-    <div class="editors">
-      <div>
-        <label for="originalCode">کد اصلی</label>
-        <textarea id="originalCode" spellcheck="false"
-          placeholder="کد اصلی پایتون را اینجا وارد کنید..."></textarea>
-      </div>
+    <section class="card">
+        <h2>۵. مقایسه کدها با هوش مصنوعی</h2>
 
-      <div>
-        <label for="optimizedCode">کد بهینه‌شده</label>
-        <textarea id="optimizedCode" spellcheck="false"
-          placeholder="نسخه بهینه‌شده را اینجا وارد کنید..."></textarea>
-      </div>
-    </div>
+        <p>
+            نسخه اولیه و نسخه بهینه‌شده کد پایتون خود را وارد کنید.
+            هوش مصنوعی تفاوت‌ها، مزایا، محدودیت‌ها و تغییرات عملکردی
+            احتمالی را بررسی می‌کند.
+        </p>
 
-    <div class="buttons">
-      <button type="button" id="sampleButton">بارگذاری نمونه</button>
-      <button type="button" id="compareButton">مقایسه کدها</button>
-      <button type="button" class="secondary" id="clearButton">پاک کردن</button>
-    </div>
+        <div class="code-grid">
 
-    <div class="notice">
-      این ابزار تفاوت‌های ظاهری و ساختاری کدها را بررسی می‌کند.
-      اندازه‌گیری سرعت واقعی اجرا در این نسخه انجام نمی‌شود.
-    </div>
-  </section>
+            <div class="code-box">
+                <h3>کد اولیه</h3>
 
-  <section class="panel" id="result" aria-live="polite">
-    <h2>نتیجه مقایسه</h2>
+                <textarea
+                    id="originalCode"
+                    placeholder="نسخه اولیه کد را وارد کنید..."
+                    spellcheck="false"
+                ></textarea>
+            </div>
 
-    <div class="stats">
-      <div class="stat">
-        <strong id="originalLines">۰</strong>
-        <span>تعداد خطوط کد اصلی</span>
-      </div>
+            <div class="code-box">
+                <h3>کد بهینه‌شده</h3>
 
-      <div class="stat">
-        <strong id="optimizedLines">۰</strong>
-        <span>تعداد خطوط کد بهینه‌شده</span>
-      </div>
+                <textarea
+                    id="optimizedCode"
+                    placeholder="نسخه بهینه‌شده کد را وارد کنید..."
+                    spellcheck="false"
+                ></textarea>
+            </div>
 
-      <div class="stat">
-        <strong id="lineDifference">۰</strong>
-        <span>اختلاف تعداد خطوط</span>
-      </div>
-    </div>
+        </div>
 
-    <div class="comparison-row">
-      <div class="result-box">
-        <h3>کد اصلی</h3>
-        <p id="originalFunctions"></p>
-        <p id="originalLoops"></p>
-        <p id="originalMembership"></p>
-      </div>
+        <button id="compareButton" type="button">
+            مقایسه کدها با AI
+        </button>
 
-      <div class="result-box">
-        <h3>کد بهینه‌شده</h3>
-        <p id="optimizedFunctions"></p>
-        <p id="optimizedLoops"></p>
-        <p id="optimizedMembership"></p>
-      </div>
-    </div>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+    </section>
 
-    <div class="notice" id="summary"></div>
+    <section class="card">
+        <h2>نتیجه مقایسه هوشمند</h2>
 
-    <p class="notice">
-      کمتر بودن تعداد خطوط لزوماً به معنی سریع‌تر بودن برنامه نیست.
-      برای مقایسه سرعت باید هر دو نسخه در شرایط یکسان اجرا و
-      زمان آن‌ها اندازه‌گیری شود.
-    </p>
+        <div id="result" class="result" aria-live="polite">
+            نتیجه مقایسه پس از ارسال دو نسخه کد نمایش داده می‌شود.
+        </div>
+    </section>
 
-    <a class="next" href="report.html">رفتن به صفحه گزارش تحلیل ←</a>
-  </section>
+    <section class="card">
+        <h2>جمع‌بندی مقایسه</h2>
+
+        <div id="summary" class="result">
+            جمع‌بندی پس از دریافت پاسخ هوش مصنوعی نمایش داده می‌شود.
+        </div>
+    </section>
+
 </main>
 
 <footer>
-  پروژه PyOptimize | تحلیل و بهینه‌سازی کد پایتون
+    PyOptimize | تحلیل و بهینه‌سازی کد با هوش مصنوعی
 </footer>
 
 <script>
-  const originalInput = document.getElementById("originalCode");
-  const optimizedInput = document.getElementById("optimizedCode");
-  const result = document.getElementById("result");
+    // آدرس بک‌اند پس از راه‌اندازی سرور تنظیم شود.
+    const API_URL = "http://localhost:8000/compare";
 
-  const sampleOriginal = `def find_duplicates(numbers):
-    duplicates = []
+    const originalInput = document.getElementById("originalCode");
+    const optimizedInput = document.getElementById("optimizedCode");
 
-    for i in range(len(numbers)):
-        for j in range(i + 1, len(numbers)):
-            if numbers[i] == numbers[j] and numbers[i] not in duplicates:
-                duplicates.append(numbers[i])
+    const compareButton = document.getElementById("compareButton");
+    const resultBox = document.getElementById("result");
+    const summaryBox = document.getElementById("summary");
+    const statusBox = document.getElementById("status");
 
-    return duplicates`;
+    compareButton.addEventListener("click", compareCodes);
 
-  const sampleOptimized = `def find_duplicates(numbers):
-    seen = set()
-    reported = set()
-    duplicates = []
+    async function compareCodes() {
+        const originalCode = originalInput.value.trim();
+        const optimizedCode = optimizedInput.value.trim();
 
-    for number in numbers:
-        if number in seen and number not in reported:
-            duplicates.append(number)
-            reported.add(number)
-        else:
-            seen.add(number)
+        if (!originalCode || !optimizedCode) {
+            statusBox.textContent =
+                "لطفاً هر دو نسخه کد را وارد کنید.";
+            return;
+        }
 
-    return duplicates`;
+        compareButton.disabled = true;
 
-  function getCodeInfo(code) {
-    const lines = code.split("\n");
-    const nonEmptyLines = lines.filter(line => line.trim() !== "");
+        statusBox.textContent =
+            "در حال مقایسه دو نسخه کد با AI...";
 
-    const withoutComments = lines.filter(line =>
-      !line.trim().startsWith("#")
-    );
+        resultBox.textContent =
+            "لطفاً منتظر بمانید...";
 
-    const loopCount = (code.match(/\b(for|while)\b/g) || []).length;
-    const functionCount = (code.match(/\bdef\s+\w+/g) || []).length;
-    const membershipCount = (code.match(/\b(?:not\s+)?in\b/g) || []).length;
+        summaryBox.textContent =
+            "در حال آماده‌سازی جمع‌بندی...";
 
-    return {
-      lines: nonEmptyLines.length,
-      loops: loopCount,
-      functions: functionCount,
-      membership: membershipCount
-    };
-  }
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    original_code: originalCode,
+                    optimized_code: optimizedCode
+                })
+            });
 
-  function showNumber(value) {
-    return value.toLocaleString("fa-IR");
-  }
+            const data = await response.json();
 
-  document.getElementById("sampleButton").addEventListener("click", () => {
-    originalInput.value = sampleOriginal;
-    optimizedInput.value = sampleOptimized;
-    result.style.display = "none";
-  });
+            if (!response.ok) {
+                throw new Error(
+                    data.detail || "خطایی در مقایسه کدها رخ داده است."
+                );
+            }
 
-  document.getElementById("clearButton").addEventListener("click", () => {
-    originalInput.value = "";
-    optimizedInput.value = "";
-    result.style.display = "none";
-  });
+            if (
+                typeof data.comparison !== "string" ||
+                typeof data.summary !== "string"
+            ) {
+                throw new Error("ساختار پاسخ سرور معتبر نیست.");
+            }
 
-  document.getElementById("compareButton").addEventListener("click", () => {
-    const original = originalInput.value.trim();
-    const optimized = optimizedInput.value.trim();
+            resultBox.textContent = data.comparison;
+            summaryBox.textContent = data.summary;
 
-    if (!original || !optimized) {
-      alert("لطفاً هر دو کد را وارد کنید.");
-      return;
+            statusBox.textContent =
+                "مقایسه کدها با موفقیت انجام شد.";
+
+        } catch (error) {
+            resultBox.textContent =
+                "امکان دریافت نتیجه مقایسه وجود ندارد.";
+
+            summaryBox.textContent =
+                "اتصال بک‌اند و تنظیمات API را بررسی کنید.";
+
+            statusBox.textContent =
+                "خطا: " + error.message;
+
+        } finally {
+            compareButton.disabled = false;
+        }
     }
-
-    const first = getCodeInfo(original);
-    const second = getCodeInfo(optimized);
-    const difference = Math.abs(first.lines - second.lines);
-
-    document.getElementById("originalLines").textContent =
-      showNumber(first.lines);
-
-    document.getElementById("optimizedLines").textContent =
-      showNumber(second.lines);
-
-    document.getElementById("lineDifference").textContent =
-      showNumber(difference);
-
-    document.getElementById("originalFunctions").textContent =
-      "تعداد تابع‌ها: " + showNumber(first.functions);
-
-    document.getElementById("originalLoops").textContent =
-      "تعداد حلقه‌ها: " + showNumber(first.loops);
-
-    document.getElementById("originalMembership").textContent =
-      "تعداد بررسی‌های عضویت: " + showNumber(first.membership);
-
-    document.getElementById("optimizedFunctions").textContent =
-      "تعداد تابع‌ها: " + showNumber(second.functions);
-
-    document.getElementById("optimizedLoops").textContent =
-      "تعداد حلقه‌ها: " + showNumber(second.loops);
-
-    document.getElementById("optimizedMembership").textContent =
-      "تعداد بررسی‌های عضویت: " + showNumber(second.membership);
-
-    let message = "";
-
-    if (first.loops > second.loops) {
-      message += "در کد دوم تعداد حلقه‌های قابل تشخیص کمتر است. ";
-    } else if (first.loops < second.loops) {
-      message += "در کد دوم تعداد حلقه‌های قابل تشخیص بیشتر است. ";
-    } else {
-      message += "تعداد حلقه‌های قابل تشخیص در هر دو کد برابر است. ";
-    }
-
-    if (first.lines > second.lines) {
-      message += "کد دوم خطوط غیرخالی کمتری دارد.";
-    } else if (first.lines < second.lines) {
-      message += "کد دوم خطوط غیرخالی بیشتری دارد.";
-    } else {
-      message += "تعداد خطوط غیرخالی دو کد برابر است.";
-    }
-
-    document.getElementById("summary").textContent = message;
-    result.style.display = "block";
-    result.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
 </script>
 
 </body>
-  </html>
+</html>
