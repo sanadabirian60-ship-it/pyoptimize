@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحلیل پیچیدگی الگوریتم با AI | PyOptimize</title>
+
+    <title>تحلیل پیچیدگی الگوریتم | PyOptimize</title>
 
     <style>
         * {
@@ -13,70 +15,107 @@
         body {
             margin: 0;
             font-family: Tahoma, Arial, sans-serif;
-            background: #0b1120;
-            color: #e5e7eb;
-            line-height: 1.8;
+            background: #f4f6fb;
+            color: #20283a;
+            line-height: 1.9;
         }
 
         header {
-            background: #111c32;
+            background: #172554;
+            color: white;
             padding: 22px 8%;
-            border-bottom: 1px solid #263653;
         }
 
         header h1 {
-            color: #60a5fa;
             margin: 0;
+            font-size: 25px;
         }
 
         header p {
-            color: #a5b4fc;
-            margin-bottom: 0;
+            color: #cbd5e1;
+            margin: 5px 0;
+        }
+
+        nav {
+            margin-top: 12px;
+        }
+
+        nav a {
+            color: #dbeafe;
+            text-decoration: none;
+            margin-left: 14px;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: white;
         }
 
         main {
-            width: min(1000px, 92%);
-            margin: 40px auto;
+            width: min(1050px, 92%);
+            margin: 35px auto;
         }
 
-        .back {
-            display: inline-block;
-            color: #93c5fd;
-            text-decoration: none;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background: #14213a;
-            border: 1px solid #263653;
-            border-radius: 14px;
+        .intro, .panel {
+            background: white;
             padding: 25px;
+            border-radius: 14px;
             margin-bottom: 25px;
+            box-shadow: 0 4px 18px #1725540d;
         }
 
         h2 {
-            color: #60a5fa;
+            color: #1e3a8a;
             margin-top: 0;
+        }
+
+        h3 {
+            color: #334155;
+        }
+
+        .complexity-card {
+            background: #eff6ff;
+            border-right: 4px solid #2563eb;
+            padding: 16px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .complexity-value {
+            direction: ltr;
+            display: inline-block;
+            color: #1d4ed8;
+            font-weight: bold;
+            font-size: 19px;
+        }
+
+        .code-box {
+            direction: ltr;
+            text-align: left;
+            background: #111827;
+            color: #e5e7eb;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre;
         }
 
         textarea {
             width: 100%;
-            min-height: 280px;
-            resize: vertical;
-            background: #080e1b;
-            color: #d1fae5;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 16px;
-            font-family: Consolas, monospace;
-            font-size: 14px;
+            min-height: 220px;
             direction: ltr;
             text-align: left;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: #3b82f6;
+            background: #111827;
+            color: #f8fafc;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            padding: 18px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            resize: vertical;
         }
 
         button {
@@ -100,68 +139,38 @@
         }
 
         .result {
-            background: #080e1b;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 20px;
-            min-height: 80px;
+            background: #eff6ff;
+            border-right: 4px solid #2563eb;
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 20px;
             white-space: pre-wrap;
             overflow-wrap: anywhere;
         }
 
-        .status {
-            margin-top: 15px;
-            color: #fbbf24;
-        }
-
-        .complexity-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .complexity-box {
-            background: #0d1930;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 18px;
-        }
-
-        .complexity-box h3 {
-            color: #93c5fd;
-            margin-top: 0;
-        }
-
-        .complexity-value {
-            color: #34d399;
-            font-size: 24px;
-            font-weight: bold;
-            direction: ltr;
-            text-align: right;
+        .note {
+            color: #64748b;
+            font-size: 13px;
         }
 
         footer {
             text-align: center;
-            padding: 25px;
-            color: #94a3b8;
-            border-top: 1px solid #263653;
+            padding: 22px;
+            color: #64748b;
         }
 
         @media (max-width: 600px) {
             header {
-                padding: 18px 5%;
+                padding: 20px 5%;
             }
 
-            .card {
-                padding: 17px;
+            nav a {
+                display: inline-block;
+                margin: 5px 8px;
             }
 
-            .complexity-grid {
-                grid-template-columns: 1fr;
-            }
-
-            textarea {
-                min-height: 220px;
+            .intro, .panel {
+                padding: 18px;
             }
         }
     </style>
@@ -170,155 +179,286 @@
 <body>
 
 <header>
+
     <h1>PyOptimize</h1>
-    <p>تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی (AI)</p>
+
+    <p>تحلیل و بهینه‌سازی کد پایتون با کمک هوش مصنوعی</p>
+
+    <nav>
+        <a href="index.html">صفحه اصلی</a>
+        <a href="analysis.html">تحلیل کد</a>
+        <a href="patterns.html">تشخیص الگوها</a>
+        <a href="optimization.html">بهینه‌سازی</a>
+        <a href="complexity.html">پیچیدگی الگوریتم</a>
+        <a href="comparison.html">مقایسه کدها</a>
+        <a href="report.html">گزارش نهایی</a>
+    </nav>
+
 </header>
+
 
 <main>
 
-    <a class="back" href="index.html">← بازگشت به صفحه اصلی</a>
+    <section class="intro">
 
-    <section class="card">
-        <h2>۴. تحلیل پیچیدگی الگوریتم با هوش مصنوعی</h2>
+        <h2>تحلیل پیچیدگی زمانی و فضایی</h2>
 
         <p>
-            کد پایتون خود را وارد کنید تا هوش مصنوعی
-            پیچیدگی زمانی و فضایی الگوریتم را بررسی کند
-            و درباره نحوه رشد مصرف زمان و حافظه توضیح دهد.
+            پیچیدگی الگوریتم نشان می‌دهد که با افزایش حجم ورودی،
+            میزان عملیات موردنیاز و حافظه مصرفی برنامه چگونه تغییر می‌کند.
+            در این بخش، پیچیدگی زمانی و فضایی کدهای پایتون بررسی می‌شود.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>۱. پیچیدگی زمانی (Time Complexity)</h2>
+
+        <p>
+            پیچیدگی زمانی بیان می‌کند که تعداد عملیات یک الگوریتم
+            با افزایش اندازه ورودی چگونه رشد می‌کند.
+        </p>
+
+        <div class="complexity-card">
+
+            <h3>پیچیدگی O(1)</h3>
+
+            <p>
+                زمان اجرای عملیات مستقل از تعداد عناصر ورودی است.
+                برای مثال، دسترسی به یک عنصر مشخص در یک لیست.
+            </p>
+
+            <span class="complexity-value">O(1)</span>
+
+        </div>
+
+        <div class="complexity-card">
+
+            <h3>پیچیدگی O(n)</h3>
+
+            <p>
+                تعداد عملیات با اندازه ورودی به‌صورت خطی افزایش می‌یابد.
+                برای مثال، پیمایش تمام عناصر یک لیست.
+            </p>
+
+            <span class="complexity-value">O(n)</span>
+
+        </div>
+
+        <div class="complexity-card">
+
+            <h3>پیچیدگی O(n²)</h3>
+
+            <p>
+                تعداد عملیات با مربع اندازه ورودی رشد می‌کند.
+                یک نمونه رایج آن استفاده از دو حلقه تودرتو است.
+            </p>
+
+            <span class="complexity-value">O(n²)</span>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>۲. پیچیدگی فضایی (Space Complexity)</h2>
+
+        <p>
+            پیچیدگی فضایی میزان حافظه موردنیاز الگوریتم را
+            با توجه به اندازه ورودی نشان می‌دهد.
+        </p>
+
+        <div class="complexity-card">
+
+            <h3>فضای O(1)</h3>
+
+            <p>
+                الگوریتم برای انجام عملیات به مقدار ثابتی حافظه
+                اضافی نیاز دارد؛ مستقل از اندازه ورودی.
+            </p>
+
+        </div>
+
+        <div class="complexity-card">
+
+            <h3>فضای O(n)</h3>
+
+            <p>
+                حافظه اضافی موردنیاز با افزایش تعداد عناصر ورودی
+                به‌صورت خطی افزایش پیدا می‌کند.
+            </p>
+
+        </div>
+
+        <p class="note">
+            در تحلیل فضایی باید مشخص شود که منظور حافظه اضافی الگوریتم
+            است یا کل حافظه موردنیاز برنامه.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>۳. نمونه تحلیل پیچیدگی الگوریتم</h2>
+
+        <p>
+            کد زیر تمام عناصر یک لیست را بررسی می‌کند.
+        </p>
+
+        <div class="code-box"><code>numbers = [3, 6, 9, 12, 15]
+
+total = 0
+
+for number in numbers:
+    total += number
+
+print(total)</code></div>
+
+        <h3>تحلیل زمانی</h3>
+
+        <p>
+            حلقه برای هر عنصر لیست یک بار اجرا می‌شود.
+            بنابراین پیچیدگی زمانی الگوریتم O(n) است.
+        </p>
+
+        <h3>تحلیل فضایی</h3>
+
+        <p>
+            متغیر total و متغیر number فضای ثابتی مصرف می‌کنند.
+            با فرض اینکه لیست ورودی از قبل موجود باشد،
+            فضای اضافی الگوریتم O(1) است.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>۴. تحلیل کد توسط کاربر</h2>
+
+        <p>
+            کد پایتون خود را در کادر زیر وارد کنید.
+            پس از اتصال سامانه به هوش مصنوعی، پیچیدگی زمانی
+            و فضایی کد بررسی خواهد شد.
         </p>
 
         <textarea
-            id="pythonCode"
-            placeholder="کد پایتون خود را اینجا وارد کنید..."
+            id="userCode"
             spellcheck="false"
-        ></textarea>
+            placeholder="کد پایتون خود را اینجا وارد کنید..."></textarea>
 
-        <button id="analyzeButton" type="button">
-            تحلیل پیچیدگی با AI
+        <button type="button" id="analyzeButton" onclick="analyzeComplexity()">
+            تحلیل پیچیدگی کد
         </button>
 
-        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <div id="result" class="result" aria-live="polite">
+            نتیجه تحلیل پیچیدگی در این قسمت نمایش داده می‌شود.
+        </div>
+
+        <p class="note">
+            نتیجه تحلیل باید بر اساس ساختار کد، اندازه ورودی و فرضیات
+            مربوط به اجرای الگوریتم تفسیر شود.
+        </p>
+
     </section>
 
-    <section class="card">
-        <h2>نتایج تحلیل پیچیدگی</h2>
 
-        <div class="complexity-grid">
+    <section class="panel">
 
-            <div class="complexity-box">
-                <h3>پیچیدگی زمانی</h3>
-                <div id="timeComplexity" class="complexity-value">
-                    —
-                </div>
-                <p>نحوه رشد زمان اجرای الگوریتم نسبت به اندازه ورودی</p>
-            </div>
+        <h2>۵. اهمیت تحلیل پیچیدگی</h2>
 
-            <div class="complexity-box">
-                <h3>پیچیدگی فضایی</h3>
-                <div id="spaceComplexity" class="complexity-value">
-                    —
-                </div>
-                <p>نحوه رشد حافظه موردنیاز الگوریتم نسبت به اندازه ورودی</p>
-            </div>
+        <p>
+            تحلیل پیچیدگی به برنامه‌نویس کمک می‌کند تا رفتار الگوریتم
+            را در برابر ورودی‌های بزرگ‌تر پیش‌بینی کند.
+            با شناخت پیچیدگی زمانی و فضایی می‌توان روش‌های مناسب‌تری
+            برای پیاده‌سازی برنامه انتخاب کرد.
+        </p>
 
-        </div>
-    </section>
+        <p>
+            این تحلیل یکی از مراحل مهم در بهینه‌سازی کد با کمک
+            هوش مصنوعی است و نتایج آن می‌تواند در بخش مقایسه
+            کد اولیه و نسخه بهینه‌شده مورد استفاده قرار گیرد.
+        </p>
 
-    <section class="card">
-        <h2>توضیحات تحلیل هوشمند</h2>
-
-        <div id="explanation" class="result" aria-live="polite">
-            توضیحات تحلیل پس از ارسال کد نمایش داده می‌شود.
-        </div>
     </section>
 
 </main>
 
+
 <footer>
-    PyOptimize | تحلیل و بهینه‌سازی کد با هوش مصنوعی
+    پروژه PyOptimize | تحلیل پیچیدگی زمانی و فضایی
 </footer>
 
+
 <script>
-    // آدرس بک‌اند پس از راه‌اندازی سرور تنظیم شود.
-    const API_URL = "http://localhost:8000/complexity";
 
-    const codeInput = document.getElementById("pythonCode");
-    const analyzeButton = document.getElementById("analyzeButton");
+async function analyzeComplexity() {
 
-    const timeBox = document.getElementById("timeComplexity");
-    const spaceBox = document.getElementById("spaceComplexity");
-    const explanationBox = document.getElementById("explanation");
-    const statusBox = document.getElementById("status");
+    const code = document.getElementById("userCode").value.trim();
+    const result = document.getElementById("result");
+    const button = document.getElementById("analyzeButton");
 
-    analyzeButton.addEventListener("click", analyzeComplexity);
+    if (!code) {
+        result.textContent = "لطفاً ابتدا کد پایتون خود را وارد کنید.";
+        return;
+    }
 
-    async function analyzeComplexity() {
-        const code = codeInput.value.trim();
+    button.disabled = true;
+    result.textContent = "در حال تحلیل پیچیدگی کد...";
 
-        if (!code) {
-            statusBox.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
-            return;
-        }
+    try {
 
-        analyzeButton.disabled = true;
-
-        statusBox.textContent =
-            "در حال بررسی پیچیدگی الگوریتم با AI...";
-
-        timeBox.textContent = "در حال تحلیل...";
-        spaceBox.textContent = "در حال تحلیل...";
-
-        explanationBox.textContent =
-            "لطفاً منتظر دریافت نتیجه باشید...";
-
-        try {
-            const response = await fetch(API_URL, {
+        const response = await fetch(
+            "http://localhost:8000/complexity",
+            {
                 method: "POST",
+
                 headers: {
                     "Content-Type": "application/json"
                 },
+
                 body: JSON.stringify({
                     code: code
                 })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(
-                    data.detail || "خطایی در تحلیل پیچیدگی رخ داده است."
-                );
             }
+        );
 
-            if (
-                typeof data.time_complexity !== "string" ||
-                typeof data.space_complexity !== "string" ||
-                typeof data.explanation !== "string"
-            ) {
-                throw new Error("ساختار پاسخ سرور معتبر نیست.");
-            }
-
-            timeBox.textContent = data.time_complexity;
-            spaceBox.textContent = data.space_complexity;
-            explanationBox.textContent = data.explanation;
-
-            statusBox.textContent =
-                "تحلیل پیچیدگی با موفقیت دریافت شد.";
-
-        } catch (error) {
-            timeBox.textContent = "نامشخص";
-            spaceBox.textContent = "نامشخص";
-
-            explanationBox.textContent =
-                "امکان دریافت تحلیل وجود ندارد. اتصال بک‌اند را بررسی کنید.";
-
-            statusBox.textContent = "خطا: " + error.message;
-
-        } finally {
-            analyzeButton.disabled = false;
+        if (!response.ok) {
+            throw new Error("خطا در دریافت پاسخ سرور");
         }
+
+        const data = await response.json();
+
+        result.textContent =
+            "پیچیدگی زمانی:\n" +
+            (data.time_complexity || "مشخص نشده است") +
+
+            "\n\nپیچیدگی فضایی:\n" +
+            (data.space_complexity || "مشخص نشده است") +
+
+            "\n\nتوضیحات تحلیل:\n" +
+            (data.explanation || "توضیحی دریافت نشد.");
+
+    } catch (error) {
+
+        result.textContent =
+            "ارتباط با سامانه تحلیل برقرار نشد.\n" +
+            "برای فعال شدن این قابلیت، باید بک‌اند پایتونی و سرویس هوش مصنوعی راه‌اندازی شوند.";
+
+    } finally {
+
+        button.disabled = false;
+
     }
+
+}
+
 </script>
 
 </body>
-    </html>
+                                                    </html>
