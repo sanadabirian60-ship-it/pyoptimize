@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ساخت گزارش تحلیل و بهینه‌سازی کد پایتون با هوش مصنوعی">
-    <title>گزارش تحلیل با AI | PyOptimize</title>
+    <title>گزارش نهایی | PyOptimize</title>
 
     <style>
         * {
@@ -13,145 +12,137 @@
 
         body {
             margin: 0;
-            font-family: Tahoma, Arial, sans-serif;
-            background: #f3f6fb;
-            color: #1e293b;
+            font-family: Tahoma, sans-serif;
+            background: #f4f6fa;
+            color: #263238;
             line-height: 1.9;
         }
 
         header {
-            background: #102a43;
+            background: #182b49;
             color: white;
-            padding: 22px 7%;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 25px;
-        }
-
-        header p {
-            margin: 5px 0 0;
-            color: #cbd5e1;
+            padding: 25px 15px;
+            text-align: center;
         }
 
         nav {
-            background: #173f5f;
-            padding: 12px 7%;
+            background: #243b60;
+            padding: 12px;
+            text-align: center;
         }
 
         nav a {
             color: white;
             text-decoration: none;
-            margin-left: 18px;
-            font-size: 14px;
+            margin: 8px;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            color: #70e1c1;
         }
 
         main {
-            width: 90%;
             max-width: 1000px;
-            margin: 35px auto;
+            margin: 30px auto;
+            padding: 20px;
         }
 
         .card {
             background: white;
             padding: 25px;
-            border-radius: 14px;
-            margin-bottom: 22px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
         }
 
-        h2 {
-            color: #123b5d;
-            margin-top: 0;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin: 18px 0 7px;
+        h2, h3 {
+            color: #176b87;
         }
 
         textarea {
             width: 100%;
-            min-height: 130px;
-            padding: 13px;
-            border: 1px solid #cbd5e1;
+            min-height: 120px;
+            padding: 15px;
+            border: 1px solid #ccd5df;
             border-radius: 8px;
-            font-family: Consolas, monospace;
+            font-family: Tahoma, sans-serif;
             font-size: 14px;
-            direction: ltr;
-            text-align: left;
             resize: vertical;
         }
 
-        textarea.text-input {
-            direction: rtl;
-            text-align: right;
-            font-family: Tahoma, Arial, sans-serif;
-        }
-
         button {
-            background: #1479b8;
+            background: #087f8c;
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 13px 25px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 15px;
-            margin-top: 20px;
+            margin: 8px 5px;
         }
 
         button:hover {
-            background: #0d5f93;
+            background: #075e68;
         }
 
         button:disabled {
-            background: #94a3b8;
+            opacity: 0.6;
             cursor: not-allowed;
         }
 
-        #status {
-            margin-top: 15px;
-            font-weight: bold;
+        pre {
+            background: #172438;
+            color: #e8f0fa;
+            padding: 18px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
         }
 
         #reportResult {
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-            background: #f8fafc;
-            border: 1px solid #dbe4ee;
-            border-radius: 8px;
-            padding: 20px;
-            min-height: 100px;
+            display: none;
         }
 
-        .hint {
-            color: #64748b;
-            font-size: 13px;
+        .note {
+            background: #e8f5f5;
+            padding: 15px;
+            border-right: 4px solid #087f8c;
+            border-radius: 6px;
         }
 
         footer {
             text-align: center;
-            padding: 22px;
-            background: #102a43;
-            color: #cbd5e1;
+            background: #182b49;
+            color: white;
+            padding: 18px;
             margin-top: 40px;
         }
 
-        @media (max-width: 600px) {
-            header, nav {
-                padding-right: 5%;
-                padding-left: 5%;
+        @media print {
+            body {
+                background: white;
             }
 
-            nav a {
-                display: inline-block;
-                margin: 4px 0 4px 12px;
+            nav, button, footer, .input-section {
+                display: none !important;
+            }
+
+            main {
+                max-width: 100%;
+                margin: 0;
             }
 
             .card {
-                padding: 18px;
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 700px) {
+            main {
+                padding: 12px;
             }
         }
     </style>
@@ -161,7 +152,7 @@
 
 <header>
     <h1>PyOptimize</h1>
-    <p>گزارش تحلیل و بهینه‌سازی کد با هوش مصنوعی</p>
+    <p>تهیه گزارش نهایی تحلیل و بهینه‌سازی کد</p>
 </header>
 
 <nav>
@@ -169,101 +160,115 @@
     <a href="analysis.html">تحلیل کد</a>
     <a href="patterns.html">تشخیص الگوها</a>
     <a href="optimization.html">بهینه‌سازی</a>
-    <a href="complexity.html">پیچیدگی</a>
+    <a href="complexity.html">پیچیدگی الگوریتم</a>
     <a href="comparison.html">مقایسه کدها</a>
+    <a href="report.html">گزارش نهایی</a>
 </nav>
 
 <main>
 
     <section class="card">
-        <h2>۶. گزارش تحلیل با هوش مصنوعی</h2>
+        <h2>گزارش نهایی پروژه</h2>
 
         <p>
-            در این بخش می‌توانید کد پایتون و نتایج مراحل قبلی
-            را وارد کنید تا یک گزارش یکپارچه از وضعیت کد،
-            مشکلات احتمالی و پیشنهادهای بهینه‌سازی دریافت کنید.
+            در این بخش می‌توانید اطلاعات مربوط به تحلیل، مشکلات،
+            پیشنهادهای بهینه‌سازی و نتایج مقایسه کد را وارد کنید
+            تا یک گزارش نهایی تهیه شود.
         </p>
 
-        <label for="code">کد اصلی پایتون:</label>
-        <textarea id="code" placeholder="کد پایتون خود را اینجا وارد کنید..."></textarea>
-
-        <label for="analysis">نتیجه تحلیل کد:</label>
-        <textarea id="analysis" class="text-input"
-            placeholder="نتیجه صفحه تحلیل کد را اینجا وارد کنید..."></textarea>
-
-        <label for="patterns">نتیجه تشخیص الگوها:</label>
-        <textarea id="patterns" class="text-input"
-            placeholder="نتیجه صفحه تشخیص الگوها را اینجا وارد کنید..."></textarea>
-
-        <label for="optimization">کد بهینه‌شده یا پیشنهادهای بهینه‌سازی:</label>
-        <textarea id="optimization"
-            placeholder="کد یا پیشنهادهای بهینه‌سازی را اینجا وارد کنید..."></textarea>
-
-        <label for="complexity">نتیجه تحلیل پیچیدگی:</label>
-        <textarea id="complexity" class="text-input"
-            placeholder="نتیجه تحلیل پیچیدگی زمانی و فضایی را اینجا وارد کنید..."></textarea>
-
-        <label for="comparison">نتیجه مقایسه کدها:</label>
-        <textarea id="comparison" class="text-input"
-            placeholder="نتیجه مقایسه نسخه اولیه و بهینه‌شده را اینجا وارد کنید..."></textarea>
-
-        <p class="hint">
-            واردکردن نتایج صفحات قبلی اختیاری است؛ برای گزارش کامل‌تر،
-            بهتر است آن‌ها را نیز وارد کنید.
-        </p>
-
-        <button id="generateButton" type="button">
-            تولید گزارش با هوش مصنوعی
-        </button>
-
-        <p id="status" role="status" aria-live="polite"></p>
+        <div class="note">
+            برای تولید گزارش، اطلاعات بخش‌های مختلف پروژه را
+            در کادرهای زیر وارد کنید.
+        </div>
     </section>
 
-    <section class="card">
-        <h2>گزارش نهایی</h2>
+    <section class="card input-section">
 
-        <div id="reportResult">
-            گزارش تولیدشده پس از تحلیل در این قسمت نمایش داده می‌شود.
-        </div>
+        <h2>اطلاعات تحلیل کد</h2>
 
-        <button id="printButton" type="button" disabled>
-            چاپ یا ذخیره گزارش به صورت PDF
+        <label for="code">کد پایتون مورد بررسی:</label>
+        <textarea id="code" dir="ltr"
+            placeholder="کد پایتون را وارد کنید..."></textarea>
+
+        <h3>نتیجه تحلیل کد</h3>
+        <textarea id="analysis"
+            placeholder="نتیجه تحلیل کد را وارد کنید..."></textarea>
+
+        <h3>الگوهای قابل بهبود</h3>
+        <textarea id="patterns"
+            placeholder="الگوهای ناکارآمد شناسایی‌شده را وارد کنید..."></textarea>
+
+        <h3>پیشنهادهای بهینه‌سازی</h3>
+        <textarea id="optimization"
+            placeholder="پیشنهادهای بهینه‌سازی را وارد کنید..."></textarea>
+
+        <h3>تحلیل پیچیدگی زمانی و فضایی</h3>
+        <textarea id="complexity"
+            placeholder="نتیجه تحلیل پیچیدگی را وارد کنید..."></textarea>
+
+        <h3>نتیجه مقایسه کدها</h3>
+        <textarea id="comparison"
+            placeholder="نتیجه مقایسه کد اولیه و بهینه‌شده را وارد کنید..."></textarea>
+
+        <button type="button" id="generateButton">
+            تهیه گزارش نهایی
         </button>
+
+        <div id="status" role="status"></div>
+
+    </section>
+
+    <section class="card" id="reportResult">
+
+        <h2>گزارش تولیدشده</h2>
+
+        <pre id="reportText"></pre>
+
+        <button type="button" id="printButton">
+            چاپ یا ذخیره گزارش
+        </button>
+
     </section>
 
 </main>
 
 <footer>
-    <p>PyOptimize | پروژه تحلیل و بهینه‌سازی کد پایتون با AI</p>
+    <p>PyOptimize | تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی</p>
 </footer>
 
 <script>
     const generateButton = document.getElementById("generateButton");
-    const printButton = document.getElementById("printButton");
-    const statusBox = document.getElementById("status");
-    const reportResult = document.getElementById("reportResult");
 
     generateButton.addEventListener("click", async function () {
-        const code = document.getElementById("code").value.trim();
 
-        if (!code) {
-            statusBox.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
+        const fields = [
+            "code",
+            "analysis",
+            "patterns",
+            "optimization",
+            "complexity",
+            "comparison"
+        ];
+
+        const reportData = {};
+
+        fields.forEach(function (field) {
+            reportData[field] =
+                document.getElementById(field).value.trim();
+        });
+
+        if (!reportData.code) {
+            document.getElementById("status").textContent =
+                "لطفاً ابتدا کد پایتون مورد بررسی را وارد کنید.";
             return;
         }
 
-        const payload = {
-            code: code,
-            analysis: document.getElementById("analysis").value.trim(),
-            patterns: document.getElementById("patterns").value.trim(),
-            optimization: document.getElementById("optimization").value.trim(),
-            complexity: document.getElementById("complexity").value.trim(),
-            comparison: document.getElementById("comparison").value.trim()
-        };
+        const status = document.getElementById("status");
+        const reportResult = document.getElementById("reportResult");
 
         generateButton.disabled = true;
-        printButton.disabled = true;
-        statusBox.textContent = "در حال ارسال اطلاعات و تولید گزارش...";
-        reportResult.textContent = "لطفاً منتظر بمانید.";
+        status.textContent = "در حال تهیه گزارش نهایی...";
+        reportResult.style.display = "none";
 
         try {
             const response = await fetch("http://localhost:8000/report", {
@@ -271,40 +276,34 @@
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(reportData)
             });
+
+            if (!response.ok) {
+                throw new Error("خطا در دریافت گزارش");
+            }
 
             const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(data.detail || "خطا در دریافت گزارش");
-            }
+            document.getElementById("reportText").textContent =
+                data.report || "گزارشی از سرور دریافت نشد.";
 
-            if (!data.report || typeof data.report !== "string") {
-                throw new Error("ساختار پاسخ سرور معتبر نیست.");
-            }
-
-            reportResult.textContent = data.report;
-            statusBox.textContent = "گزارش با موفقیت تولید شد.";
-            printButton.disabled = false;
+            reportResult.style.display = "block";
+            status.textContent = "گزارش با موفقیت تهیه شد.";
 
         } catch (error) {
-            reportResult.textContent =
-                "گزارشی دریافت نشد. لطفاً اتصال سرور را بررسی کنید.";
-
-            statusBox.textContent =
-                "خطا: " + error.message;
-
+            status.textContent =
+                "ارتباط با سرور برقرار نشد. برای تهیه گزارش واقعی باید بک‌اند پروژه اجرا شود.";
         } finally {
             generateButton.disabled = false;
         }
+
     });
 
-    printButton.addEventListener("click", function () {
+    document.getElementById("printButton").addEventListener("click", function () {
         window.print();
     });
 </script>
 
 </body>
-  </html>
-                                                     </html>
+</html>
