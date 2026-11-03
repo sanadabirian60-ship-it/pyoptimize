@@ -3,157 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحلیل کد با AI | PyOptimize</title>
+
+    <title>تحلیل کد با هوش مصنوعی | PyOptimize</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --background: #0b1120;
+            --surface: #111c32;
+            --surface-light: #17243c;
+            --border: #293b57;
+            --primary: #0ea5e9;
+            --primary-hover: #0284c7;
+            --text: #e5e7eb;
+            --muted: #9caec5;
+            --success: #34d399;
+            --warning: #fbbf24;
         }
 
         body {
-            margin: 0;
-            font-family: 'Vazirmatn', sans-serif;
-            background: #0b1120;
-            color: #e5e7eb;
+            font-family: "Vazirmatn", sans-serif;
+            background: var(--background);
+            color: var(--text);
             line-height: 1.9;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
         header {
-            background: #111c32;
-            padding: 18px 7%;
-            border-bottom: 1px solid #263550;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 7%;
         }
 
         nav {
+            max-width: 1200px;
+            margin: auto;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        nav a {
-            color: #dbeafe;
-            text-decoration: none;
-            margin-left: 18px;
-        }
-
-        nav a:hover {
-            color: #38bdf8;
+            justify-content: space-between;
+            gap: 20px;
         }
 
         .logo {
-            font-size: 21px;
+            font-size: 25px;
             font-weight: 800;
-            color: #38bdf8;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            transition: color .2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
         }
 
         main {
-            width: 90%;
-            max-width: 950px;
-            margin: 45px auto;
+            width: 92%;
+            max-width: 1050px;
+            margin: 40px auto;
         }
 
         .card {
-            background: #111c32;
-            border: 1px solid #263550;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 25px;
+            padding: 26px;
             margin-bottom: 25px;
         }
 
-        h1, h2, h3 {
-            color: #38bdf8;
+        h1 {
+            font-size: clamp(25px, 4vw, 35px);
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            font-size: 21px;
+            color: #7dd3fc;
+            margin-bottom: 14px;
+        }
+
+        h3 {
+            color: #7dd3fc;
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: var(--muted);
+        }
+
+        .intro {
+            margin-top: 10px;
+        }
+
+        .notice {
+            margin-top: 16px;
+            padding: 12px 15px;
+            background: #332b18;
+            color: var(--warning);
+            border-radius: 9px;
+            font-size: 13px;
+        }
+
+        .editor-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
 
         textarea {
             width: 100%;
-            min-height: 250px;
-            padding: 16px;
-            border: 1px solid #334155;
-            border-radius: 10px;
+            min-height: 300px;
+            resize: vertical;
             background: #080e1b;
             color: #dbeafe;
-            font-family: monospace;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 18px;
+            font-family: Consolas, monospace;
             font-size: 14px;
+            line-height: 1.8;
             direction: ltr;
             text-align: left;
-            resize: vertical;
+            outline: none;
+            tab-size: 4;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
         }
 
         button {
             border: none;
             border-radius: 9px;
-            padding: 12px 24px;
-            margin-top: 15px;
-            margin-left: 8px;
+            padding: 11px 20px;
             font-family: inherit;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
+            transition: .2s;
         }
 
-        .analyze-btn {
-            background: #0284c7;
+        button:focus-visible {
+            outline: 2px solid white;
+            outline-offset: 3px;
+        }
+
+        .primary {
+            background: var(--primary);
             color: white;
         }
 
-        .clear-btn {
-            background: #334155;
+        .primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .secondary {
+            background: #263750;
             color: white;
         }
 
-        button:hover {
-            opacity: 0.85;
-        }
-
-        .result-box {
-            background: #080e1b;
-            border: 1px solid #263550;
-            border-radius: 10px;
-            padding: 18px;
-            margin-top: 15px;
-        }
-
-        .result-box li {
-            margin-bottom: 8px;
-        }
-
-        .notice {
-            color: #fbbf24;
-            font-size: 14px;
+        .secondary:hover {
+            background: #344966;
         }
 
         .success {
-            color: #4ade80;
+            background: #065f46;
+            color: white;
         }
 
-        .error {
-            color: #f87171;
+        .success:hover {
+            background: #047857;
+        }
+
+        .result-section {
+            margin-top: 18px;
+            padding: 20px;
+            background: #080e1b;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .result-section ul {
+            padding-right: 22px;
+        }
+
+        .result-section li {
+            margin-bottom: 8px;
+            color: var(--muted);
+        }
+
+        .result-section p {
+            color: var(--muted);
+        }
+
+        .result-code {
+            direction: ltr;
+            text-align: left;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            background: #050a13;
+            border: 1px solid #263550;
+            border-radius: 9px;
+            padding: 15px;
+            margin-top: 12px;
+            color: #a7f3d0;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #12354b;
+            color: #7dd3fc;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .message {
+            margin-top: 12px;
+            color: var(--warning);
+            font-size: 14px;
         }
 
         footer {
             text-align: center;
             padding: 25px;
-            color: #94a3b8;
-            border-top: 1px solid #263550;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            margin-top: 50px;
         }
 
-        @media (max-width: 600px) {
-            main {
-                width: 94%;
-                margin-top: 25px;
-            }
-
-            .card {
-                padding: 17px;
+        @media (max-width: 650px) {
+            header {
+                padding: 15px 5%;
             }
 
             nav {
                 flex-direction: column;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 14px;
+                font-size: 13px;
+            }
+
+            .card {
+                padding: 19px;
+            }
+
+            .buttons button {
+                flex: 1 1 100%;
             }
         }
     </style>
@@ -163,298 +301,317 @@
 
 <header>
     <nav>
-        <div class="logo">PyOptimize</div>
-        <div>
+        <a href="index.html" class="logo">PyOptimize</a>
+
+        <div class="nav-links">
             <a href="index.html">صفحه اصلی</a>
             <a href="analysis.html">تحلیل کد</a>
+            <a href="patterns.html">تشخیص الگوها</a>
+            <a href="optimization.html">بهینه‌سازی</a>
         </div>
     </nav>
 </header>
 
 <main>
 
+    <!-- معرفی صفحه -->
     <section class="card">
+        <span class="badge">مرحله اول پروژه</span>
+
         <h1>تحلیل کد با هوش مصنوعی</h1>
 
-        <p>
-            کد پایتون خود را وارد کنید تا ساختار آن بررسی شود،
-            بخش‌های مهم برنامه شناسایی شوند و پیشنهادهایی برای
-            بهبود کیفیت و کارایی کد دریافت کنید.
+        <p class="intro">
+            در این بخش می‌توانید کد پایتون خود را وارد کنید تا ساختار
+            آن بررسی شود، الگوهای احتمالی ناکارآمد شناسایی شوند و
+            پیشنهادهایی برای بهبود عملکرد برنامه دریافت کنید.
         </p>
 
-        <p class="notice">
-            توجه: نسخه فعلی از تحلیل الگوها و قواعد ساده استفاده می‌کند
-            و هنوز به مدل هوش مصنوعی واقعی متصل نیست.
-        </p>
+        <div class="notice">
+            توجه: این نسخه یک تحلیل‌گر اولیه مبتنی بر قواعد ساده است.
+            هنوز به مدل هوش مصنوعی واقعی متصل نشده است.
+        </div>
     </section>
 
+    <!-- ویرایشگر کد -->
     <section class="card">
         <h2>ورود کد پایتون</h2>
 
-        <textarea id="codeInput"
-            placeholder="کد پایتون خود را اینجا وارد کنید..."></textarea>
+        <p style="margin-bottom: 18px;">
+            کد خودتان را وارد کنید یا نمونه آماده را بارگذاری کنید.
+        </p>
 
-        <br>
+        <label class="editor-label" for="codeInput">
+            ویرایشگر کد:
+        </label>
 
-        <button class="analyze-btn" id="analyzeButton">
-            شروع تحلیل کد
-        </button>
+        <textarea
+            id="codeInput"
+            spellcheck="false"
+            placeholder="کد پایتون خود را اینجا وارد کنید..."
+        ></textarea>
 
-        <button class="clear-btn" id="clearButton">
-            پاک کردن
-        </button>
+        <div class="buttons">
+            <button class="secondary" id="sampleButton" type="button">
+                بارگذاری نمونه کد
+            </button>
+
+            <button class="primary" id="analyzeButton" type="button">
+                تحلیل کد
+            </button>
+
+            <button class="secondary" id="clearButton" type="button">
+                پاک کردن
+            </button>
+        </div>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
     </section>
 
-    <section class="card" id="result" hidden>
-        <h2>نتیجه تحلیل کد</h2>
-        <div id="resultContent"></div>
+    <!-- نتایج تحلیل -->
+    <section class="card hidden" id="results">
+
+        <h2>نتایج تحلیل</h2>
+
+        <div class="result-section">
+            <h3>۱. بررسی ساختار برنامه</h3>
+            <p id="structure"></p>
+        </div>
+
+        <div class="result-section">
+            <h3>۲. مشکلات احتمالی</h3>
+            <div id="problems"></div>
+        </div>
+
+        <div class="result-section">
+            <h3>۳. پیشنهادهای بهینه‌سازی</h3>
+            <div id="suggestions"></div>
+        </div>
+
+        <div class="result-section">
+            <h3>۴. تحلیل اولیه پیچیدگی</h3>
+            <p id="complexity"></p>
+        </div>
+
+        <div class="result-section">
+            <h3>۵. نمونه کد بهینه‌شده</h3>
+            <p id="optimizationNote"></p>
+            <pre class="result-code" id="optimizedCode"></pre>
+        </div>
+
+    </section>
+
+    <!-- ادامه مسیر -->
+    <section class="card">
+        <h2>مراحل بعدی پروژه</h2>
+
+        <p>
+            پس از تحلیل اولیه، می‌توانید به بخش‌های دیگر پروژه بروید:
+        </p>
+
+        <div class="buttons">
+            <a href="patterns.html">
+                <button class="secondary" type="button">تشخیص الگوها</button>
+            </a>
+
+            <a href="optimization.html">
+                <button class="secondary" type="button">بهینه‌سازی کد</button>
+            </a>
+
+            <a href="complexity.html">
+                <button class="secondary" type="button">تحلیل پیچیدگی</button>
+            </a>
+        </div>
     </section>
 
 </main>
 
 <footer>
-    پروژه تحلیل و بهینه‌سازی کد با AI | PyOptimize
+    PyOptimize | پروژه تحلیل و بهینه‌سازی کد پایتون
 </footer>
 
 <script>
 "use strict";
 
-const codeInput = document.getElementById("codeInput");
-const result = document.getElementById("result");
-const resultContent = document.getElementById("resultContent");
+/* نمونه کد اولیه با الگوریتم جست‌وجوی تکراری */
+const sampleCode = `def find_duplicates(numbers):
+    duplicates = []
 
+    for i in range(len(numbers)):
+        for j in range(i + 1, len(numbers)):
+            if numbers[i] == numbers[j]:
+                if numbers[i] not in duplicates:
+                    duplicates.append(numbers[i])
+
+    return duplicates
+
+
+values = [4, 2, 8, 2, 4, 9]
+print(find_duplicates(values))`;
+
+
+/* نسخه بهینه‌شده نمونه */
+const optimizedSample = `def find_duplicates(numbers):
+    seen = set()
+    reported = set()
+    duplicates = []
+
+    for number in numbers:
+        if number in seen and number not in reported:
+            duplicates.append(number)
+            reported.add(number)
+        else:
+            seen.add(number)
+
+    return duplicates
+
+
+values = [4, 2, 8, 2, 4, 9]
+print(find_duplicates(values))`;
+
+
+const input = document.getElementById("codeInput");
+const results = document.getElementById("results");
+const message = document.getElementById("message");
+
+
+/* بارگذاری نمونه کد */
+document.getElementById("sampleButton").addEventListener("click", function () {
+    input.value = sampleCode;
+    message.textContent = "نمونه کد با موفقیت بارگذاری شد.";
+    results.classList.add("hidden");
+});
+
+
+/* پاک کردن ویرایشگر */
+document.getElementById("clearButton").addEventListener("click", function () {
+    input.value = "";
+    results.classList.add("hidden");
+    message.textContent = "ویرایشگر پاک شد.";
+});
+
+
+/* شروع تحلیل */
 document.getElementById("analyzeButton").addEventListener("click", analyzeCode);
-document.getElementById("clearButton").addEventListener("click", clearCode);
 
-function countMatches(code, regex) {
-    const matches = code.match(regex);
-    return matches ? matches.length : 0;
-}
 
 function analyzeCode() {
-    const code = codeInput.value;
+    const code = input.value;
 
     if (!code.trim()) {
-        alert("لطفاً ابتدا کد پایتون خود را وارد کنید.");
+        message.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
+        results.classList.add("hidden");
         return;
     }
 
-    const lines = code.split("\n");
-    const functionCount = countMatches(code, /^\s*def\s+\w+/gm);
-    const loopCount = countMatches(code, /^\s*(for|while)\b/gm);
-    const classCount = countMatches(code, /^\s*class\s+\w+/gm);
-    const importCount = countMatches(code, /^\s*(import|from)\s+/gm);
-    const conditionCount = countMatches(code, /^\s*(if|elif|else)\b/gm);
-    const returnCount = countMatches(code, /^\s*return\b/gm);
-    const printCount = countMatches(code, /\bprint\s*\(/g);
+    message.textContent = "تحلیل اولیه انجام شد.";
 
-    const explanations = [];
+    const lines = code.split("\n");
+
+    const functionCount = (code.match(/^\s*def\s+/gm) || []).length;
+    const classCount = (code.match(/^\s*class\s+/gm) || []).length;
+    const forCount = (code.match(/^\s*for\b/gm) || []).length;
+    const whileCount = (code.match(/^\s*while\b/gm) || []).length;
+    const importCount = (code.match(/^\s*(import|from)\s+/gm) || []).length;
+
+    const loopCount = forCount + whileCount;
+
     const problems = [];
     const suggestions = [];
 
-    // بررسی ساختار برنامه
-
-    explanations.push(
-        "برنامه از " + lines.length + " خط تشکیل شده است."
-    );
-
-    if (functionCount > 0) {
-        explanations.push(
-            "در برنامه " + functionCount + " تابع تعریف شده است."
-        );
-    } else {
-        explanations.push(
-            "تابعی در برنامه شناسایی نشد."
-        );
+    /* بررسی حلقه‌های تو در تو */
+    if (/^\s*for\b[^\n]*:\s*\n(?:[ \t]*\n)*[ \t]+for\b/m.test(code)) {
+        problems.push("احتمال وجود حلقه‌های تو در تو شناسایی شد.");
+        suggestions.push("بررسی کنید آیا می‌توان از مجموعه‌ها یا دیکشنری برای کاهش جست‌وجوهای تکراری استفاده کرد.");
     }
 
-    if (loopCount > 0) {
-        explanations.push(
-            "برنامه دارای " + loopCount + " حلقه تکرار است."
-        );
-    }
-
-    if (classCount > 0) {
-        explanations.push(
-            "در برنامه " + classCount + " کلاس تعریف شده است."
-        );
-    }
-
-    if (conditionCount > 0) {
-        explanations.push(
-            "برنامه دارای " + conditionCount + " شرط است."
-        );
-    }
-
-    if (importCount > 0) {
-        explanations.push(
-            importCount + " دستور import در برنامه وجود دارد."
-        );
-    }
-
-    if (returnCount > 0) {
-        explanations.push(
-            "تعداد دستورات return برابر " + returnCount + " است."
-        );
-    }
-
-    if (printCount > 0) {
-        explanations.push(
-            "برنامه از دستور print برای نمایش خروجی استفاده می‌کند."
-        );
-    }
-
-    // بررسی الگوهای احتمالی مشکل‌دار
-
+    /* بررسی eval */
     if (/\beval\s*\(/.test(code)) {
-        problems.push(
-            "استفاده از eval شناسایی شد. این دستور در صورت دریافت ورودی نامطمئن می‌تواند خطر امنیتی داشته باشد."
-        );
-
-        suggestions.push(
-            "در صورت امکان از روش‌های امن‌تر برای پردازش ورودی استفاده کنید."
-        );
+        problems.push("تابع eval در کد دیده شد.");
+        suggestions.push("در صورت امکان از روش‌های امن‌تر برای پردازش ورودی استفاده کنید.");
     }
 
-    if (/for\s+\w+\s+in\s+[\w.]+\s*:\s*\n\s+for\s+/m.test(code)) {
-        problems.push(
-            "حلقه‌های تودرتو شناسایی شدند. بهتر است تعداد تکرارها و ضرورت این ساختار بررسی شود."
-        );
+    /* بررسی print */
+    const printCount = (code.match(/\bprint\s*\(/g) || []).length;
 
-        suggestions.push(
-            "در صورت امکان، الگوریتم حلقه‌های تودرتو را بازبینی کنید."
-        );
+    if (printCount > 5) {
+        suggestions.push("تعداد زیادی دستور print وجود دارد؛ برای خروجی‌های متعدد، استفاده از logging را بررسی کنید.");
     }
 
-    if (/for\s+\w+\s+in\s+[\w.]+\s*:\s*\n\s+if\s+.*\bnot\s+in\b/m.test(code)) {
-        problems.push(
-            "احتمال بررسی مکرر عضویت در یک حلقه وجود دارد."
-        );
-
-        suggestions.push(
-            "اگر شرایط برنامه اجازه می‌دهد، استفاده از set را برای بررسی عضویت بررسی کنید."
-        );
-    }
-
-    if (/\binput\s*\(/.test(code)) {
-        explanations.push(
-            "برنامه برای دریافت اطلاعات از کاربر از input استفاده می‌کند."
-        );
-    }
-
-    if (/\bappend\s*\(/.test(code)) {
-        explanations.push(
-            "برنامه از append برای افزودن عنصر به لیست استفاده می‌کند."
-        );
-    }
-
-    if (/\bsorted\s*\(|\.sort\s*\(/.test(code)) {
-        explanations.push(
-            "در برنامه عملیات مرتب‌سازی داده‌ها شناسایی شد."
-        );
-    }
-
-    if (/\bsum\s*\(/.test(code)) {
-        explanations.push(
-            "از تابع sum برای محاسبه مجموع مقادیر استفاده شده است."
-        );
-    }
-
-    if (/\bmax\s*\(|\bmin\s*\(/.test(code)) {
-        explanations.push(
-            "از تابع max یا min برای یافتن مقدار بیشینه یا کمینه استفاده شده است."
-        );
-    }
-
-    // پیشنهادهای عمومی
-
+    /* بررسی حلقه‌ها */
     if (loopCount > 0) {
-        suggestions.push(
-            "حلقه‌ها را از نظر تعداد تکرار و عملیات غیرضروری بررسی کنید."
-        );
-    }
-
-    if (functionCount === 0 && lines.length > 10) {
-        suggestions.push(
-            "تقسیم برنامه به توابع کوچک‌تر می‌تواند خوانایی و نگهداری کد را بهتر کند."
-        );
-    }
-
-    if (suggestions.length === 0) {
-        suggestions.push(
-            "در الگوهای بررسی‌شده پیشنهاد ویژه‌ای شناسایی نشد. برای ارزیابی دقیق‌تر، کد باید از نظر منطق و عملکرد نیز بررسی شود."
-        );
+        suggestions.push("تعداد تکرار حلقه‌ها و وابستگی آن‌ها به اندازه ورودی را بررسی کنید.");
     }
 
     if (problems.length === 0) {
-        problems.push(
-            "با قواعد ساده این نسخه، مشکل مشخصی شناسایی نشد. این موضوع به معنی بدون‌خطا بودن برنامه نیست."
-        );
+        problems.push("با قواعد ساده این نسخه، مشکل مشخصی شناسایی نشد. این نتیجه به معنی بدون‌خطا بودن برنامه نیست.");
     }
 
-    // نمایش نتیجه
+    if (suggestions.length === 0) {
+        suggestions.push("در بررسی اولیه پیشنهاد مشخصی پیدا نشد. برای تحلیل دقیق‌تر، منطق برنامه باید بررسی شود.");
+    }
 
-    resultContent.replaceChildren();
+    /* نمایش ساختار */
+    document.getElementById("structure").textContent =
+        "تعداد خطوط: " + lines.length +
+        " | تعداد توابع: " + functionCount +
+        " | تعداد کلاس‌ها: " + classCount +
+        " | تعداد حلقه‌ها: " + loopCount +
+        " | تعداد دستورات import: " + importCount;
 
-    addSection("۱. توضیح برنامه", explanations);
-    addSection("۲. ساختار کد", [
-        "تعداد خطوط: " + lines.length,
-        "تعداد توابع: " + functionCount,
-        "تعداد حلقه‌ها: " + loopCount,
-        "تعداد شرط‌ها: " + conditionCount,
-        "تعداد کلاس‌ها: " + classCount,
-        "تعداد دستورات import: " + importCount,
-        "تعداد دستورات return: " + returnCount,
-        "تعداد دستورات print: " + printCount
-    ]);
+    showList("problems", problems);
+    showList("suggestions", suggestions);
 
-    addSection("۳. مشکلات احتمالی", problems);
-    addSection("۴. پیشنهادهای بهینه‌سازی", suggestions);
+    /* تحلیل مقدماتی پیچیدگی */
+    let complexity = "پیچیدگی دقیق الگوریتم از روی تعداد خطوط کد قابل تعیین نیست. ";
 
-    const conclusion = document.createElement("p");
-    conclusion.className = "success";
-    conclusion.textContent =
-        "تحلیل اولیه به پایان رسید. پیشنهادها باید با اجرای برنامه و بررسی صحت خروجی ارزیابی شوند.";
+    if (loopCount === 0) {
+        complexity += "حلقه‌ای شناسایی نشد؛ با این حال ممکن است فراخوانی توابع یا عملیات داخلی زمان‌بر باشند.";
+    } else if (loopCount === 1) {
+        complexity += "یک حلقه شناسایی شد. اگر تعداد تکرارهای آن متناسب با اندازه ورودی باشد، ممکن است پیچیدگی زمانی O(n) باشد.";
+    } else {
+        complexity += "چند حلقه شناسایی شدند. باید مشخص شود حلقه‌ها تو در تو هستند یا جداگانه اجرا می‌شوند.";
+    }
 
-    const finalSection = document.createElement("div");
-    finalSection.className = "result-box";
-    finalSection.appendChild(conclusion);
+    document.getElementById("complexity").textContent = complexity;
 
-    resultContent.appendChild(finalSection);
+    /* نمایش نمونه بهینه‌شده فقط برای نمونه آماده */
+    const isSample = code.trim() === sampleCode.trim();
 
-    result.hidden = false;
-    result.scrollIntoView({
+    if (isSample) {
+        document.getElementById("optimizationNote").textContent =
+            "این نسخه برای نمونه آماده نوشته شده است. با استفاده از set، جست‌وجوی تکراری کاهش می‌یابد. زمان مورد انتظار از O(n²) به O(n) در حالت میانگین می‌رسد.";
+
+        document.getElementById("optimizedCode").textContent = optimizedSample;
+    } else {
+        document.getElementById("optimizationNote").textContent =
+            "برای کد دلخواه، این نسخه هنوز قادر به تولید کد بهینه‌شده نیست. در مرحله اتصال بک‌اند هوش مصنوعی، این قابلیت اضافه خواهد شد.";
+
+        document.getElementById("optimizedCode").textContent =
+            "نسخه بهینه‌شده هنوز تولید نشده است.";
+    }
+
+    results.classList.remove("hidden");
+    results.scrollIntoView({
         behavior: "smooth",
         block: "start"
     });
 }
 
-function addSection(title, items) {
-    const box = document.createElement("div");
-    box.className = "result-box";
 
-    const heading = document.createElement("h3");
-    heading.textContent = title;
-
+/* ساخت فهرست امن نتایج */
+function showList(elementId, items) {
+    const container = document.getElementById(elementId);
     const list = document.createElement("ul");
 
-    items.forEach(function(item) {
+    items.forEach(function (item) {
         const li = document.createElement("li");
         li.textContent = item;
         list.appendChild(li);
     });
 
-    box.appendChild(heading);
-    box.appendChild(list);
-
-    resultContent.appendChild(box);
-}
-
-function clearCode() {
-    codeInput.value = "";
-    resultContent.replaceChildren();
-    result.hidden = true;
+    container.replaceChildren(list);
 }
 </script>
 
-    </body>
+</body>
+</html>
