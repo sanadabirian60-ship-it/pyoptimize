@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بهینه‌سازی کد با AI | PyOptimize</title>
+
+    <title>بهینه‌سازی کد | PyOptimize</title>
 
     <style>
         * {
@@ -13,74 +15,343 @@
         body {
             margin: 0;
             font-family: Tahoma, Arial, sans-serif;
-            background: #0b1120;
-            color: #e5e7eb;
-            line-height: 1.8;
+            background: #f4f6fb;
+            color: #20283a;
+            line-height: 1.9;
         }
 
         header {
-            background: #111c32;
+            background: #172554;
+            color: white;
             padding: 22px 8%;
-            border-bottom: 1px solid #263653;
         }
 
         header h1 {
-            color: #60a5fa;
             margin: 0;
+            font-size: 25px;
         }
 
         header p {
-            color: #a5b4fc;
-            margin-bottom: 0;
+            color: #cbd5e1;
+            margin: 5px 0;
+        }
+
+        nav {
+            margin-top: 12px;
+        }
+
+        nav a {
+            color: #dbeafe;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: white;
         }
 
         main {
-            width: min(1000px, 92%);
-            margin: 40px auto;
+            width: min(1050px, 92%);
+            margin: 35px auto;
         }
 
-        .back {
-            display: inline-block;
-            color: #93c5fd;
-            text-decoration: none;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background: #14213a;
-            border: 1px solid #263653;
-            border-radius: 14px;
+        .intro, .panel {
+            background: white;
             padding: 25px;
+            border-radius: 14px;
             margin-bottom: 25px;
+            box-shadow: 0 4px 18px #1725540d;
         }
 
         h2 {
-            color: #60a5fa;
+            color: #1e3a8a;
             margin-top: 0;
+        }
+
+        h3 {
+            color: #334155;
+        }
+
+        .code-box {
+            direction: ltr;
+            text-align: left;
+            background: #111827;
+            color: #e5e7eb;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre;
         }
 
         textarea {
             width: 100%;
-            min-height: 260px;
-            resize: vertical;
-            background: #080e1b;
-            color: #d1fae5;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 16px;
-            font-family: Consolas, monospace;
-            font-size: 14px;
+            min-height: 200px;
             direction: ltr;
             text-align: left;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: #3b82f6;
+            background: #111827;
+            color: #f8fafc;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            padding: 18px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            resize: vertical;
         }
 
         button {
             border: none;
             border-radius: 9px;
             padding: 12px 22px;
-            margin-top
+            margin-top: 15px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .result {
+            background: #eff6ff;
+            border-right: 4px solid #2563eb;
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .note {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 22px;
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px 5%;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 5px 8px;
+            }
+
+            .intro, .panel {
+                padding: 18px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>PyOptimize</h1>
+
+    <p>تحلیل و بهینه‌سازی کد پایتون با کمک هوش مصنوعی</p>
+
+    <nav>
+        <a href="index.html">صفحه اصلی</a>
+        <a href="analysis.html">تحلیل کد</a>
+        <a href="patterns.html">تشخیص الگوها</a>
+        <a href="optimization.html">بهینه‌سازی</a>
+        <a href="complexity.html">پیچیدگی الگوریتم</a>
+        <a href="comparison.html">مقایسه کدها</a>
+        <a href="report.html">گزارش نهایی</a>
+    </nav>
+
+</header>
+
+
+<main>
+
+    <section class="intro">
+
+        <h2>بهینه‌سازی کد با هوش مصنوعی</h2>
+
+        <p>
+            در این بخش، کدهای پایتون بررسی می‌شوند تا روش‌های
+            مناسب‌تری برای پیاده‌سازی آن‌ها پیشنهاد شود.
+            هدف، افزایش خوانایی، کاهش عملیات غیرضروری و بهبود
+            عملکرد برنامه است.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>۱. نمایش کد اولیه</h2>
+
+        <p>
+            نمونه زیر مجموع اعداد یک لیست را با استفاده از
+            یک حلقه محاسبه می‌کند.
+        </p>
+
+        <div class="code-box"><code>numbers = [2, 4, 6, 8, 10]
+
+total = 0
+
+for number in numbers:
+    total = total + number
+
+print(total)</code></div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>۲. نسخه بهینه‌شده نمونه</h2>
+
+        <p>
+            در این مثال می‌توان از تابع آماده sum در پایتون
+            برای محاسبه مجموع عناصر لیست استفاده کرد.
+        </p>
+
+        <div class="code-box"><code>numbers = [2, 4, 6, 8, 10]
+
+total = sum(numbers)
+
+print(total)</code></div>
+
+        <h3>توضیح تغییرات</h3>
+
+        <ul>
+            <li>حلقه دستی حذف شده است.</li>
+            <li>از تابع داخلی sum استفاده شده است.</li>
+            <li>کد کوتاه‌تر و خواناتر شده است.</li>
+            <li>نتیجه محاسبه مانند نسخه اولیه برابر با 30 است.</li>
+        </ul>
+
+        <p>
+            توجه: استفاده از تابع sum لزوماً به معنای کاهش
+            مرتبه پیچیدگی زمانی نیست؛ هر دو روش برای این مسئله
+            از مرتبه O(n) هستند.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>۳. واردکردن کد توسط کاربر</h2>
+
+        <p>
+            کد پایتون خود را در کادر زیر وارد کنید تا برای
+            دریافت نسخه پیشنهادی بهینه‌شده ارسال شود.
+        </p>
+
+        <textarea
+            id="userCode"
+            spellcheck="false"
+            placeholder="کد اولیه پایتون را اینجا وارد کنید..."></textarea>
+
+        <button type="button" onclick="optimizeCode()">
+            بهینه‌سازی کد
+        </button>
+
+        <div id="result" class="result" aria-live="polite">
+            نتیجه بهینه‌سازی در این قسمت نمایش داده می‌شود.
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>۴. هدف از بهینه‌سازی</h2>
+
+        <p>
+            هدف این بخش، ارائه نسخه‌ای خواناتر و کارآمدتر از کد
+            اولیه است. هوش مصنوعی می‌تواند تغییرات پیشنهادی را
+            توضیح دهد تا کاربر علاوه بر دریافت کد جدید،
+            دلیل بهینه‌سازی را نیز درک کند.
+        </p>
+
+        <p>
+            نسخه پیشنهادی باید از نظر درستی عملکرد بررسی شود
+            تا نتیجه آن با هدف برنامه مطابقت داشته باشد.
+        </p>
+
+    </section>
+
+</main>
+
+
+<footer>
+    پروژه PyOptimize | بهینه‌سازی کد با هوش مصنوعی
+</footer>
+
+
+<script>
+
+async function optimizeCode() {
+
+    const code = document.getElementById("userCode").value.trim();
+    const result = document.getElementById("result");
+
+    if (!code) {
+        result.textContent = "لطفاً ابتدا کد پایتون خود را وارد کنید.";
+        return;
+    }
+
+    result.textContent = "در حال ارسال کد برای بهینه‌سازی...";
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:8000/optimize",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    code: code
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("خطا در دریافت پاسخ سرور");
+        }
+
+        const data = await response.json();
+
+        result.textContent =
+            "کد بهینه‌شده:\n\n" +
+            (data.optimized_code || "نسخه بهینه‌شده دریافت نشد.") +
+            "\n\nتوضیح تغییرات:\n\n" +
+            (data.explanation || "توضیحی دریافت نشد.");
+
+    } catch (error) {
+
+        result.textContent =
+            "ارتباط با سامانه بهینه‌سازی برقرار نشد.\n" +
+            "برای فعال شدن این قابلیت، باید بک‌اند پایتونی و سرویس هوش مصنوعی راه‌اندازی شوند.";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
