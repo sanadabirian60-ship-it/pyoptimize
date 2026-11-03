@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحلیل کد با هوش مصنوعی | PyOptimize</title>
+
+    <title>مقدمه تحلیل کد | PyOptimize</title>
 
     <style>
         * {
@@ -12,126 +14,97 @@
 
         body {
             margin: 0;
-            font-family: Tahoma, Arial, sans-serif;
-            background: #0b1120;
-            color: #e5e7eb;
-            line-height: 1.8;
+            font-family: Tahoma, sans-serif;
+            background: #f4f6fa;
+            color: #263238;
+            line-height: 2;
         }
 
         header {
-            background: #111c32;
-            padding: 22px 8%;
-            border-bottom: 1px solid #263653;
+            background: #182b49;
+            color: white;
+            text-align: center;
+            padding: 40px 15px;
         }
 
-        header h1 {
-            color: #60a5fa;
-            margin: 0;
+        nav {
+            background: #243b60;
+            padding: 12px;
+            text-align: center;
         }
 
-        header p {
-            color: #a5b4fc;
-            margin-bottom: 0;
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 8px;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            color: #70e1c1;
         }
 
         main {
-            width: min(1000px, 92%);
-            margin: 40px auto;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
         }
 
         .card {
-            background: #14213a;
-            border: 1px solid #263653;
-            border-radius: 14px;
+            background: white;
             padding: 25px;
             margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
         }
 
-        h2 {
-            color: #60a5fa;
-            margin-top: 0;
+        h2, h3 {
+            color: #176b87;
         }
 
-        textarea {
-            width: 100%;
-            min-height: 280px;
-            resize: vertical;
-            background: #080e1b;
-            color: #d1fae5;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 16px;
-            font-family: Consolas, monospace;
-            font-size: 14px;
+        .example {
+            background: #172438;
+            color: #e8f0fa;
+            padding: 20px;
+            border-radius: 8px;
             direction: ltr;
             text-align: left;
-            outline: none;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
         }
 
-        textarea:focus {
-            border-color: #3b82f6;
+        .note {
+            background: #e8f5f5;
+            padding: 15px;
+            border-right: 4px solid #087f8c;
+            border-radius: 6px;
         }
 
-        button {
-            border: none;
-            border-radius: 9px;
-            padding: 12px 22px;
-            margin-top: 15px;
-            background: #2563eb;
-            color: white;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1d4ed8;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .result {
-            background: #080e1b;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 20px;
-            min-height: 100px;
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-        }
-
-        .status {
-            margin-top: 15px;
-            color: #fbbf24;
-        }
-
-        .back {
+        .button {
             display: inline-block;
-            color: #93c5fd;
+            background: #087f8c;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 8px;
             text-decoration: none;
-            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            background: #075e68;
         }
 
         footer {
+            background: #182b49;
+            color: white;
             text-align: center;
-            padding: 25px;
-            color: #94a3b8;
-            border-top: 1px solid #263653;
+            padding: 18px;
+            margin-top: 40px;
         }
 
-        @media (max-width: 600px) {
-            header {
-                padding: 18px 5%;
-            }
-
-            .card {
-                padding: 17px;
-            }
-
-            textarea {
-                min-height: 220px;
+        @media (max-width: 700px) {
+            main {
+                padding: 12px;
             }
         }
     </style>
@@ -141,111 +114,112 @@
 
 <header>
     <h1>PyOptimize</h1>
-    <p>تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی (AI)</p>
+    <p>مقدمه‌ای بر تحلیل کد پایتون</p>
 </header>
+
+<nav>
+    <a href="index.html">صفحه اصلی</a>
+    <a href="analysis-intro.html">مقدمه تحلیل</a>
+    <a href="analysis.html">تحلیل کد</a>
+    <a href="patterns.html">تشخیص الگوها</a>
+    <a href="optimization.html">بهینه‌سازی</a>
+    <a href="complexity.html">پیچیدگی الگوریتم</a>
+    <a href="comparison.html">مقایسه کدها</a>
+    <a href="report.html">گزارش نهایی</a>
+</nav>
 
 <main>
 
-    <a class="back" href="index.html">← بازگشت به صفحه اصلی</a>
-
     <section class="card">
-        <h2>۱. تحلیل کد با هوش مصنوعی</h2>
+        <h2>تحلیل کد چیست؟</h2>
 
         <p>
-            کد پایتون خود را وارد کنید تا هوش مصنوعی آن را بررسی کند،
-            مشکلات احتمالی را شناسایی کند و پیشنهادهای بهبود ارائه دهد.
+            تحلیل کد فرایندی است که طی آن ساختار، منطق و عملکرد
+            یک برنامه بررسی می‌شود تا مشکلات احتمالی، خطاها و
+            بخش‌های قابل بهبود شناسایی شوند.
         </p>
 
-        <textarea
-            id="pythonCode"
-            placeholder="کد پایتون خود را اینجا وارد کنید..."
-            spellcheck="false"
-        ></textarea>
-
-        <button id="analyzeButton" type="button">
-            تحلیل کد با AI
-        </button>
-
-        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <p>
+            در پروژه PyOptimize هدف استفاده از روش‌های تحلیل
+            برنامه و هوش مصنوعی برای بررسی کدهای پایتون و ارائه
+            پیشنهادهایی برای بهبود آن‌هاست.
+        </p>
     </section>
 
     <section class="card">
-        <h2>نتیجه تحلیل هوشمند</h2>
+        <h2>چرا تحلیل کد اهمیت دارد؟</h2>
 
-        <div id="result" class="result" aria-live="polite">
-            نتیجه تحلیل پس از ارسال کد نمایش داده می‌شود.
+        <ul>
+            <li>شناسایی خطاهای احتمالی برنامه</li>
+            <li>افزایش خوانایی و نظم کد</li>
+            <li>شناسایی روش‌های ناکارآمد</li>
+            <li>بررسی پیچیدگی زمانی و فضایی</li>
+            <li>کمک به انتخاب روش‌های مناسب‌تر برنامه‌نویسی</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>نمونه‌ای از تحلیل کد پایتون</h2>
+
+        <p>کد زیر اعداد یک لیست را با هم جمع می‌کند:</p>
+
+        <pre class="example"><code>numbers = [2, 4, 6, 8, 10]
+
+total = 0
+
+for number in numbers:
+    total += number
+
+print(total)</code></pre>
+
+        <h3>توضیح عملکرد کد</h3>
+
+        <p>
+            ابتدا یک لیست از اعداد ساخته می‌شود. سپس متغیر total
+            با مقدار صفر تعریف می‌شود. حلقه for تمام عناصر لیست
+            را پیمایش می‌کند و هر عدد را به مجموع اضافه می‌کند.
+            در پایان نتیجه نمایش داده می‌شود.
+        </p>
+
+        <div class="note">
+            این نمونه از نظر زمانی دارای پیچیدگی O(n) و از نظر
+            فضای کمکی دارای پیچیدگی O(1) است.
         </div>
+    </section>
+
+    <section class="card">
+        <h2>نقش هوش مصنوعی در تحلیل کد</h2>
+
+        <p>
+            هوش مصنوعی می‌تواند با بررسی کد، عملکرد بخش‌های مختلف
+            را توضیح دهد، مشکلات احتمالی را شناسایی کند و برای
+            بهبود ساختار برنامه پیشنهادهایی ارائه دهد.
+        </p>
+
+        <p>
+            البته پیشنهادهای هوش مصنوعی باید بررسی و آزمایش شوند
+            تا از درستی و مناسب‌بودن آن‌ها اطمینان حاصل شود.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>شروع تحلیل کد</h2>
+
+        <p>
+            برای مشاهده نمونه‌های عملی و واردکردن کد پایتون،
+            وارد بخش تحلیل کد شوید.
+        </p>
+
+        <a href="analysis.html" class="button">
+            ورود به بخش تحلیل کد
+        </a>
     </section>
 
 </main>
 
 <footer>
-    PyOptimize | تحلیل و بهینه‌سازی کد با هوش مصنوعی
+    <p>PyOptimize | تحلیل و بهینه‌سازی کد با استفاده از هوش مصنوعی</p>
 </footer>
-
-<script>
-    // آدرس بک‌اند را پس از راه‌اندازی سرور وارد کنید.
-    const API_URL = "http://localhost:8000/analyze";
-
-    const codeInput = document.getElementById("pythonCode");
-    const analyzeButton = document.getElementById("analyzeButton");
-    const resultBox = document.getElementById("result");
-    const statusBox = document.getElementById("status");
-
-    analyzeButton.addEventListener("click", analyzeCode);
-
-    async function analyzeCode() {
-        const code = codeInput.value.trim();
-
-        if (!code) {
-            statusBox.textContent = "لطفاً ابتدا کد پایتون را وارد کنید.";
-            return;
-        }
-
-        analyzeButton.disabled = true;
-        statusBox.textContent = "در حال ارسال کد برای تحلیل هوشمند...";
-        resultBox.textContent = "لطفاً منتظر بمانید...";
-
-        try {
-            const response = await fetch(API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    code: code
-                })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(
-                    data.detail || "خطایی در تحلیل کد رخ داده است."
-                );
-            }
-
-            if (typeof data.analysis !== "string") {
-                throw new Error("پاسخ سرور معتبر نیست.");
-            }
-
-            resultBox.textContent = data.analysis;
-            statusBox.textContent = "تحلیل با موفقیت انجام شد.";
-
-        } catch (error) {
-            resultBox.textContent =
-                "امکان دریافت نتیجه تحلیل وجود ندارد.";
-
-            statusBox.textContent =
-                "خطا: " + error.message +
-                " | اتصال بک‌اند را بررسی کنید.";
-
-        } finally {
-            analyzeButton.disabled = false;
-        }
-    }
-</script>
 
 </body>
 </html>
-  
